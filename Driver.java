@@ -126,7 +126,7 @@ public class Driver {
 			String name = Helper.getStringInput("Enter Name: ");
 			if (findPerson(network, name)) {
 				Person p = network.get(getIndexByProperty(network, name));
-				updateProfile(p, connection);
+				updateProfile(p, network, connection);
 			} else
 				System.out.println("[" + name + "] not found");
 
@@ -193,7 +193,7 @@ public class Driver {
 		}
 	}
 
-	public void updateProfile(Person p, ArrayList<Relationship> connection) {
+	public void updateProfile(Person p, ArrayList<Person> nt, ArrayList<Relationship> connection) {
 		Boolean proceed = true;
 		if (p instanceof Adult) {
 			Adult a = (Adult) p;
@@ -254,8 +254,14 @@ public class Driver {
 					}
 				}
 			}
-			if (proceed)
-				c.setAge(newAge);
+			if (proceed) {
+				if (newAge <= GlobalClass.minorAge) {
+					YoungChild y = (YoungChild) p;
+					// need to clone, rebuild all relationships & delete old instance : not_done_yet
+					y.setAge(newAge);
+				}
+
+			}
 		}
 
 		findFriends(p, connection, GlobalClass.suppressDetails);
