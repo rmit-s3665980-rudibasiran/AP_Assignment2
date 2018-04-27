@@ -12,6 +12,7 @@ Notes: --
 public class Adult extends Person {
 
 	String _info;
+	String _baby;
 
 	public Adult(String name, int age, String g, String info) {
 		super.setName(name);
