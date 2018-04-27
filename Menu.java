@@ -13,21 +13,21 @@ public class Menu {
 	private int _choice;
 	private Boolean _quit;
 
-	private String[] _menuItems = new String[GlobalClass.menuSize];
+	private String[] _menuItems = new String[Helper.menuSize];
 
 	public Menu() {
 		_choice = 1;
 		_quit = false;
-		_menuItems[GlobalClass.quitMenu] = "Quit";
-		_menuItems[GlobalClass.addPerson] = "Add Person";
-		_menuItems[GlobalClass.findPerson] = "Find Person";
-		_menuItems[GlobalClass.displayProfile] = "Display Single Profile";
-		_menuItems[GlobalClass.displayAllProfile] = "Display All Profile(s)";
-		_menuItems[GlobalClass.updateProfile] = "Update Profile";
-		_menuItems[GlobalClass.deletePerson] = "Delete Person";
-		_menuItems[GlobalClass.connectPerson] = "Connect Person";
-		_menuItems[GlobalClass.findFriends] = "Find Friends";
-		_menuItems[GlobalClass.findFamily] = "Find Family";
+		_menuItems[Helper.quitMenu] = "Quit";
+		_menuItems[Helper.addPerson] = "Add Person";
+		_menuItems[Helper.findPerson] = "Find Person";
+		_menuItems[Helper.displayProfile] = "Display Single Profile";
+		_menuItems[Helper.displayAllProfile] = "Display All Profile(s)";
+		_menuItems[Helper.updateProfile] = "Update Profile";
+		_menuItems[Helper.deletePerson] = "Delete Person";
+		_menuItems[Helper.connectPerson] = "Connect Person";
+		_menuItems[Helper.findFriends] = "Find Friends";
+		_menuItems[Helper.findFamily] = "Find Family";
 
 	}
 

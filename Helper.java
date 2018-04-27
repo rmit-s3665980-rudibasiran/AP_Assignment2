@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import javafx.scene.paint.Color;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -14,6 +16,36 @@ Notes:
  */
 
 public class Helper {
+
+	public static Color boxColor = Color.DARKORANGE;
+	public static Color textColor = Color.BLACK;
+	public static String buttonStyle = "/-fx-background-color:linear-gradient(#f2f2f2, #d6d6d6),linear-gradient(#fcfcfc 0%, #d9d9d9 20%, #d6d6d6 100%),linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6;-fx-background-insets: 0,1,2;-fx-pref-width: 200px;-fx-text-fill: black;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
+	public static int menuSize = 10;
+	public static int quitMenu = 0;
+	public static int addPerson = 1;
+	public static int findPerson = 2;
+	public static int displayProfile = 3;
+	public static int displayAllProfile = 4;
+	public static int updateProfile = 5;
+	public static int deletePerson = 6;
+	public static int connectPerson = 7;
+	public static int findFriends = 8;
+	public static int findFamily = 9;
+
+	public static int friend = 0;
+	public static int spouse = 1;
+	public static int father = 2;
+	public static int mother = 3;
+
+	public static Boolean showDetails = true;
+	public static Boolean suppressDetails = false;
+
+	public static int minorAge = 16;
+	public static int babyAge = 2;
+	public static int ageGap = 3;
+
+	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother" };
+
 	public static String getDate() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		return dateFormat.format(new Date());

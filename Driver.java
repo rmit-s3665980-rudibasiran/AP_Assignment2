@@ -69,43 +69,43 @@ public class Driver {
 		network.add(wanyi);
 
 		// adding connections
-		connection.add(new Relationship(rudi, GlobalClass.spouse, ahysa));
-		connection.add(new Relationship(rudi, GlobalClass.father, rida));
-		connection.add(new Relationship(ahysa, GlobalClass.mother, rida));
+		connection.add(new Relationship(rudi, Helper.spouse, ahysa));
+		connection.add(new Relationship(rudi, Helper.father, rida));
+		connection.add(new Relationship(ahysa, Helper.mother, rida));
 
-		connection.add(new Relationship(arthur, GlobalClass.spouse, sheree));
-		connection.add(new Relationship(arthur, GlobalClass.father, rangi));
-		connection.add(new Relationship(sheree, GlobalClass.mother, rangi));
+		connection.add(new Relationship(arthur, Helper.spouse, sheree));
+		connection.add(new Relationship(arthur, Helper.father, rangi));
+		connection.add(new Relationship(sheree, Helper.mother, rangi));
 
-		connection.add(new Relationship(arthur, GlobalClass.father, tane));
-		connection.add(new Relationship(sheree, GlobalClass.mother, tane));
+		connection.add(new Relationship(arthur, Helper.father, tane));
+		connection.add(new Relationship(sheree, Helper.mother, tane));
 
-		connection.add(new Relationship(andrew, GlobalClass.father, callum));
+		connection.add(new Relationship(andrew, Helper.father, callum));
 
-		connection.add(new Relationship(rasyid, GlobalClass.spouse, amalina));
-		connection.add(new Relationship(rasyid, GlobalClass.father, sabrina));
-		connection.add(new Relationship(amalina, GlobalClass.mother, sabrina));
-		connection.add(new Relationship(rasyid, GlobalClass.father, riyan));
-		connection.add(new Relationship(amalina, GlobalClass.mother, riyan));
+		connection.add(new Relationship(rasyid, Helper.spouse, amalina));
+		connection.add(new Relationship(rasyid, Helper.father, sabrina));
+		connection.add(new Relationship(amalina, Helper.mother, sabrina));
+		connection.add(new Relationship(rasyid, Helper.father, riyan));
+		connection.add(new Relationship(amalina, Helper.mother, riyan));
 
-		connection.add(new Relationship(rudi, GlobalClass.friend, sherri));
-		connection.add(new Relationship(rudi, GlobalClass.friend, huani));
-		connection.add(new Relationship(rudi, GlobalClass.friend, chloe));
+		connection.add(new Relationship(rudi, Helper.friend, sherri));
+		connection.add(new Relationship(rudi, Helper.friend, huani));
+		connection.add(new Relationship(rudi, Helper.friend, chloe));
 
-		connection.add(new Relationship(rida, GlobalClass.friend, rangi));
+		connection.add(new Relationship(rida, Helper.friend, rangi));
 
 		// end: initial set up of network
 	}
 
 	public void menuAction(int menuItem, ArrayList<Person> network, ArrayList<Relationship> connection) {
 
-		if (menuItem == GlobalClass.addPerson)
+		if (menuItem == Helper.addPerson)
 			addPerson(network);
 
-		else if (menuItem == GlobalClass.findPerson)
+		else if (menuItem == Helper.findPerson)
 			findPerson(network);
 
-		else if (menuItem == GlobalClass.displayProfile) {
+		else if (menuItem == Helper.displayProfile) {
 			String name = Helper.getStringInput("Enter Name: ");
 			if (findPerson(network, name)) {
 				Person p = network.get(getIndexByProperty(network, name));
@@ -114,7 +114,7 @@ public class Driver {
 				System.out.println("[" + name + "] not found");
 		}
 
-		else if (menuItem == GlobalClass.displayAllProfile) {
+		else if (menuItem == Helper.displayAllProfile) {
 			// go through the whole network and show their whole profiles
 			// reuse already defined displayProfile()
 			for (int i = 0; i < network.size(); i++) {
@@ -122,7 +122,7 @@ public class Driver {
 				Helper.drawLine();
 			}
 
-		} else if (menuItem == GlobalClass.updateProfile) {
+		} else if (menuItem == Helper.updateProfile) {
 			String name = Helper.getStringInput("Enter Name: ");
 			if (findPerson(network, name)) {
 				Person p = network.get(getIndexByProperty(network, name));
@@ -130,7 +130,7 @@ public class Driver {
 			} else
 				System.out.println("[" + name + "] not found");
 
-		} else if (menuItem == GlobalClass.deletePerson) {
+		} else if (menuItem == Helper.deletePerson) {
 			// delete person and assume ok to delete their relationships if any
 			String name = Helper.getStringInput("Enter Name: ");
 			if (findPerson(network, name)) {
@@ -139,7 +139,7 @@ public class Driver {
 			} else
 				System.out.println("[" + name + "] not found");
 
-		} else if (menuItem == GlobalClass.connectPerson) {
+		} else if (menuItem == Helper.connectPerson) {
 			String input = Helper.getStringInput("Enter Name of First Person (Friend or Parent): ");
 			if (findPerson(network, input)) {
 				Person p = network.get(getIndexByProperty(network, input));
@@ -149,10 +149,10 @@ public class Driver {
 					int conn = -1;
 					// loop till correct role is selected
 					do {
-						System.out.println(GlobalClass.friend + ". " + GlobalClass.roleDesc[GlobalClass.friend]);
-						System.out.println(GlobalClass.spouse + ". " + GlobalClass.roleDesc[GlobalClass.spouse]);
-						System.out.println(GlobalClass.father + ". " + GlobalClass.roleDesc[GlobalClass.father]);
-						System.out.println(GlobalClass.mother + ". " + GlobalClass.roleDesc[GlobalClass.mother]);
+						System.out.println(Helper.friend + ". " + Helper.roleDesc[Helper.friend]);
+						System.out.println(Helper.spouse + ". " + Helper.roleDesc[Helper.spouse]);
+						System.out.println(Helper.father + ". " + Helper.roleDesc[Helper.father]);
+						System.out.println(Helper.mother + ". " + Helper.roleDesc[Helper.mother]);
 						conn = Helper.getIntegerInput("Choose Relationship: ");
 					} while (conn > 3 | conn < 0);
 
@@ -163,7 +163,7 @@ public class Driver {
 				System.out.println("[" + input + "] not found");
 		}
 
-		else if (menuItem == GlobalClass.findFriends) {
+		else if (menuItem == Helper.findFriends) {
 			// find out where Person A is friends with Person B
 			// possible to extend to check all relationships instead in future
 			String input = Helper.getStringInput("Enter Name of First Person (Friend): ");
@@ -182,7 +182,7 @@ public class Driver {
 				System.out.println("[" + input + "] not found");
 		}
 
-		else if (menuItem == GlobalClass.findFamily) {
+		else if (menuItem == Helper.findFamily) {
 			// list down spouse and children
 			String name = Helper.getStringInput("Enter Name: ");
 			if (findPerson(network, name)) {
@@ -202,14 +202,14 @@ public class Driver {
 			a.setInfo(newInfo);
 
 			int newAge = Helper.getIntegerInput("Enter New Age: ");
-			if (newAge <= GlobalClass.minorAge) {
+			if (newAge <= Helper.minorAge) {
 				// test adult with spouse change age
-				if (findSpouse(p, connection, GlobalClass.suppressDetails)) {
+				if (findSpouse(p, connection, Helper.suppressDetails)) {
 					System.out.println("You cannot change your age to " + newAge + " as you have a spouse.");
 					proceed = false;
 				}
 				// test adult with spouse change age
-				if (findChildren(p, connection, GlobalClass.suppressDetails)) {
+				if (findChildren(p, connection, Helper.suppressDetails)) {
 					System.out.println("You cannot change your age to " + newAge + " as you have children.");
 					proceed = false;
 				}
@@ -224,18 +224,18 @@ public class Driver {
 			Child c = (Child) p;
 			int newAge = Helper.getIntegerInput("Enter New Age: ");
 
-			if (newAge <= GlobalClass.babyAge) {
+			if (newAge <= Helper.babyAge) {
 				// test child change age to baby
-				if (findFriends(p, connection, GlobalClass.suppressDetails)) {
+				if (findFriends(p, connection, Helper.suppressDetails)) {
 					System.out.println("You cannot change your age to " + newAge
-							+ " as you have friends; children below " + GlobalClass.babyAge + " cannot have friends.");
+							+ " as you have friends; children below " + Helper.babyAge + " cannot have friends.");
 					proceed = false;
 				}
-			} else if (newAge > GlobalClass.minorAge) {
+			} else if (newAge > Helper.minorAge) {
 				// test child with parents change age
-				if (findParents(p, connection, GlobalClass.suppressDetails)) {
-					System.out.println("You cannot change your age to above " + GlobalClass.minorAge
-							+ " as you have linked parents.");
+				if (findParents(p, connection, Helper.suppressDetails)) {
+					System.out.println(
+							"You cannot change your age to above " + Helper.minorAge + " as you have linked parents.");
 					proceed = false;
 				}
 
@@ -243,19 +243,19 @@ public class Driver {
 				for (int i = 0; i < connection.size(); i++) {
 
 					if ((connection.get(i).getPersonA().getName().equals(p.getName())
-							& connection.get(i).getConn() == GlobalClass.friend
-							& Math.abs((connection.get(i).getPersonB().getAge() - newAge)) > GlobalClass.ageGap)
+							& connection.get(i).getConn() == Helper.friend
+							& Math.abs((connection.get(i).getPersonB().getAge() - newAge)) > Helper.ageGap)
 							| (connection.get(i).getPersonB().getName().equals(p.getName())
-									& connection.get(i).getConn() == GlobalClass.friend & Math.abs(
-											(connection.get(i).getPersonA().getAge() - newAge)) > GlobalClass.ageGap)) {
+									& connection.get(i).getConn() == Helper.friend
+									& Math.abs((connection.get(i).getPersonA().getAge() - newAge)) > Helper.ageGap)) {
 						System.out.println("You cannot change your age to " + newAge
-								+ " as you have friends who are within the " + GlobalClass.ageGap + "-year age gap.");
+								+ " as you have friends who are within the " + Helper.ageGap + "-year age gap.");
 						proceed = false;
 					}
 				}
 			}
 			if (proceed) {
-				if (newAge <= GlobalClass.minorAge) {
+				if (newAge <= Helper.minorAge) {
 					YoungChild y = (YoungChild) p;
 					// need to clone, rebuild all relationships & delete old instance : not_done_yet
 					y.setAge(newAge);
@@ -264,7 +264,7 @@ public class Driver {
 			}
 		}
 
-		findFriends(p, connection, GlobalClass.suppressDetails);
+		findFriends(p, connection, Helper.suppressDetails);
 
 	}
 
@@ -292,11 +292,11 @@ public class Driver {
 			for (int i = 0; i < connection.size(); i++) {
 				// find p's father
 				if (connection.get(i).getPersonB().getName().equals(p.getName())
-						& connection.get(i).getConn() == GlobalClass.father) {
+						& connection.get(i).getConn() == Helper.father) {
 					for (int j = 0; j < connection.size(); j++) {
 						// check if q's father is same as p's
 						if (connection.get(j).getPersonB().getName().equals(q.getName())
-								& connection.get(j).getConn() == GlobalClass.father & connection.get(j).getPersonA()
+								& connection.get(j).getConn() == Helper.father & connection.get(j).getPersonA()
 										.getName().equals(connection.get(i).getPersonA().getName())) {
 							System.out.println(
 									p.getName() + " and " + q.getName() + " are siblings; they cannot be friends");
@@ -307,11 +307,11 @@ public class Driver {
 				}
 				// find p's mother
 				if (connection.get(i).getPersonB().getName().equals(p.getName())
-						& connection.get(i).getConn() == GlobalClass.mother) {
+						& connection.get(i).getConn() == Helper.mother) {
 					for (int j = 0; j < connection.size(); j++) {
 						// check if q's father is same as p's
 						if (connection.get(j).getPersonB().getName().equals(q.getName())
-								& connection.get(j).getConn() == GlobalClass.mother & connection.get(j).getPersonA()
+								& connection.get(j).getConn() == Helper.mother & connection.get(j).getPersonA()
 										.getName().equals(connection.get(i).getPersonA().getName())) {
 							System.out.println(
 									p.getName() + " and " + q.getName() + " are siblings; they cannot be friends");
@@ -324,71 +324,70 @@ public class Driver {
 		}
 		// test child connect friend (child within age-range)
 		if (p instanceof Child & q instanceof Child) {
-			if (Math.abs(p.getAge() - q.getAge()) > GlobalClass.ageGap) {
-				System.out.println("Age gap between children wishing to connect as friends is " + GlobalClass.ageGap);
+			if (Math.abs(p.getAge() - q.getAge()) > Helper.ageGap) {
+				System.out.println("Age gap between children wishing to connect as friends is " + Helper.ageGap);
 				proceed = false;
 			}
 		}
 
 		// test child connect adult as parent, should be other way
-		if ((conn == GlobalClass.father || conn == GlobalClass.mother) & (p instanceof Child & q instanceof Adult)) {
+		if ((conn == Helper.father || conn == Helper.mother) & (p instanceof Child & q instanceof Adult)) {
 			System.out.println("To connect as parents, the Adult's name should be entered first.");
 			proceed = false;
 		}
 
 		// test adult connect child (correct gender)
-		if ((conn == GlobalClass.father & !p.getGender().equals("M"))
-				| (conn == GlobalClass.mother & !p.getGender().equals("F"))) {
+		if ((conn == Helper.father & !p.getGender().equals("M"))
+				| (conn == Helper.mother & !p.getGender().equals("F"))) {
 			System.out.println("To connect as parents, the Adult's gender must be correct.");
 			proceed = false;
 		}
 
 		// test adult connect child (father already exists)
-		if ((conn == GlobalClass.father && findFather(q, connection)) & (p instanceof Adult & q instanceof Child)) {
+		if ((conn == Helper.father && findFather(q, connection)) & (p instanceof Adult & q instanceof Child)) {
 			System.out.println("Father already exists.");
 			proceed = false;
 		}
 
 		// test adult connect child (mother already exists)
-		if ((conn == GlobalClass.mother && findMother(q, connection)) & (p instanceof Adult & q instanceof Child)) {
+		if ((conn == Helper.mother && findMother(q, connection)) & (p instanceof Adult & q instanceof Child)) {
 			System.out.println("Mother already exists.");
 			proceed = false;
 		}
 
 		// test child connect friend (adult)
-		if (conn == GlobalClass.friend
+		if (conn == Helper.friend
 				& ((p instanceof Adult & q instanceof Child) | (p instanceof Child & q instanceof Adult))) {
 			System.out.println("Adults cannot have be friends with Children.");
 			proceed = false;
 
 		}
 		// test child below 2 connect friend
-		if ((p instanceof Child | q instanceof Child) & conn == GlobalClass.friend) {
-			if (p.getAge() <= GlobalClass.babyAge | q.getAge() <= GlobalClass.babyAge) {
-				System.out.println("Children below " + GlobalClass.babyAge + " cannot have friends.");
+		if ((p instanceof Child | q instanceof Child) & conn == Helper.friend) {
+			if (p.getAge() <= Helper.babyAge | q.getAge() <= Helper.babyAge) {
+				System.out.println("Children below " + Helper.babyAge + " cannot have friends.");
 				proceed = false;
 			}
 		}
 
 		// test connect spouse (1 not adult)
-		if ((p instanceof Child | q instanceof Child) & conn == GlobalClass.spouse) {
+		if ((p instanceof Child | q instanceof Child) & conn == Helper.spouse) {
 			System.out.println("Children cannot have spouses.");
 			proceed = false;
 		}
 
 		// test connect spouse (spouse already exists)
-		if ((p instanceof Adult & q instanceof Adult) & conn == GlobalClass.spouse) {
-			if (findSpouse(p, connection, GlobalClass.suppressDetails)
-					| findSpouse(q, connection, GlobalClass.suppressDetails)) {
+		if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
+			if (findSpouse(p, connection, Helper.suppressDetails) | findSpouse(q, connection, Helper.suppressDetails)) {
 				System.out.println("One or both adults already have spouse(s).");
 				proceed = false;
 			}
 		}
 
 		// test connect spouse (no spouse yet, both adults)
-		if ((p instanceof Adult & q instanceof Adult) & conn == GlobalClass.spouse) {
-			if (!findSpouse(p, connection, GlobalClass.suppressDetails)
-					& !findSpouse(q, connection, GlobalClass.suppressDetails)) {
+		if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
+			if (!findSpouse(p, connection, Helper.suppressDetails)
+					& !findSpouse(q, connection, Helper.suppressDetails)) {
 				System.out.println("Just Married!");
 			}
 		}
@@ -423,12 +422,12 @@ public class Driver {
 
 		for (int i = 0; i < connection.size(); i++) {
 			if (connection.get(i).getPersonA().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.friend
+					& connection.get(i).getConn() == Helper.friend
 					& connection.get(i).getPersonB().getName().equals(q.getName()))
 				found = true;
 
 			if (connection.get(i).getPersonA().getName().equals(q.getName())
-					& connection.get(i).getConn() == GlobalClass.friend
+					& connection.get(i).getConn() == Helper.friend
 					& connection.get(i).getPersonB().getName().equals(p.getName()))
 				found = true;
 		}
@@ -438,14 +437,14 @@ public class Driver {
 	public void findFamily(Person p, ArrayList<Relationship> connection) {
 		if (p instanceof Adult) {
 			Adult a = (Adult) p;
-			findSpouse(p, connection, GlobalClass.showDetails);
-			findChildren(p, connection, GlobalClass.showDetails);
+			findSpouse(p, connection, Helper.showDetails);
+			findChildren(p, connection, Helper.showDetails);
 
 		}
 		if (p instanceof Child) {
 			Child c = (Child) p;
-			findParents(c, connection, GlobalClass.showDetails);
-			findSiblings(p, connection, GlobalClass.showDetails);
+			findParents(c, connection, Helper.showDetails);
+			findSiblings(p, connection, Helper.showDetails);
 		}
 	}
 
@@ -456,15 +455,14 @@ public class Driver {
 		for (int i = 0; i < connection.size(); i++) {
 			// find parents of child first
 			if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& (connection.get(i).getConn() == GlobalClass.father
-							| connection.get(i).getConn() == GlobalClass.mother)) {
+					& (connection.get(i).getConn() == Helper.father | connection.get(i).getConn() == Helper.mother)) {
 
 				for (int j = 0; j < connection.size(); j++) {
 					// match Person A and then get Person B (sibling) if it's not the same as
 					// child's
 					if (connection.get(j).getPersonA().getName().equals(connection.get(i).getPersonA().getName())
-							& (connection.get(j).getConn() == GlobalClass.father
-									| connection.get(j).getConn() == GlobalClass.mother)
+							& (connection.get(j).getConn() == Helper.father
+									| connection.get(j).getConn() == Helper.mother)
 							& !connection.get(j).getPersonB().getName().equals(p.getName())) {
 						// if not already in, add into arraylist
 						if (!siblings.contains(connection.get(j).getPersonB()))
@@ -490,14 +488,14 @@ public class Driver {
 			if (a.getInfo() != null)
 				System.out.println("About: " + a.getInfo());
 
-			findSpouse(p, connection, GlobalClass.showDetails);
-			findChildren(p, connection, GlobalClass.showDetails);
-			findFriends(p, connection, GlobalClass.showDetails);
+			findSpouse(p, connection, Helper.showDetails);
+			findChildren(p, connection, Helper.showDetails);
+			findFriends(p, connection, Helper.showDetails);
 		}
 		if (p instanceof Child) {
 			Child c = (Child) p;
-			findParents(c, connection, GlobalClass.showDetails);
-			findFriends(c, connection, GlobalClass.showDetails);
+			findParents(c, connection, Helper.showDetails);
+			findFriends(c, connection, Helper.showDetails);
 		}
 	}
 
@@ -505,14 +503,14 @@ public class Driver {
 		Boolean found = false;
 		for (int i = 0; i < connection.size(); i++) {
 			if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.father) {
+					& connection.get(i).getConn() == Helper.father) {
 				found = true;
 				if (print)
 					System.out.println("Father: " + connection.get(i).getPersonA().getName());
 			}
 
 			if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.mother) {
+					& connection.get(i).getConn() == Helper.mother) {
 				found = true;
 				if (print)
 					System.out.println("Mother: " + connection.get(i).getPersonA().getName());
@@ -525,7 +523,7 @@ public class Driver {
 		Boolean found = false;
 		for (int i = 0; i < connection.size(); i++) {
 			if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.father) {
+					& connection.get(i).getConn() == Helper.father) {
 				found = true;
 			}
 		}
@@ -536,7 +534,7 @@ public class Driver {
 		Boolean found = false;
 		for (int i = 0; i < connection.size(); i++) {
 			if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.mother) {
+					& connection.get(i).getConn() == Helper.mother) {
 				found = true;
 			}
 		}
@@ -549,7 +547,7 @@ public class Driver {
 
 		for (int i = 0; i < connection.size(); i++) {
 			if (connection.get(i).getPersonA().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.friend) {
+					& connection.get(i).getConn() == Helper.friend) {
 				count++;
 				found = true;
 				if (print)
@@ -557,7 +555,7 @@ public class Driver {
 							.println(((count == 1) ? "Friends :\n-" : "-") + connection.get(i).getPersonB().getName());
 			}
 			if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.friend) {
+					& connection.get(i).getConn() == Helper.friend) {
 				count++;
 				found = true;
 				if (print)
@@ -572,8 +570,8 @@ public class Driver {
 		int count = 0;
 		Boolean found = false;
 		for (int i = 0; i < connection.size(); i++) {
-			if (connection.get(i).getPersonA().getName().equals(p.getName()) & connection.get(i)
-					.getConn() == ((p.getGender() == "M") ? GlobalClass.father : GlobalClass.mother)) {
+			if (connection.get(i).getPersonA().getName().equals(p.getName())
+					& connection.get(i).getConn() == ((p.getGender() == "M") ? Helper.father : Helper.mother)) {
 				count++;
 				found = true;
 				if (print)
@@ -588,13 +586,13 @@ public class Driver {
 		Boolean found = false;
 		for (int i = 0; i < connection.size(); i++) {
 			if (connection.get(i).getPersonA().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.spouse) {
+					& connection.get(i).getConn() == Helper.spouse) {
 				found = true;
 				if (print)
 					System.out.println("Spouse: " + connection.get(i).getPersonB().getName());
 
 			} else if (connection.get(i).getPersonB().getName().equals(p.getName())
-					& connection.get(i).getConn() == GlobalClass.spouse) {
+					& connection.get(i).getConn() == Helper.spouse) {
 				found = true;
 				if (print)
 					System.out.println("Spouse: " + connection.get(i).getPersonA().getName());
