@@ -38,7 +38,7 @@ public class newMenu extends Application {
 		e.setRadius(shadowRadius);
 		e.setBlurType(BlurType.GAUSSIAN);
 
-		Rectangle buttonBack = new Rectangle(0, 0, 180, SCENEHEIGHT);
+		Rectangle buttonBack = new Rectangle(0, 0, 175, SCENEHEIGHT);
 
 		buttonBack.setStroke(Helper.menuColor);
 		buttonBack.setFill(Helper.menuColor);
