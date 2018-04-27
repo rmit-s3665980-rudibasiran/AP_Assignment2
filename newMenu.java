@@ -3,6 +3,7 @@ package AP_Assignment2;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
@@ -37,9 +38,10 @@ public class newMenu extends Application {
 		e.setRadius(shadowRadius);
 		e.setBlurType(BlurType.GAUSSIAN);
 
-		Rectangle buttonBack = new Rectangle(0, 0, 220, SCENEHEIGHT);
-		buttonBack.setStroke(Color.CORNFLOWERBLUE);
-		buttonBack.setFill(Color.CORNFLOWERBLUE);
+		Rectangle buttonBack = new Rectangle(0, 0, 180, SCENEHEIGHT);
+
+		buttonBack.setStroke(Helper.menuColor);
+		buttonBack.setFill(Helper.menuColor);
 		buttonBack.setEffect(e);
 		pane.getChildren().add(buttonBack);
 
@@ -58,19 +60,22 @@ public class newMenu extends Application {
 
 		Button menuButtons[] = new Button[Helper.menuSize];
 
+		Label menuLabel[] = new Label[Helper.menuSize];
+
 		for (int i = 1; i < _menuItems.length; i++) {
-			menuButtons[i] = new Button(_menuItems[i]);
-			menuButtons[i].setStyle(Helper.buttonStyle);
-			menuButtons[i].setLayoutX(startX);
-			menuButtons[i].setLayoutY(startY + (i * 50));
-			pane.getChildren().add(menuButtons[i]);
+			menuLabel[i] = new Label(_menuItems[i]);
+			menuLabel[i].setLayoutX(startX);
+			menuLabel[i].setLayoutY(startY + (i * 40));
+			menuLabel[i].setStyle(Helper.labelStyle);
+			pane.getChildren().add(menuLabel[i]);
+
 		}
 
-		menuButtons[0] = new Button(_menuItems[0]);
-		menuButtons[0].setStyle(Helper.buttonStyle);
-		menuButtons[0].setLayoutX(startX);
-		menuButtons[0].setLayoutY(startY + (Helper.menuSize * 50));
-		pane.getChildren().add(menuButtons[0]);
+		menuLabel[0] = new Label(_menuItems[0]);
+		menuLabel[0].setStyle(Helper.labelStyle);
+		menuLabel[0].setLayoutX(startX);
+		menuLabel[0].setLayoutY(startY + (Helper.menuSize * 40));
+		pane.getChildren().add(menuLabel[0]);
 
 		Scene scene = new Scene(pane, SCENEWIDTH, SCENEHEIGHT);
 		scene.setFill(Color.SKYBLUE);
