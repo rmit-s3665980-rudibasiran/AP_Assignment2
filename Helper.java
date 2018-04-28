@@ -21,7 +21,6 @@ public class Helper {
 	public static Color textColor = Color.BLACK;
 	public static Color menuColor = Color.LIGHTSLATEGRAY;
 	public static String buttonStyle = "/-fx-background-color:linear-gradient(#f2f2f2, #d6d6d6),linear-gradient(#fcfcfc 0%, #d9d9d9 20%, #d6d6d6 100%),linear-gradient(#dddddd 0%, #f6f6f6 50%);-fx-background-radius: 8,7,6;-fx-background-insets: 0,1,2;-fx-pref-width: 200px;-fx-text-fill: black;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );";
-	public static String labelStyle = "/-fx-pref-width: 200px;-fx-text-fill: white;-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 1, 1 , 1 , 1 );";
 	public static int menuSize = 10;
 	public static int quitMenu = 0;
 	public static int addPerson = 1;
