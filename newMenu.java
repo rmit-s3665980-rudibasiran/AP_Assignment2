@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
@@ -34,7 +35,6 @@ public class newMenu extends Application {
 		brandRectangle.setStroke(Helper.menuRectBorder);
 		brandRectangle.setHeight(rectHeight);
 		brandRectangle.setWidth(rectWidth * 7);
-		// brandRectangle.setEffect(ds);
 		Helper.doRectEffect(brandRectangle);
 
 		Label brandLabel = new Label("R.Net");
@@ -53,37 +53,46 @@ public class newMenu extends Application {
 		for (int i = 0; i < Helper.menuSize; i++)
 			_menuItems[i] = Helper.menuDesc[i];
 
-		Rectangle menuRectangle[] = new Rectangle[Helper.menuSize];
-		Label menuLabel[] = new Label[Helper.menuSize];
-		StackPane menuPane[] = new StackPane[Helper.menuSize];
+		for (int i = 0; i < _menuItems.length; i++) {
 
-		int i;
-		for (i = 0; i < _menuItems.length; i++) {
-			menuRectangle[i] = new Rectangle();
-			menuRectangle[i].setFill(Helper.menuRectColor);
-			menuRectangle[i].setStroke(Helper.menuRectBorder);
-			menuRectangle[i].setHeight(rectHeight);
-			menuRectangle[i].setWidth(rectWidth);
-			Helper.doRectEffect(menuRectangle[i]);
+			Rectangle menuRectangle = new Rectangle();
+			Label menuLabel = new Label();
+			StackPane menuPane = new StackPane();
 
-			menuLabel[i] = new Label();
-			menuLabel[i].setTextFill(Helper.menuTextColor);
+			menuRectangle.setFill(Helper.menuRectColor);
+			menuRectangle.setStroke(Helper.menuRectBorder);
+			menuRectangle.setHeight(rectHeight);
+			menuRectangle.setWidth(rectWidth);
+			Helper.doRectEffect(menuRectangle);
 
-			menuLabel[i].setMaxWidth(Double.MAX_VALUE);
-			menuLabel[i].setAlignment(Pos.CENTER_LEFT);
-			menuLabel[i].setText("     " + _menuItems[i]);
+			menuLabel.setTextFill(Helper.menuTextColor);
 
-			menuPane[i] = new StackPane();
-			menuPane[i].getChildren().addAll(menuRectangle[i], menuLabel[i]);
-			menuPane[i].setLayoutX(startX);
+			menuLabel.setMaxWidth(Double.MAX_VALUE);
+			menuLabel.setAlignment(Pos.CENTER_LEFT);
+			menuLabel.setText(Helper.spaces + _menuItems[i]);
+
+			menuPane.getChildren().addAll(menuRectangle, menuLabel);
+			menuPane.setLayoutX(startX);
 
 			if (i == 0)
-				menuPane[i].setLayoutY(menuStartY + (_menuItems.length * rectOffset));
+				menuPane.setLayoutY(menuStartY + (_menuItems.length * rectOffset));
 			else
-				menuPane[i].setLayoutY(menuStartY + (i * rectOffset));
+				menuPane.setLayoutY(menuStartY + (i * rectOffset));
 
-			pane.getChildren().add(menuPane[i]);
+			// add shadow when mouse over
+			menuPane.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> Helper.rollOver(menuPane));
 
+			// removing the shadow when the mouse cursor is off
+			menuPane.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> menuPane.setEffect(null));
+
+			// darken shadow on click
+			menuPane.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> Helper.clickColor(menuPane));
+
+			// restore hover style on click end
+			// menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) ->
+			// Helper.rollOver(menuPane));
+
+			pane.getChildren().add(menuPane);
 		}
 
 		Scene scene = new Scene(pane, SCENEWIDTH, SCENEHEIGHT);
