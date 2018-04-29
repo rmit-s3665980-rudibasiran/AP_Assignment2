@@ -4,6 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -14,6 +19,11 @@ Notes:
  */
 
 public class Helper {
+
+	public static Color menuRectColor = Color.rgb(25, 25, 25);
+	public static Color menuRectBorder = Color.rgb(25, 25, 25);
+	public static Color menuTextColor = Color.rgb(200, 200, 200);
+	public static Color menuBackColor = Color.rgb(40, 40, 40);
 
 	public static int menuSize = 10;
 	public static int quitMenu = 0;
@@ -40,6 +50,10 @@ public class Helper {
 	public static int ageGap = 3;
 
 	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother" };
+
+	public static String menuDesc[] = { "Quit", "Add Person", "Find Person", "Display Single Profile",
+			"Display All Profile(s)", "Update Profile", "Delete Person", "Connect Person", "Find Friends",
+			"Find Family" };
 
 	public static String getDate() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -169,5 +183,26 @@ public class Helper {
 		for (int x = 0; x < 50; x++)
 			System.out.print("-");
 		System.out.println("");
+	}
+
+	public static Rectangle doRectEffect(Rectangle r) {
+		Rectangle newRect = new Rectangle();
+		newRect = r;
+		int shadowWidth = 2;
+		int shadowHeight = 2;
+		int shadowOffsetX = 5;
+		int shadowOffsetY = 5;
+		int shadowRadius = 2;
+
+		DropShadow ds = new DropShadow();
+		ds.setWidth(shadowWidth);
+		ds.setHeight(shadowHeight);
+		ds.setOffsetX(shadowOffsetX);
+		ds.setOffsetY(shadowOffsetY);
+		ds.setRadius(shadowRadius);
+		ds.setBlurType(BlurType.GAUSSIAN);
+
+		newRect.setEffect(ds);
+		return newRect;
 	}
 }
