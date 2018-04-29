@@ -18,16 +18,9 @@ public class Menu {
 	public Menu() {
 		_choice = 1;
 		_quit = false;
-		_menuItems[Helper.quitMenu] = "Quit";
-		_menuItems[Helper.addPerson] = "Add Person";
-		_menuItems[Helper.findPerson] = "Find Person";
-		_menuItems[Helper.displayProfile] = "Display Single Profile";
-		_menuItems[Helper.displayAllProfile] = "Display All Profile(s)";
-		_menuItems[Helper.updateProfile] = "Update Profile";
-		_menuItems[Helper.deletePerson] = "Delete Person";
-		_menuItems[Helper.connectPerson] = "Connect Person";
-		_menuItems[Helper.findFriends] = "Find Friends";
-		_menuItems[Helper.findFamily] = "Find Family";
+
+		for (int i = 0; i < Helper.menuSize; i++)
+			_menuItems[i] = Helper.menuDesc[i];
 
 	}
 

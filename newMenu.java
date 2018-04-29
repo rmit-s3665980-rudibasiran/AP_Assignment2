@@ -22,8 +22,6 @@ public class newMenu extends Application {
 		int startY = 5;
 		int menuStartY = 10;
 
-		int rectWidth = 200;
-		int rectHeight = 50;
 		int rectOffset = 60;
 
 		Rectangle backRectangle = new Rectangle(0, 0, SCENEWIDTH, SCENEHEIGHT);
@@ -33,12 +31,12 @@ public class newMenu extends Application {
 		Rectangle brandRectangle = new Rectangle();
 		brandRectangle.setFill(Helper.menuRectColor);
 		brandRectangle.setStroke(Helper.menuRectBorder);
-		brandRectangle.setHeight(rectHeight);
-		brandRectangle.setWidth(rectWidth * 7);
+		brandRectangle.setHeight(Helper.rectHeight);
+		brandRectangle.setWidth(Helper.rectWidth * 7);
 		Helper.doRectEffect(brandRectangle);
 
 		Label brandLabel = new Label("R.Net");
-		brandLabel.setTextFill(Helper.menuTextColor);
+		brandLabel.setTextFill(Helper.menuRectTextColor);
 
 		StackPane brandPane = new StackPane();
 		brandPane.setLayoutX(startX);
@@ -61,11 +59,11 @@ public class newMenu extends Application {
 
 			menuRectangle.setFill(Helper.menuRectColor);
 			menuRectangle.setStroke(Helper.menuRectBorder);
-			menuRectangle.setHeight(rectHeight);
-			menuRectangle.setWidth(rectWidth);
+			menuRectangle.setHeight(Helper.rectHeight);
+			menuRectangle.setWidth(Helper.rectWidth);
 			Helper.doRectEffect(menuRectangle);
 
-			menuLabel.setTextFill(Helper.menuTextColor);
+			menuLabel.setTextFill(Helper.menuRectTextColor);
 
 			menuLabel.setMaxWidth(Double.MAX_VALUE);
 			menuLabel.setAlignment(Pos.CENTER_LEFT);
@@ -80,23 +78,22 @@ public class newMenu extends Application {
 				menuPane.setLayoutY(menuStartY + (i * rectOffset));
 
 			// add shadow when mouse over
-			menuPane.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> Helper.rollOver(menuPane));
+			menuPane.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> Helper.rectMouseEntered(menuPane));
 
 			// removing the shadow when the mouse cursor is off
-			menuPane.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> menuPane.setEffect(null));
+			menuPane.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> Helper.rectMouseExited(menuPane));
 
 			// darken shadow on click
-			menuPane.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> Helper.clickColor(menuPane));
+			menuPane.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> Helper.rectMousePressed(menuPane));
 
 			// restore hover style on click end
-			// menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) ->
-			// Helper.rollOver(menuPane));
+			menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> Helper.rectMouseExited(menuPane));
 
 			pane.getChildren().add(menuPane);
 		}
 
 		Scene scene = new Scene(pane, SCENEWIDTH, SCENEHEIGHT);
-		primaryStage.setTitle("MiniNET"); // Set the stage title
+		primaryStage.setTitle("R.Net"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
 		primaryStage.show(); // Display the stage
 	}

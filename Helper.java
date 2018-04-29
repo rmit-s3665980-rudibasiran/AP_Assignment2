@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
@@ -22,10 +23,14 @@ Notes:
 public class Helper {
 
 	public static Color menuRectColor = Color.rgb(25, 25, 25);
-	public static Color menuRectColorSelected = Color.rgb(200, 200, 200);
+	public static Color menuRectColorSelected = Color.rgb(0, 0, 0);
 	public static Color menuRectBorder = Color.rgb(25, 25, 25);
-	public static Color menuTextColor = Color.rgb(200, 200, 200);
+	public static Color menuRectTextColor = Color.rgb(200, 200, 200);
+	public static Color menuRectTextSelected = Color.rgb(200, 200, 200);
 	public static Color menuBackColor = Color.rgb(40, 40, 40);
+
+	public static int rectWidth = 200;
+	public static int rectHeight = 50;
 
 	public static String spaces = "     ";
 	public static int menuSize = 10;
@@ -188,23 +193,64 @@ public class Helper {
 		System.out.println("");
 	}
 
-	public static Pane rollOver(Pane p) {
+	public static Pane rectMouseEntered(Pane p) {
 		Pane newPane = new Pane();
 		newPane = p;
-		DropShadow rollOverColor = new DropShadow();
-		rollOverColor.setColor(Color.ORANGERED);
-
-		newPane.setEffect(rollOverColor);
+		Rectangle r = new Rectangle();
+		Label l = new Label();
+		for (int i = 0; i < p.getChildren().size(); i++) {
+			if (p.getChildren().get(i) instanceof Rectangle) {
+				r = (Rectangle) p.getChildren().get(i);
+				r.setFill(Helper.menuRectColorSelected);
+				r.setStroke(Helper.menuRectColorSelected);
+			}
+			if (p.getChildren().get(i) instanceof Label) {
+				l = (Label) p.getChildren().get(i);
+				l.setTextFill(Helper.menuRectTextSelected);
+			}
+		}
 		return newPane;
 	}
 
-	public static Pane clickColor(Pane p) {
+	public static Pane rectMouseExited(Pane p) {
 		Pane newPane = new Pane();
 		newPane = p;
+		Rectangle r = new Rectangle();
+		Label l = new Label();
+		for (int i = 0; i < p.getChildren().size(); i++) {
+			if (p.getChildren().get(i) instanceof Rectangle) {
+				r = (Rectangle) p.getChildren().get(i);
+				r.setFill(Helper.menuRectColor);
+				r.setStroke(Helper.menuRectColor);
+				Helper.doRectEffect(r);
 
-		DropShadow clickColor = new DropShadow();
-		clickColor.setColor(Color.GREEN);
-		newPane.setEffect(clickColor);
+			}
+			if (p.getChildren().get(i) instanceof Label) {
+				l = (Label) p.getChildren().get(i);
+				l.setTextFill(Helper.menuRectTextColor);
+			}
+		}
+
+		return newPane;
+	}
+
+	public static Pane rectMousePressed(Pane p) {
+		Pane newPane = new Pane();
+		newPane = p;
+		Rectangle r = new Rectangle();
+		Label l = new Label();
+		for (int i = 0; i < p.getChildren().size(); i++) {
+			if (p.getChildren().get(i) instanceof Rectangle) {
+				r = (Rectangle) p.getChildren().get(i);
+				r.setFill(Helper.menuRectColorSelected);
+				r.setStroke(Helper.menuRectColorSelected);
+				r.setEffect(null);
+			}
+			if (p.getChildren().get(i) instanceof Label) {
+				l = (Label) p.getChildren().get(i);
+				l.setTextFill(Helper.menuRectTextSelected);
+			}
+		}
 		return newPane;
 	}
 
