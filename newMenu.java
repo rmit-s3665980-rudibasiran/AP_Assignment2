@@ -52,6 +52,7 @@ public class newMenu extends Application {
 		brandRectangle.setHeight(rectHeight);
 		brandRectangle.setWidth(rectWidth * 7);
 		brandRectangle.setEffect(ds);
+		// doEffect(brandRectangle);
 
 		Label brandLabel = new Label("R.Net");
 		brandLabel.setTextFill(Color.WHITE);
