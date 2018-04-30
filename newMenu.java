@@ -20,9 +20,9 @@ public class newMenu extends Application {
 
 		int startX = 5;
 		int startY = 5;
-		int menuStartY = 10;
+		int menuStartY = 5;
 
-		int rectOffset = 60;
+		int rectOffset = 55;
 
 		Rectangle backRectangle = new Rectangle(0, 0, SCENEWIDTH, SCENEHEIGHT);
 		backRectangle.setFill(Helper.menuBackColor);
@@ -91,6 +91,16 @@ public class newMenu extends Application {
 
 			pane.getChildren().add(menuPane);
 		}
+
+		Rectangle bottomRectangle = new Rectangle();
+		bottomRectangle.setFill(Helper.menuRectColor);
+		bottomRectangle.setStroke(Helper.menuRectBorder);
+		bottomRectangle.setHeight(Helper.rectHeight * 4.5);
+		bottomRectangle.setWidth(Helper.rectWidth);
+		bottomRectangle.setLayoutY(menuStartY + ((_menuItems.length + 1) * rectOffset));
+		bottomRectangle.setLayoutX(startX);
+		Helper.doRectEffect(bottomRectangle);
+		pane.getChildren().add(bottomRectangle);
 
 		Scene scene = new Scene(pane, SCENEWIDTH, SCENEHEIGHT);
 		primaryStage.setTitle("R.Net"); // Set the stage title
