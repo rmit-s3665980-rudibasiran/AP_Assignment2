@@ -24,6 +24,7 @@ public class Helper {
 
 	public static Color menuRectColor = Color.rgb(25, 25, 25);
 	public static Color menuRectColorSelected = Color.rgb(0, 0, 0);
+	public static Color menuRectBorderSelected = Color.ORANGERED;
 	public static Color menuRectBorder = Color.rgb(25, 25, 25);
 	public static Color menuRectTextColor = Color.rgb(200, 200, 200);
 	public static Color menuRectTextSelected = Color.rgb(200, 200, 200);
@@ -203,6 +204,7 @@ public class Helper {
 				r = (Rectangle) p.getChildren().get(i);
 				r.setFill(Helper.menuRectColorSelected);
 				r.setStroke(Helper.menuRectColorSelected);
+
 			}
 			if (p.getChildren().get(i) instanceof Label) {
 				l = (Label) p.getChildren().get(i);
@@ -243,7 +245,7 @@ public class Helper {
 			if (p.getChildren().get(i) instanceof Rectangle) {
 				r = (Rectangle) p.getChildren().get(i);
 				r.setFill(Helper.menuRectColorSelected);
-				r.setStroke(Helper.menuRectColorSelected);
+				r.setStroke(Helper.menuRectBorderSelected);
 				r.setEffect(null);
 			}
 			if (p.getChildren().get(i) instanceof Label) {
