@@ -64,12 +64,12 @@ public class newMenu extends Application {
 			Helper.doRectEffect(menuRectangle);
 
 			menuLabel.setTextFill(Helper.menuRectTextColor);
-
 			menuLabel.setMaxWidth(Double.MAX_VALUE);
 			menuLabel.setAlignment(Pos.CENTER_LEFT);
 			menuLabel.setText(Helper.spaces + _menuItems[i]);
 
 			menuPane.getChildren().addAll(menuRectangle, menuLabel);
+
 			menuPane.setLayoutX(startX);
 
 			if (i == 0)
