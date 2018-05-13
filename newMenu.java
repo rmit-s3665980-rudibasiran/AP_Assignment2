@@ -3,6 +3,9 @@ package AP_Assignment2;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -62,7 +65,7 @@ public class newMenu extends Application {
 			menuRectangle.setHeight(Helper.rectHeight);
 			menuRectangle.setWidth(Helper.rectWidth);
 			Helper.doRectEffect(menuRectangle);
-
+			menuRectangle.setId(_menuItems[i]);
 			menuLabel.setTextFill(Helper.menuRectTextColor);
 			menuLabel.setMaxWidth(Double.MAX_VALUE);
 			menuLabel.setAlignment(Pos.CENTER_LEFT);
@@ -87,7 +90,8 @@ public class newMenu extends Application {
 			menuPane.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> Helper.rectMousePressed(menuPane));
 
 			// restore hover style on click end
-			menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED, (event) -> Helper.rectMouseExited(menuPane));
+			menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED,
+					(event) -> menuAction(primaryStage, menuRectangle.getId()));
 
 			pane.getChildren().add(menuPane);
 		}
@@ -106,6 +110,16 @@ public class newMenu extends Application {
 		primaryStage.setTitle("R.Net"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
 		primaryStage.show(); // Display the stage
+	}
+
+	public void menuAction(Stage primaryStage, String menuClicked) {
+
+		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
+			primaryStage.close();
+		} else {
+			Alert alert = new Alert(AlertType.INFORMATION, menuClicked, ButtonType.CLOSE);
+			alert.showAndWait();
+		}
 	}
 
 	public static void main(String[] args) {
