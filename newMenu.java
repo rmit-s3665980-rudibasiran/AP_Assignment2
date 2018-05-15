@@ -38,7 +38,7 @@ public class newMenu extends Application {
 		brandRectangle.setWidth(Helper.rectWidth * 7);
 		Helper.doRectEffect(brandRectangle);
 
-		Label brandLabel = new Label("R.Net");
+		Label brandLabel = new Label("MiniNet");
 		brandLabel.setTextFill(Helper.menuRectTextColor);
 
 		StackPane brandPane = new StackPane();
@@ -64,8 +64,9 @@ public class newMenu extends Application {
 			menuRectangle.setStroke(Helper.menuRectBorder);
 			menuRectangle.setHeight(Helper.rectHeight);
 			menuRectangle.setWidth(Helper.rectWidth);
-			Helper.doRectEffect(menuRectangle);
 			menuRectangle.setId(_menuItems[i]);
+			Helper.doRectEffect(menuRectangle);
+
 			menuLabel.setTextFill(Helper.menuRectTextColor);
 			menuLabel.setMaxWidth(Double.MAX_VALUE);
 			menuLabel.setAlignment(Pos.CENTER_LEFT);
@@ -107,7 +108,7 @@ public class newMenu extends Application {
 		pane.getChildren().add(bottomRectangle);
 
 		Scene scene = new Scene(pane, SCENEWIDTH, SCENEHEIGHT);
-		primaryStage.setTitle("R.Net"); // Set the stage title
+		primaryStage.setTitle("MiniNet"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
 		primaryStage.show(); // Display the stage
 	}
