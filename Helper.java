@@ -30,6 +30,32 @@ public class Helper {
 	public static Color menuRectTextSelected = Color.rgb(200, 200, 200);
 	public static Color menuBackColor = Color.rgb(40, 40, 40);
 
+	public static String lblStyle = "-fx-font-family:\"Helvetica\";\n" + "    -fx-font-size: 18px;\n"
+			+ "  -fx-font-weight: bold;  -fx-text-fill: white;";
+	public static String workScreenStyle = "-fx-background-color: #4d4d4d;";
+	public static int workTextFieldArraySize = 4;
+	public static int infoLabelWidth = 750;
+	public static int workbtnWidth = 100;
+
+	public static String btnStyle = "-fx-background-color: \n"
+			+ "        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),\n"
+			+ "        linear-gradient(#020b02, #3a3a3a),\n"
+			+ "        linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),\n"
+			+ "        linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),\n"
+			+ "        linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);\n"
+			+ "    -fx-background-insets: 0 0 -1 0,0,1;\n" + "    -fx-background-radius: 5,5,4;\n"
+			+ "    -fx-padding: 7 30 7 30;\n" + "    -fx-text-fill: #242d35;\n"
+			+ "    -fx-font-family: \"Helvetica\";\n" + "    -fx-font-size: 12px;\n" + "    -fx-text-fill: white;";
+
+	public static String btnEffect = "-fx-background-color: \n"
+			+ "        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),\n"
+			+ "        linear-gradient(#020b02, #3a3a3a),\n"
+			+ "        linear-gradient(#b9b9b9 0%, #c2c2c2 20%, #afafaf 80%, #c8c8c8 100%),\n"
+			+ "        linear-gradient(#f5f5f5 0%, #dbdbdb 50%, #cacaca 51%, #d7d7d7 100%);\n"
+			+ "    -fx-background-insets: 0 0 -1 0,0,1;\n" + "    -fx-background-radius: 5,5,4;\n"
+			+ "    -fx-padding: 7 30 7 30;\n" + "    -fx-text-fill: #242d35;\n"
+			+ "    -fx-font-family: \"Helvetica\";\n" + "    -fx-font-size: 12px;\n" + "    -fx-text-fill: black;";
+
 	public static int rectWidth = 200;
 	public static int rectHeight = 50;
 
@@ -276,5 +302,13 @@ public class Helper {
 
 		newRect.setEffect(ds);
 		return newRect;
+	}
+
+	public static DropShadow dropShadow() {
+		// DropShadow effect
+		DropShadow dropShadow = new DropShadow();
+		dropShadow.setOffsetX(5);
+		dropShadow.setOffsetY(5);
+		return dropShadow;
 	}
 }
