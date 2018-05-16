@@ -1,4 +1,4 @@
-Rudi Basiran;48;M;Systems Analyst
+Rudi Basiran;48;M;Lead Systems Analyst | I have 19 years’ experience at the National University of Singapore (NUS) developing IT systems which administer a typical university student’s life cycle - from admissions, matriculation, time-tabling, module registration and exam processing to eventually graduation. I was the Team Leader, Interface Team, PeopleSoft Campus Solution Student Information System (SIS), which aimed to synchronize inbound / outbound data flow from PeopleSoft Campus Solution with satellite systems with 95% data consistency. In addition, I was the main Technical Lead that managed Official Statistics at NUS and was involved in replacing the SAP Business Warehouse reports/dashboard and introducing additional business intelligence capabilities using Qlik.
 Ahysa Ahmad;45;F;
 Rida Aqyda;7;F;
 Arthur Simanjuntak;45;M;Wave Engineer

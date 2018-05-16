@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -124,13 +126,15 @@ public class UIHelper {
 			}
 		}
 
-		GridPane infoPane = new GridPane();
+		ScrollPane infoPane = new ScrollPane();
 		infoPane.setPadding(new Insets(20, 20, 20, 20));
-		infoPane.setHgap(5);
-		infoPane.setVgap(5);
-		infoPane.add(_info, 0, 0);
-		infoPane.setPrefHeight(400);
+		infoPane.setContent(_info);
+		infoPane.setPrefHeight(Helper.infoLabelHeight);
+		infoPane.setStyle(Helper.workScrollStyle);
 		infoPane.setPrefWidth(Helper.infoLabelWidth);
+		infoPane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		infoPane.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		infoPane.setVisible(false);
 
 		GridPane buttonPane = new GridPane();
 		buttonPane.setPadding(new Insets(20, 20, 20, 20));
@@ -149,15 +153,18 @@ public class UIHelper {
 
 				ArrayList<Person> n = d.getNetwork();
 				ArrayList<Relationship> r = d.getRelationship();
+				infoPane.setVisible(true);
 				_info.setText(Helper.menuDesc[menuItem] + ": Not Done Yet!!");
 
 				if (menuItem == Helper.addPerson) {
+
 					_info.setText(d.addPerson(_txt));
 
 				} else if (menuItem == Helper.findPerson) {
 					_info.setText(d.findPerson(_txt));
 
 				} else if (menuItem == Helper.displayProfile) {
+					_info.setText(d.displayProfile(_txt));
 
 				} else if (menuItem == Helper.displayAllProfile) {
 

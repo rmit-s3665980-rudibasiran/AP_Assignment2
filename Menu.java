@@ -20,9 +20,8 @@ Date Created: 5 May 2018
 Description: Menu Class controlling the GUI
 Notes: --
 
-Change History: 
-- Rudi Basiran <s3665980@student.rmit.edu.au> : 16 May 2018 : Updated GUI
-
+Change History:
+- [16 May 2018] Rudi Basiran  : Updated GUI
  */
 
 public class Menu extends Application {

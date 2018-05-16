@@ -7,12 +7,13 @@ Developer(s):
 Date Created: 21 March 2018 
 Description: MiniNet Class which is basically the main starting class
 Notes: --
+Change History:
+- [16 May 2018] Rudi Basiran  : Remove old menu, created new one
  */
 
 public class MiniNet {
 
 	public static void main(String[] args) {
-
 		Menu menu = new Menu();
 		menu.go();
 	}

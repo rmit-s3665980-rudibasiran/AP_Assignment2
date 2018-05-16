@@ -153,4 +153,35 @@ public class Driver {
 		}
 		return result;
 	}
+
+	public String displayProfile(TextField t[]) {
+		String output = "";
+		String name = t[0].getText().toString();
+
+		if (findPerson(name)) {
+			output = "[" + _network.get(getIndexByProperty(name)).getName() + "] already exists.";
+			Person p = _network.get(getIndexByProperty(name));
+			output = "Name: " + p.getName() + ", (" + p.getGender() + "), " + p.getAge();
+			if (p instanceof Adult) {
+				Adult a = (Adult) p;
+				if (a.getInfo() != null)
+					output = output + "\n" + "About: " + (a.getInfo().isEmpty() ? "-" : a.getInfo());
+
+				// findSpouse(p, connection, Helper.showDetails);
+				// findChildren(p, connection, Helper.showDetails);
+				// findFriends(p, connection, Helper.showDetails);
+			}
+			if (p instanceof Child) {
+				Child c = (Child) p;
+				// findParents(c, connection, Helper.showDetails);
+				// findFriends(c, connection, Helper.showDetails);
+			}
+
+		} else {
+			output = "[" + name + "] not found.";
+		}
+
+		return output;
+	}
+
 }

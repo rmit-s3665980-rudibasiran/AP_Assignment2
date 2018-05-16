@@ -34,8 +34,10 @@ public class Helper {
 	public static String lblStyle = "-fx-font-family:\"Helvetica\";\n" + "    -fx-font-size: 18px;\n"
 			+ "  -fx-font-weight: bold;  -fx-text-fill: white;";
 	public static String workScreenStyle = "-fx-background-color: #4d4d4d;";
+	public static String workScrollStyle = "-fx-background: rgb(80,80,80);";
 	public static int workTextFieldArraySize = 4;
 	public static int infoLabelWidth = 750;
+	public static int infoLabelHeight = 200;
 	public static int workbtnWidth = 100;
 	public static int txtFieldWidth = 300;
 	public static double workWidth = 2000;
