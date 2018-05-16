@@ -1,7 +1,5 @@
 package AP_Assignment2;
 
-import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -29,15 +27,14 @@ Change History:
 
 public class Menu extends Application {
 
-	ArrayList<Person> _network = new ArrayList<Person>();
-	ArrayList<Relationship> _relationship = new ArrayList<Relationship>();
-	Driver _driver = new Driver(_network, _relationship);
+	private Driver _driver = new Driver();
 
 	public Menu() {
+		_driver = new Driver();
+		_driver.loadData();
 	}
 
 	public void go() {
-		_driver.loadData(_network, _relationship);
 		launch();
 	}
 
@@ -241,18 +238,12 @@ public class Menu extends Application {
 
 				UIHelper workBox = new UIHelper(labels, actionButton, "Close");
 				BorderPane workBorderPane = new BorderPane();
-				workBorderPane = workBox.constructPane(_driver, _network, _relationship, actionItem, wp, p);
+				workBorderPane = workBox.constructPane(_driver, actionItem, wp, p);
 				wp.getChildren().add(workBorderPane);
 				wp.setVisible(true);
 
 			}
 
-			// Alert alert = new Alert(AlertType.INFORMATION, menuClicked,
-			// ButtonType.CLOSE);
-			// alert.showAndWait();
-
-			// wp.setVisible(false);
-			// setMenu(wp, true);
 		}
 	}
 

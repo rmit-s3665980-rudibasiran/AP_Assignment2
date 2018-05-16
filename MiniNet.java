@@ -1,7 +1,5 @@
 package AP_Assignment2;
 
-import java.util.ArrayList;
-
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -15,21 +13,8 @@ public class MiniNet {
 
 	public static void main(String[] args) {
 
-		if (Helper.runTextMode) {
-
-			ArrayList<Person> _network = new ArrayList<>();
-			ArrayList<Relationship> _relationship = new ArrayList<>();
-			Driver driver = new Driver(_network, _relationship);
-			oldMenu omenu = new oldMenu();
-
-			while (!omenu.exitMenu()) {
-				omenu.displayMenu();
-				driver.menuAction(omenu.getOption(), _network, _relationship);
-			}
-		} else {
-			Menu menu = new Menu();
-			menu.go();
-		}
+		Menu menu = new Menu();
+		menu.go();
 	}
 
 }

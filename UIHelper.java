@@ -86,8 +86,7 @@ public class UIHelper {
 
 	}
 
-	public BorderPane constructPane(Driver d, ArrayList<Person> n, ArrayList<Relationship> r, int menuItem, GridPane wp,
-			Pane p) {
+	public BorderPane constructPane(Driver d, int menuItem, GridPane wp, Pane p) {
 
 		wp.setVisible(true);
 
@@ -148,12 +147,15 @@ public class UIHelper {
 		_buttonExe.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 
+				ArrayList<Person> n = d.getNetwork();
+				ArrayList<Relationship> r = d.getRelationship();
+
 				_info.setText(Helper.menuDesc[menuItem]);
 				if (menuItem == Helper.addPerson) {
 
 				} else if (menuItem == Helper.findPerson) {
+					_info.setText(d.findPerson(_txt));
 
-					_info.setText(d.findPerson(n, _txt));
 				} else if (menuItem == Helper.displayProfile) {
 
 				} else if (menuItem == Helper.displayAllProfile) {
