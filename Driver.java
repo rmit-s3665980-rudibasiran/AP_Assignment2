@@ -153,30 +153,32 @@ public class Driver {
 
 	public String displayProfile(String name) {
 		String output = "";
-		Person p = _network.get(getIndexByProperty(name));
-		output = "Name: " + p.getName() + ", (" + p.getGender() + "), " + p.getAge();
-		if (p instanceof Adult) {
-			Adult a = (Adult) p;
-			if (a.getInfo() != null)
-				output = output + "\n" + "About: " + (a.getInfo().isEmpty() ? "-" : a.getInfo());
+		if (findPerson(name)) {
+			Person p = _network.get(getIndexByProperty(name));
+			output = "Name: " + p.getName() + ", (" + p.getGender() + "), " + p.getAge();
+			if (p instanceof Adult) {
+				Adult a = (Adult) p;
+				if (a.getInfo() != null)
+					output = output + "\n" + "About: " + (a.getInfo().isEmpty() ? "-" : a.getInfo());
 
-			if (haveSpouse(a))
-				output = output + "\n" + findSpouse(a);
+				if (haveSpouse(a))
+					output = output + "\n" + findSpouse(a);
 
-			if (haveChildren(a))
-				output = output + "\n" + findChildren(a);
+				if (haveChildren(a))
+					output = output + "\n" + findChildren(a);
 
-			if (haveFriends(a))
-				output = output + "\n" + findFriends(a);
+				if (haveFriends(a))
+					output = output + "\n" + findFriends(a);
 
-		} else if (p instanceof Child) {
-			Child c = (Child) p;
+			} else if (p instanceof Child) {
+				Child c = (Child) p;
 
-			if (haveParents(c))
-				output = output + "\n" + findParents(c);
+				if (haveParents(c))
+					output = output + "\n" + findParents(c);
 
-			if (haveFriends(c))
-				output = output + "\n" + findFriends(c);
+				if (haveFriends(c))
+					output = output + "\n" + findFriends(c);
+			}
 		}
 		return output;
 	}
@@ -186,7 +188,7 @@ public class Driver {
 		String name = t[0].getText().toString();
 
 		if (findPerson(name)) {
-			displayProfile(name);
+			output = output + displayProfile(name);
 
 		} else {
 			output = "[" + name + "] not found.";
@@ -408,6 +410,223 @@ public class Driver {
 		}
 		return output;
 
+	}
+
+	public String deletePerson(TextField t[]) {
+
+		String output = "";
+
+		String name = t[0].getText().toString();
+		Person p = _network.get(getIndexByProperty(name));
+		if (findPerson(name)) {
+			for (int i = _relationship.size() - 1; i >= 0; i--) {
+				if (_relationship.get(i).getPersonA().getName().equals(p.getName()))
+					_relationship.remove(i);
+			}
+
+			for (int i = _relationship.size() - 1; i >= 0; i--) {
+				if (_relationship.get(i).getPersonB().getName().equals(p.getName()))
+					_relationship.remove(i);
+			}
+
+			_network.remove(p);
+			output = "[" + name + "] removed from MiniNet.";
+		} else
+			output = "[" + name + "] not found.";
+		return output;
+	}
+
+	public String connectPerson(TextField t[]) {
+		Boolean proceed = true;
+		String output = "";
+
+		try {
+			String name1 = t[0].getText().toString();
+			String name2 = t[1].getText().toString();
+			String strConn = t[2].getText().toString();
+			int conn = Integer.parseInt(strConn);
+
+			if (!findPerson(name1)) {
+				output = "[" + name1 + "] not found.\n";
+				proceed = false;
+			} else if (!findPerson(name2)) {
+				output = "[" + name2 + "] not found.\n";
+				proceed = false;
+			} else {
+				proceed = false;
+				for (int i = 0; i < Helper.roleDesc.length; i++) {
+					if (conn == i) {
+						proceed = true;
+						break;
+					}
+				}
+				if (!proceed)
+					output = "[" + conn + "] is not a valid relationship.\n";
+			}
+
+			if (proceed) {
+
+				Person p = _network.get(getIndexByProperty(name1));
+				Person q = _network.get(getIndexByProperty(name2));
+
+				// test child connect friend (child inside family)
+				if (p instanceof Child & q instanceof Child) {
+					for (int i = 0; i < _relationship.size(); i++) {
+						// find p's father
+						if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+								& _relationship.get(i).getConn() == Helper.father) {
+							for (int j = 0; j < _relationship.size(); j++) {
+								// check if q's father is same as p's
+								if (_relationship.get(j).getPersonB().getName().equals(q.getName())
+										& _relationship.get(j).getConn() == Helper.father
+										& _relationship.get(j).getPersonA().getName()
+												.equals(_relationship.get(i).getPersonA().getName())) {
+									output = output + p.getName() + " and " + q.getName()
+											+ " are siblings; they cannot be friends.\n";
+									proceed = false;
+									break;
+								}
+							}
+						}
+						// find p's mother
+						if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+								& _relationship.get(i).getConn() == Helper.mother) {
+							for (int j = 0; j < _relationship.size(); j++) {
+								// check if q's father is same as p's
+								if (_relationship.get(j).getPersonB().getName().equals(q.getName())
+										& _relationship.get(j).getConn() == Helper.mother
+										& _relationship.get(j).getPersonA().getName()
+												.equals(_relationship.get(i).getPersonA().getName())) {
+									output = output + p.getName() + " and " + q.getName()
+											+ " are siblings; they cannot be friends.\n";
+									proceed = false;
+									break;
+								}
+							}
+						}
+					}
+				}
+				// test child connect friend (child within age-range)
+				if (p instanceof Child & q instanceof Child) {
+					if (Math.abs(p.getAge() - q.getAge()) > Helper.ageGap) {
+						output = output + "Age gap between children wishing to connect as friends is " + Helper.ageGap
+								+ ".\n";
+						proceed = false;
+					}
+				}
+
+				// test child connect adult as parent, should be other way
+				if ((conn == Helper.father || conn == Helper.mother) & (p instanceof Child & q instanceof Adult)) {
+					output = output + "To connect as parents, the Adult's name should be entered first.\n";
+					proceed = false;
+				}
+
+				// test adult connect child (correct gender)
+				if ((conn == Helper.father & !p.getGender().equals("M"))
+						| (conn == Helper.mother & !p.getGender().equals("F"))) {
+					output = output + "To connect as parents, the Adult's gender must be correct.\n";
+					proceed = false;
+				}
+
+				// test adult connect child (father already exists)
+				if ((conn == Helper.father && haveFather(q)) & (p instanceof Adult & q instanceof Child)) {
+					output = output + "Father already exists.\n";
+					proceed = false;
+				}
+
+				// test adult connect child (mother already exists)
+				if ((conn == Helper.mother && haveMother(q)) & (p instanceof Adult & q instanceof Child)) {
+					output = output + "Mother already exists.\n";
+					proceed = false;
+				}
+
+				// test child connect friend (adult)
+				if (conn == Helper.friend
+						& ((p instanceof Adult & q instanceof Child) | (p instanceof Child & q instanceof Adult))) {
+					output = output + "Adults cannot have be friends with Children.\n";
+					proceed = false;
+
+				}
+				// test child below 2 connect friend
+				if ((p instanceof Child | q instanceof Child) & conn == Helper.friend) {
+					if (p.getAge() <= Helper.babyAge | q.getAge() <= Helper.babyAge) {
+						output = output + "Children below " + Helper.babyAge + " cannot have friends.\n";
+						proceed = false;
+					}
+				}
+
+				// test connect spouse (1 not adult)
+				if ((p instanceof Child | q instanceof Child) & conn == Helper.spouse) {
+					output = output + "Children cannot have spouses.\n";
+					proceed = false;
+				}
+
+				// test connect spouse (spouse already exists)
+				if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
+					if (haveSpouse(p) | haveSpouse(q)) {
+						output = output + "One or both adults already have spouse(s).\n";
+						proceed = false;
+					}
+				}
+
+				// test connect spouse (no spouse yet, both adults)
+				if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
+					if (!haveSpouse(p) & !haveSpouse(q)) {
+						output = output + "Congratulations! Just Married!\n";
+					}
+				}
+
+				// test connect friends (connections already exists)
+				Relationship r = new Relationship(p, conn, q);
+
+				for (int i = 0; i < _relationship.size(); i++) {
+					if (r.getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
+							& r.getConn() == _relationship.get(i).getConn()
+							& r.getPersonB().getName().equals(_relationship.get(i).getPersonB().getName())) {
+						output = output + "Connection already exists.\n";
+						proceed = false;
+					}
+				}
+
+				// test connect relationship already exists (other way)
+				for (int i = 0; i < _relationship.size(); i++) {
+					if (r.getPersonA().getName().equals(_relationship.get(i).getPersonB().getName())
+							& r.getConn() == _relationship.get(i).getConn()
+							& r.getPersonB().getName().equals(_relationship.get(i).getPersonA().getName())) {
+						output = output + "Connection already exists.\n";
+						proceed = false;
+					}
+				}
+				if (proceed)
+					_relationship.add(new Relationship(p, conn, q));
+			}
+		} catch (NumberFormatException e) {
+			output = "Invalid relationship entered.";
+
+		}
+		return output;
+	}
+
+	public Boolean haveFather(Person p) {
+		Boolean found = false;
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.father) {
+				found = true;
+			}
+		}
+		return found;
+	}
+
+	public Boolean haveMother(Person p) {
+		Boolean found = false;
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.mother) {
+				found = true;
+			}
+		}
+		return found;
 	}
 
 }

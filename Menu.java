@@ -200,18 +200,24 @@ public class Menu extends Application {
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.deletePerson])) {
 				labels[0] = "Enter Full Name: ";
-				actionButton = "Search";
+				actionButton = "Delete";
 				actionItem = Helper.deletePerson;
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.connectPerson])) {
-				labels[0] = "Enter Full Name of 1st Person: ";
-				labels[1] = "Enter Full Name of 1st Person: ";
-				labels[2] = "Enter Relationship: ";
+				labels[0] = "Enter Full Name of 1st Person \n[Parent first if 2nd Person is a Child]: ";
+				labels[1] = "Enter Full Name of 2nd Person: ";
+
+				String options = "Enter Relationship: ";
+				for (int i = 0; i < Helper.roleDesc.length; i++) {
+					options = options + (i % 3 == 0 ? "\n" : "") + "[" + i + "] " + Helper.roleDesc[i] + " ";
+				}
+				labels[2] = options;
 				actionButton = "Save";
 				actionItem = Helper.connectPerson;
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.findFriends])) {
-				labels[0] = "Enter Full Name: ";
+				labels[0] = "Enter Full Name of 1st Person: ";
+				labels[1] = "Enter Full Name of 2nd Person: ";
 				actionButton = "Search";
 				actionItem = Helper.findFriends;
 

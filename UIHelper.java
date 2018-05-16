@@ -173,8 +173,10 @@ public class UIHelper {
 					_info.setText(d.updateProfile(_txt));
 
 				} else if (menuItem == Helper.deletePerson) {
+					_info.setText(d.deletePerson(_txt));
 
 				} else if (menuItem == Helper.connectPerson) {
+					_info.setText(d.connectPerson(_txt));
 
 				} else if (menuItem == Helper.findFriends) {
 
