@@ -8,6 +8,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
@@ -20,10 +21,6 @@ public class newMenu extends Application {
 		double SCENEHEIGHT = 1536;
 
 		Pane pane = new Pane();
-
-		int startX = 5;
-		int startY = 5;
-		int menuStartY = 5;
 
 		int rectOffset = 55;
 
@@ -42,12 +39,34 @@ public class newMenu extends Application {
 		brandLabel.setTextFill(Helper.menuRectTextColor);
 
 		StackPane brandPane = new StackPane();
-		brandPane.setLayoutX(startX);
-		brandPane.setLayoutY(startY);
+		brandPane.setLayoutX(Helper.startX);
+		brandPane.setLayoutY(Helper.startY);
 
 		brandPane.getChildren().addAll(brandRectangle, brandLabel);
 
 		pane.getChildren().add(brandPane);
+
+		// work window begin
+		GridPane workPane = new GridPane();
+		Rectangle workWindow = new Rectangle(0, 0, Helper.workWidth, Helper.workHeight);
+		workWindow.setEffect(Helper.dropShadow());
+		workWindow.setFill(Helper.menuBackColor);
+
+		workWindow.setFill(Helper.menuRectColor);
+		workWindow.setStroke(Helper.menuRectBorder);
+		workWindow.setHeight(Helper.rectHeight * 14);
+		workWindow.setWidth(Helper.rectWidth * 5.5);
+		workWindow.setId("workRectangle");
+		Helper.doRectEffect(workWindow);
+
+		workPane.add(workWindow, 0, 0);
+
+		workPane.setVisible(false);
+		workPane.setLayoutX(Helper.rectWidth + 20);
+		workPane.setLayoutY(Helper.startY + Helper.rectHeight + 20);
+		pane.getChildren().add(workPane);
+
+		// work window ends
 
 		String[] _menuItems = new String[Helper.menuSize];
 
@@ -74,12 +93,12 @@ public class newMenu extends Application {
 
 			menuPane.getChildren().addAll(menuRectangle, menuLabel);
 
-			menuPane.setLayoutX(startX);
+			menuPane.setLayoutX(Helper.startX);
 
 			if (i == 0)
-				menuPane.setLayoutY(menuStartY + (_menuItems.length * rectOffset));
+				menuPane.setLayoutY(Helper.menuStartY + (_menuItems.length * rectOffset));
 			else
-				menuPane.setLayoutY(menuStartY + (i * rectOffset));
+				menuPane.setLayoutY(Helper.menuStartY + (i * rectOffset));
 
 			// add shadow when mouse over
 			menuPane.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> Helper.rectMouseEntered(menuPane));
@@ -92,7 +111,7 @@ public class newMenu extends Application {
 
 			// restore hover style on click end
 			menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED,
-					(event) -> menuAction(primaryStage, menuRectangle.getId()));
+					(event) -> menuAction(primaryStage, workPane, menuRectangle.getId()));
 
 			pane.getChildren().add(menuPane);
 		}
@@ -102,8 +121,8 @@ public class newMenu extends Application {
 		bottomRectangle.setStroke(Helper.menuRectBorder);
 		bottomRectangle.setHeight(Helper.rectHeight * 4.5);
 		bottomRectangle.setWidth(Helper.rectWidth);
-		bottomRectangle.setLayoutY(menuStartY + ((_menuItems.length + 1) * rectOffset));
-		bottomRectangle.setLayoutX(startX);
+		bottomRectangle.setLayoutY(Helper.menuStartY + ((_menuItems.length + 1) * rectOffset));
+		bottomRectangle.setLayoutX(Helper.startX);
 		Helper.doRectEffect(bottomRectangle);
 		pane.getChildren().add(bottomRectangle);
 
@@ -113,13 +132,17 @@ public class newMenu extends Application {
 		primaryStage.show(); // Display the stage
 	}
 
-	public void menuAction(Stage primaryStage, String menuClicked) {
+	public void menuAction(Stage primaryStage, GridPane wp, String menuClicked) {
 
 		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
 			primaryStage.close();
 		} else {
+
+			wp.setVisible(true);
 			Alert alert = new Alert(AlertType.INFORMATION, menuClicked, ButtonType.CLOSE);
 			alert.showAndWait();
+			wp.setVisible(false);
+
 		}
 	}
 

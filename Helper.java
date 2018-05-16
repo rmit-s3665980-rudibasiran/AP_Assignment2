@@ -37,6 +37,14 @@ public class Helper {
 	public static int infoLabelWidth = 750;
 	public static int workbtnWidth = 100;
 
+	public static double workWidth = 2000;
+	public static double workHeight = 1000;
+
+	public static int startX = 5;
+	public static int startY = 5;
+
+	public static int menuStartY = 5;
+
 	public static String btnStyle = "-fx-background-color: \n"
 			+ "        linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),\n"
 			+ "        linear-gradient(#020b02, #3a3a3a),\n"
