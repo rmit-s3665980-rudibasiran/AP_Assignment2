@@ -121,6 +121,8 @@ public class Menu extends Application {
 			menuPane.setId(_menuItems[i]);
 			menuPane.getChildren().addAll(menuRectangle, menuLabel);
 
+			menuPane.setDisable(false);
+
 			menuPane.setLayoutX(Helper.startX);
 
 			if (i == 0)
@@ -135,7 +137,7 @@ public class Menu extends Application {
 			menuPane.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> Helper.rectMousePressed(menuPane));
 
 			menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED,
-					(event) -> menuAction(primaryStage, workPane, menuRectangle.getId()));
+					(event) -> menuAction(primaryStage, workPane, pane, menuRectangle.getId()));
 
 			pane.getChildren().add(menuPane);
 		}
@@ -156,7 +158,7 @@ public class Menu extends Application {
 		primaryStage.show(); // Display the stage
 	}
 
-	public void menuAction(Stage primaryStage, GridPane wp, String menuClicked) {
+	public void menuAction(Stage primaryStage, GridPane wp, Pane p, String menuClicked) {
 
 		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
 			primaryStage.close();
@@ -239,7 +241,7 @@ public class Menu extends Application {
 
 				UIHelper workBox = new UIHelper(labels, actionButton, "Close");
 				BorderPane workBorderPane = new BorderPane();
-				workBorderPane = workBox.constructPane(_driver, _network, _relationship, actionItem, wp);
+				workBorderPane = workBox.constructPane(_driver, _network, _relationship, actionItem, wp, p);
 				wp.getChildren().add(workBorderPane);
 				wp.setVisible(true);
 

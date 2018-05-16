@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 public class UIHelper {
 	private Label _lbl[] = new Label[Helper.workTextFieldArraySize];
@@ -84,10 +86,14 @@ public class UIHelper {
 
 	}
 
-	public BorderPane constructPane(Driver d, ArrayList<Person> n, ArrayList<Relationship> r, int menuItem,
-			GridPane wp) {
+	public BorderPane constructPane(Driver d, ArrayList<Person> n, ArrayList<Relationship> r, int menuItem, GridPane wp,
+			Pane p) {
 
 		wp.setVisible(true);
+
+		for (int i = 0; i < p.getChildren().size(); i++)
+			if (p.getChildren().get(i) instanceof StackPane)
+				p.getChildren().get(i).setDisable(true);
 
 		BorderPane workBorderPane = new BorderPane();
 		workBorderPane.setPadding(new Insets(20, 20, 20, 20));
@@ -175,6 +181,10 @@ public class UIHelper {
 				workBorderPane.setVisible(false);
 
 				wp.setVisible(false);
+
+				for (int i = 0; i < p.getChildren().size(); i++)
+					if (p.getChildren().get(i) instanceof StackPane)
+						p.getChildren().get(i).setDisable(false);
 			}
 		});
 		return workBorderPane;
