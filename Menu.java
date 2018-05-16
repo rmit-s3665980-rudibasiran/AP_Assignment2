@@ -215,11 +215,11 @@ public class Menu extends Application {
 				actionButton = "Save";
 				actionItem = Helper.connectPerson;
 
-			} else if (menuClicked.equals(Helper.menuDesc[Helper.findFriends])) {
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.findConnection])) {
 				labels[0] = "Enter Full Name of 1st Person: ";
 				labels[1] = "Enter Full Name of 2nd Person: ";
 				actionButton = "Search";
-				actionItem = Helper.findFriends;
+				actionItem = Helper.findConnection;
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.findFamily])) {
 				labels[0] = "Enter Full Name: ";

@@ -178,7 +178,8 @@ public class UIHelper {
 				} else if (menuItem == Helper.connectPerson) {
 					_info.setText(d.connectPerson(_txt));
 
-				} else if (menuItem == Helper.findFriends) {
+				} else if (menuItem == Helper.findConnection) {
+					_info.setText(d.findConnection(_txt));
 
 				} else if (menuItem == Helper.findFamily) {
 

@@ -469,6 +469,12 @@ public class Driver {
 				Person p = _network.get(getIndexByProperty(name1));
 				Person q = _network.get(getIndexByProperty(name2));
 
+				// test 2 adults set as parents to each other
+				if (p instanceof Adult & q instanceof Adult & (conn == Helper.father | conn == Helper.mother)) {
+					output = output + p.getName() + " and " + q.getName()
+							+ " are adults; they cannot have parent/child relatonships.\n";
+					proceed = false;
+				}
 				// test child connect friend (child inside family)
 				if (p instanceof Child & q instanceof Child) {
 					for (int i = 0; i < _relationship.size(); i++) {
@@ -543,7 +549,7 @@ public class Driver {
 				// test child connect friend (adult)
 				if (conn == Helper.friend
 						& ((p instanceof Adult & q instanceof Child) | (p instanceof Child & q instanceof Adult))) {
-					output = output + "Adults cannot have be friends with Children.\n";
+					output = output + "Adults cannot be friends with Children.\n";
 					proceed = false;
 
 				}
@@ -563,8 +569,16 @@ public class Driver {
 
 				// test connect spouse (spouse already exists)
 				if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
-					if (haveSpouse(p) | haveSpouse(q)) {
-						output = output + "One or both adults already have spouse(s).\n";
+					if (haveSpouse(p)) {
+						output = output + p.getName() + " already have a spouse; please get divorced first.\n";
+						proceed = false;
+					}
+					if (haveSpouse(p)) {
+						output = output + q.getName() + " already have a spouse; please get divorced first.\n";
+						proceed = false;
+					}
+					if (p.getGender().equals(q.getGender())) {
+						output = "While we support your rights, our system doesn't cater to that yet.\n";
 						proceed = false;
 					}
 				}
@@ -576,14 +590,16 @@ public class Driver {
 					}
 				}
 
-				// test connect friends (connections already exists)
+				// test connect friends (connections already exists) 999
 				Relationship r = new Relationship(p, conn, q);
 
 				for (int i = 0; i < _relationship.size(); i++) {
 					if (r.getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
 							& r.getConn() == _relationship.get(i).getConn()
 							& r.getPersonB().getName().equals(_relationship.get(i).getPersonB().getName())) {
-						output = output + "Connection already exists.\n";
+						output = output + "Connection already exists:\n";
+						output = output + p.getName() + " < " + Helper.roleDesc[_relationship.get(i).getConn()] + "> "
+								+ q.getName() + "\n";
 						proceed = false;
 					}
 				}
@@ -593,7 +609,9 @@ public class Driver {
 					if (r.getPersonA().getName().equals(_relationship.get(i).getPersonB().getName())
 							& r.getConn() == _relationship.get(i).getConn()
 							& r.getPersonB().getName().equals(_relationship.get(i).getPersonA().getName())) {
-						output = output + "Connection already exists.\n";
+						output = output + "Connection already exists:\n";
+						output = output + p.getName() + " < " + Helper.roleDesc[_relationship.get(i).getConn()] + "> "
+								+ q.getName() + "\n";
 						proceed = false;
 					}
 				}
@@ -629,4 +647,37 @@ public class Driver {
 		return found;
 	}
 
+	public String findConnection(TextField t[]) {
+
+		Boolean proceed = true;
+		String output = "";
+		Boolean found = false;
+
+		String name1 = t[0].getText().toString();
+		String name2 = t[1].getText().toString();
+
+		if (!findPerson(name1)) {
+			output = "[" + name1 + "] not found.\n";
+			proceed = false;
+		} else if (!findPerson(name2)) {
+			output = "[" + name2 + "] not found.\n";
+			proceed = false;
+		} else {
+			Person p = _network.get(getIndexByProperty(name1));
+			Person q = _network.get(getIndexByProperty(name2));
+			for (int i = 0; i < _relationship.size(); i++) {
+				if ((_relationship.get(i).getPersonA().getName().equals(p.getName())
+						& _relationship.get(i).getPersonB().getName().equals(q.getName()))
+						| (_relationship.get(i).getPersonA().getName().equals(q.getName())
+								& _relationship.get(i).getPersonB().getName().equals(p.getName()))) {
+					found = true;
+					output = p.getName() + " < " + Helper.roleDesc[_relationship.get(i).getConn()] + "> " + q.getName();
+					break;
+				}
+			}
+			if (!found)
+				output = p.getName() + " and " + q.getName() + " are not connected.";
+		}
+		return output;
+	}
 }

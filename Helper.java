@@ -81,7 +81,7 @@ public class Helper {
 	public static int updateProfile = 5;
 	public static int deletePerson = 6;
 	public static int connectPerson = 7;
-	public static int findFriends = 8;
+	public static int findConnection = 8;
 	public static int findFamily = 9;
 	public static int findClassmates = 10;
 
@@ -101,7 +101,7 @@ public class Helper {
 	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother", "Classmate" };
 
 	public static String menuDesc[] = { "Quit", "Add Person", "Find Person", "Display Single Profile",
-			"Display All Profile(s)", "Update Profile", "Delete Person", "Connect Person", "Find Friends",
+			"Display All Profile(s)", "Update Profile", "Delete Person", "Connect Person", "Find Connection",
 			"Find Family", "Find Classmate" };
 
 	public static String getDate() {
