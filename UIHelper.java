@@ -167,8 +167,10 @@ public class UIHelper {
 					_info.setText(d.displayProfile(_txt));
 
 				} else if (menuItem == Helper.displayAllProfile) {
+					_info.setText(d.displayAllProfile());
 
 				} else if (menuItem == Helper.updateProfile) {
+					_info.setText(d.updateProfile(_txt));
 
 				} else if (menuItem == Helper.deletePerson) {
 

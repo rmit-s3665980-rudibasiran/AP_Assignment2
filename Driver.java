@@ -57,15 +57,10 @@ public class Driver {
 
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 		try {
-
 			Scanner input = new Scanner(new File(path + "relationships.txt"));
 			input.useDelimiter(";|\n");
 
@@ -77,8 +72,10 @@ public class Driver {
 
 				int relationship = -1;
 				for (int i = 0; i < Helper.roleDesc.length; i++)
-					if (Helper.roleDesc[i].equals(conn))
+					if (Helper.roleDesc[i].toLowerCase().equals(conn.toLowerCase())) {
 						relationship = i;
+						break;
+					}
 
 				if (findPerson(person1) & findPerson(person2)) {
 					Person p1 = _network.get(getIndexByProperty(person1));
@@ -87,11 +84,7 @@ public class Driver {
 				}
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 	}
@@ -128,17 +121,21 @@ public class Driver {
 	public String addPerson(TextField t[]) {
 		String output = "";
 
-		String name = t[0].getText().toString();
-		String strAge = t[1].getText().toString();
-		int age = Integer.parseInt(strAge);
-		String gender = t[2].getText().toString();
-		String info = t[3].getText().toString();
+		try {
+			String name = t[0].getText().toString();
+			String strAge = t[1].getText().toString();
+			int age = Integer.parseInt(strAge);
+			String gender = t[2].getText().toString();
+			String info = t[3].getText().toString();
 
-		if (findPerson(name)) {
-			output = "[" + _network.get(getIndexByProperty(name)).getName() + "] already exists.";
-		} else {
-			addPerson(name, age, gender, info);
-			output = "[" + name + "] created.";
+			if (findPerson(name)) {
+				output = "[" + _network.get(getIndexByProperty(name)).getName() + "] already exists.";
+			} else {
+				addPerson(name, age, gender, info);
+				output = "[" + name + "] has been added to MiniNet.";
+			}
+		} catch (NumberFormatException e) {
+			output = "Age should be integer.";
 		}
 		return output;
 	}
@@ -154,34 +151,263 @@ public class Driver {
 		return result;
 	}
 
+	public String displayProfile(String name) {
+		String output = "";
+		Person p = _network.get(getIndexByProperty(name));
+		output = "Name: " + p.getName() + ", (" + p.getGender() + "), " + p.getAge();
+		if (p instanceof Adult) {
+			Adult a = (Adult) p;
+			if (a.getInfo() != null)
+				output = output + "\n" + "About: " + (a.getInfo().isEmpty() ? "-" : a.getInfo());
+
+			if (haveSpouse(a))
+				output = output + "\n" + findSpouse(a);
+
+			if (haveChildren(a))
+				output = output + "\n" + findChildren(a);
+
+			if (haveFriends(a))
+				output = output + "\n" + findFriends(a);
+
+		} else if (p instanceof Child) {
+			Child c = (Child) p;
+
+			if (haveParents(c))
+				output = output + "\n" + findParents(c);
+
+			if (haveFriends(c))
+				output = output + "\n" + findFriends(c);
+		}
+		return output;
+	}
+
 	public String displayProfile(TextField t[]) {
 		String output = "";
 		String name = t[0].getText().toString();
 
 		if (findPerson(name)) {
-			output = "[" + _network.get(getIndexByProperty(name)).getName() + "] already exists.";
-			Person p = _network.get(getIndexByProperty(name));
-			output = "Name: " + p.getName() + ", (" + p.getGender() + "), " + p.getAge();
-			if (p instanceof Adult) {
-				Adult a = (Adult) p;
-				if (a.getInfo() != null)
-					output = output + "\n" + "About: " + (a.getInfo().isEmpty() ? "-" : a.getInfo());
-
-				// findSpouse(p, connection, Helper.showDetails);
-				// findChildren(p, connection, Helper.showDetails);
-				// findFriends(p, connection, Helper.showDetails);
-			}
-			if (p instanceof Child) {
-				Child c = (Child) p;
-				// findParents(c, connection, Helper.showDetails);
-				// findFriends(c, connection, Helper.showDetails);
-			}
+			displayProfile(name);
 
 		} else {
 			output = "[" + name + "] not found.";
 		}
-
 		return output;
+	}
+
+	public Boolean haveSpouse(Person p) {
+		return (findSpouse(p).equals("") ? false : true);
+	}
+
+	public String findSpouse(Person p) {
+		String output = "";
+		Boolean found = false;
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (_relationship.get(i).getPersonA().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.spouse) {
+				output = "Spouse: " + _relationship.get(i).getPersonB().getName();
+				found = true;
+
+			} else if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.spouse) {
+				output = "Spouse: " + _relationship.get(i).getPersonA().getName();
+				found = true;
+			}
+		}
+		if (!found)
+			output = "";
+		return output;
+	}
+
+	public Boolean haveChildren(Person p) {
+		return (findChildren(p).equals("") ? false : true);
+	}
+
+	public String findChildren(Person p) {
+		String output = "";
+		int count = 0;
+		Boolean found = false;
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (_relationship.get(i).getPersonA().getName().equals(p.getName())
+					& (_relationship.get(i).getConn() == Helper.father
+							| _relationship.get(i).getConn() == Helper.mother)) {
+				count++;
+				found = true;
+				output = output + ((count == 1) ? "Children :\n-" : "\n-")
+						+ _relationship.get(i).getPersonB().getName();
+			}
+		}
+
+		if (!found)
+			output = "";
+		return output;
+	}
+
+	public Boolean haveFriends(Person p) {
+		return (findFriends(p).equals("") ? false : true);
+	}
+
+	public String findFriends(Person p) {
+		int count = 0;
+		String output = "";
+		Boolean found = false;
+
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (_relationship.get(i).getPersonA().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.friend) {
+				count++;
+				found = true;
+				output = output + ((count == 1) ? "Friends :\n-" : "\n-") + _relationship.get(i).getPersonB().getName();
+			}
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.friend) {
+				count++;
+				found = true;
+				output = output + ((count == 1) ? "Friends :\n-" : "\n-") + _relationship.get(i).getPersonA().getName();
+			}
+		}
+		if (!found)
+			output = "";
+		return output;
+	}
+
+	public Boolean haveParents(Person p) {
+		return (findParents(p).equals("") ? false : true);
+	}
+
+	public String findParents(Person p) {
+		Boolean found = false;
+		String output = "";
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.father) {
+				found = true;
+				output = output + "Father: " + _relationship.get(i).getPersonA().getName() + "\n";
+			}
+
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& _relationship.get(i).getConn() == Helper.mother) {
+				found = true;
+				output = output + "Mother: " + _relationship.get(i).getPersonA().getName() + "\n";
+			}
+		}
+		if (!found)
+			output = "";
+		return output;
+	}
+
+	public String displayAllProfile() {
+
+		String output = "";
+		for (int i = 0; i < _network.size(); i++) {
+			output = output + "\n\n" + displayProfile(_network.get(i).getName());
+		}
+		return output;
+	}
+
+	public String updateProfile(TextField t[]) {
+		Boolean proceed = true;
+		String output = "";
+
+		try {
+			String name = t[0].getText().toString();
+			String strAge = t[1].getText().toString();
+			int newAge = Integer.parseInt(strAge);
+			String newGender = t[2].getText().toString();
+			String newInfo = t[3].getText().toString();
+
+			Person p = _network.get(getIndexByProperty(name));
+
+			if (p instanceof Adult) {
+				Adult a = (Adult) p;
+
+				if (newAge <= Helper.minorAge) {
+					// test adult with spouse change age
+					if (haveSpouse(p)) {
+						output = output + "You cannot change your age to " + newAge + " as you have a spouse.\n";
+						proceed = false;
+					}
+					// test adult with spouse change age
+					if (haveChildren(p)) {
+						output = output + "You cannot change your age to " + newAge + " as you have children.\n";
+						proceed = false;
+					}
+
+				}
+
+				if (!newGender.equals(p.getGender())) {
+					if (haveSpouse(p)) {
+						output = output + "You cannot change your gender to " + newGender + " as you have a spouse.\n";
+						proceed = false;
+					}
+
+					if (haveChildren(p)) {
+						output = output + "You cannot change your gender to " + newGender + " as you have children.\n";
+						proceed = false;
+					}
+
+					if (!newGender.equals("M") | !newGender.equals("F")) {
+						output = output + "Gender should be M or F only.\n";
+						proceed = false;
+					}
+				}
+
+				if (proceed) {
+					a.setAge(newAge);
+					a.setGender(newGender);
+				}
+
+				// need to upgrade/downgrade person: not_done_yet
+
+			} else if (p instanceof Child) {
+				Child c = (Child) p;
+
+				if (newAge <= Helper.babyAge) {
+					// test child change age to baby
+					if (haveFriends(p)) {
+						output = output + "You cannot change your age to " + newAge
+								+ " as you have friends; children below " + Helper.babyAge + " cannot have friends.\n";
+						proceed = false;
+					}
+				} else if (newAge > Helper.minorAge) {
+					// test child with parents change age
+					if (haveParents(p)) {
+						output = output + "You cannot change your age to above " + Helper.minorAge
+								+ " as you have linked parents.\n";
+						proceed = false;
+					}
+
+					// test child change age who has friends within age-gap
+					for (int i = 0; i < _relationship.size(); i++) {
+
+						if ((_relationship.get(i).getPersonA().getName().equals(p.getName())
+								& _relationship.get(i).getConn() == Helper.friend
+								& Math.abs((_relationship.get(i).getPersonB().getAge() - newAge)) > Helper.ageGap)
+								| (_relationship.get(i).getPersonB().getName().equals(p.getName())
+										& _relationship.get(i).getConn() == Helper.friend
+										& Math.abs((_relationship.get(i).getPersonA().getAge()
+												- newAge)) > Helper.ageGap)) {
+							output = output + "You cannot change your age to " + newAge
+									+ " as you have friends who are within the " + Helper.ageGap + "-year age gap.\n";
+							proceed = false;
+						}
+					}
+				}
+				if (proceed) {
+					if (newAge <= Helper.minorAge) {
+						YoungChild y = (YoungChild) p;
+						// need to clone, rebuild all relationships & delete old instance : not_done_yet
+						y.setAge(newAge);
+					}
+
+				}
+			}
+			if (proceed)
+				output = "Record updated.";
+		} catch (NumberFormatException e) {
+			output = "Age should be integer.";
+		}
+		return output;
+
 	}
 
 }

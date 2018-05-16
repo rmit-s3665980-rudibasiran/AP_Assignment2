@@ -192,8 +192,8 @@ public class Menu extends Application {
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.updateProfile])) {
 				labels[0] = "Enter Full Name: ";
-				labels[1] = "Update Gender: ";
-				labels[2] = "Update Age: ";
+				labels[1] = "Update Age: ";
+				labels[2] = "Update Gender: ";
 				labels[3] = "Update Info: ";
 				actionButton = "Save";
 				actionItem = Helper.updateProfile;
