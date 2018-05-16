@@ -84,7 +84,8 @@ public class UIHelper {
 
 	}
 
-	public BorderPane constructPane(Driver d, ArrayList n, ArrayList r, int menuItem, GridPane wp) {
+	public BorderPane constructPane(Driver d, ArrayList<Person> n, ArrayList<Relationship> r, int menuItem,
+			GridPane wp) {
 
 		wp.setVisible(true);
 
