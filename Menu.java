@@ -171,8 +171,8 @@ public class Menu extends Application {
 
 			if (menuClicked.equals(Helper.menuDesc[Helper.addPerson])) {
 				labels[0] = "Enter Full Name: ";
-				labels[1] = "Enter Gender: ";
-				labels[2] = "Enter Age: ";
+				labels[1] = "Enter Age: ";
+				labels[2] = "Enter Gender: ";
 				labels[3] = "Enter Info: ";
 				actionButton = "Save";
 				actionItem = Helper.addPerson;

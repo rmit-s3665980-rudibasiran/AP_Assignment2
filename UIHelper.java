@@ -149,9 +149,10 @@ public class UIHelper {
 
 				ArrayList<Person> n = d.getNetwork();
 				ArrayList<Relationship> r = d.getRelationship();
+				_info.setText(Helper.menuDesc[menuItem] + ": Not Done Yet!!");
 
-				_info.setText(Helper.menuDesc[menuItem]);
 				if (menuItem == Helper.addPerson) {
+					_info.setText(d.addPerson(_txt));
 
 				} else if (menuItem == Helper.findPerson) {
 					_info.setText(d.findPerson(_txt));

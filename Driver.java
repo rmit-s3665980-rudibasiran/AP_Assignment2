@@ -47,22 +47,14 @@ public class Driver {
 			input.useDelimiter(";|\n");
 
 			while (input.hasNext()) {
+
 				String name = input.next();
 				String strAge = input.next();
 				int age = Integer.parseInt(strAge);
 				String gender = input.next();
 				String info = input.next();
+				addPerson(name, age, gender, info);
 
-				if (age > Helper.minorAge) {
-					Adult a = new Adult(name, age, gender, info);
-					_network.add(a);
-				} else if (age <= Helper.minorAge & age > Helper.babyAge) {
-					Child c = new Child(name, age, gender, info);
-					_network.add(c);
-				} else if (age >= Helper.babyAge) {
-					YoungChild y = new YoungChild(name, age, gender);
-					_network.add(y);
-				}
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -93,7 +85,6 @@ public class Driver {
 					Person p2 = _network.get(getIndexByProperty(person2));
 					_relationship.add(new Relationship(p1, relationship, p2));
 				}
-
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -106,10 +97,7 @@ public class Driver {
 	}
 
 	public Boolean findPerson(String name) {
-		if (getIndexByProperty(name) >= 0)
-			return true;
-		else
-			return false;
+		return ((getIndexByProperty(name) >= 0) ? true : false);
 	}
 
 	public String findPerson(TextField t[]) {
@@ -121,6 +109,37 @@ public class Driver {
 		} else
 			output = "[" + name + "] not found.";
 
+		return output;
+	}
+
+	public void addPerson(String name, int age, String gender, String info) {
+		if (age > Helper.minorAge) {
+			Adult a = new Adult(name, age, gender, info);
+			_network.add(a);
+		} else if (age <= Helper.minorAge & age > Helper.babyAge) {
+			Child c = new Child(name, age, gender, info);
+			_network.add(c);
+		} else if (age >= Helper.babyAge) {
+			YoungChild y = new YoungChild(name, age, gender);
+			_network.add(y);
+		}
+	}
+
+	public String addPerson(TextField t[]) {
+		String output = "";
+
+		String name = t[0].getText().toString();
+		String strAge = t[1].getText().toString();
+		int age = Integer.parseInt(strAge);
+		String gender = t[2].getText().toString();
+		String info = t[3].getText().toString();
+
+		if (findPerson(name)) {
+			output = "[" + _network.get(getIndexByProperty(name)).getName() + "] already exists.";
+		} else {
+			addPerson(name, age, gender, info);
+			output = "[" + name + "] created.";
+		}
 		return output;
 	}
 
