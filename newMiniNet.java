@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class newMenu extends Application {
+public class newMiniNet extends Application {
 	@Override // Override the start method in the Application class
 	public void start(Stage primaryStage) {
 		double SCENEWIDTH = 2048;
@@ -36,7 +36,8 @@ public class newMenu extends Application {
 		Helper.doRectEffect(brandRectangle);
 
 		Label brandLabel = new Label("MiniNet");
-		brandLabel.setTextFill(Helper.menuRectTextColor);
+		brandLabel.setStyle(Helper.lblStyle);
+		brandLabel.setEffect(Helper.dropShadow());
 
 		StackPane brandPane = new StackPane();
 		brandPane.setLayoutX(Helper.startX);
@@ -54,8 +55,8 @@ public class newMenu extends Application {
 
 		workWindow.setFill(Helper.menuRectColor);
 		workWindow.setStroke(Helper.menuRectBorder);
-		workWindow.setHeight(Helper.rectHeight * 14);
-		workWindow.setWidth(Helper.rectWidth * 5.5);
+		workWindow.setHeight(Helper.rectHeight * 15);
+		workWindow.setWidth(Helper.rectWidth * 5.75);
 		workWindow.setId("workRectangle");
 		Helper.doRectEffect(workWindow);
 
@@ -139,6 +140,8 @@ public class newMenu extends Application {
 		} else {
 
 			wp.setVisible(true);
+
+			// menuRectangle.setId(_menuItems[i]);
 			Alert alert = new Alert(AlertType.INFORMATION, menuClicked, ButtonType.CLOSE);
 			alert.showAndWait();
 			wp.setVisible(false);
