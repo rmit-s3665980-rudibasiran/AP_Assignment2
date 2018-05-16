@@ -1,6 +1,7 @@
 package AP_Assignment2;
 
-import GHARL.User;
+import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -32,6 +33,7 @@ public class UIHelper {
 			_lbl[i].setTextFill(Helper.menuRectTextColor);
 			_lbl[i].setEffect(Helper.dropShadow());
 
+			_txt[i].setPrefWidth(Helper.txtFieldWidth);
 			_txt[i].setEffect(Helper.dropShadow());
 
 		}
@@ -82,9 +84,10 @@ public class UIHelper {
 
 	}
 
-	public BorderPane constructPane(Driver d, User cu, int menuItem, Button btn[], GridPane wp) {
+	public BorderPane constructPane(Driver d, ArrayList n, ArrayList r, int menuItem, GridPane wp) {
 
 		wp.setVisible(true);
+
 		BorderPane workBorderPane = new BorderPane();
 		workBorderPane.setPadding(new Insets(20, 20, 20, 20));
 		workBorderPane.setStyle(Helper.workScreenStyle);
@@ -131,8 +134,6 @@ public class UIHelper {
 		buttonPane.add(_buttonExe, 0, 0);
 		buttonPane.add(_buttonClose, 1, 0);
 
-		// workBorderPane.setTop(workHBox);
-
 		workBorderPane.setTop(queryPane);
 		workBorderPane.setCenter(infoPane);
 		workBorderPane.setBottom(buttonPane);
@@ -143,10 +144,9 @@ public class UIHelper {
 				_info.setText(Helper.menuDesc[menuItem]);
 				if (menuItem == Helper.addPerson) {
 
-					// _info.setText(c.viewCourse(d, _txt));
-
 				} else if (menuItem == Helper.findPerson) {
 
+					_info.setText(d.findPerson(n, _txt));
 				} else if (menuItem == Helper.displayProfile) {
 
 				} else if (menuItem == Helper.displayAllProfile) {
@@ -162,15 +162,17 @@ public class UIHelper {
 				} else if (menuItem == Helper.findFamily) {
 
 				}
+
+				else if (menuItem == Helper.findClassmates) {
+
+				}
 			}
 		});
 
 		_buttonClose.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				workBorderPane.setVisible(false);
-				for (Button b : btn) {
-					b.setDisable(false);
-				}
+
 				wp.setVisible(false);
 			}
 		});

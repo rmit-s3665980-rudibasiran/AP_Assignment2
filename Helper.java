@@ -22,13 +22,14 @@ Notes:
 
 public class Helper {
 
-	public static Color menuRectColor = Color.rgb(25, 25, 25);
+	public static Boolean runTextMode = false;
+	public static Color menuRectColor = Color.web("#4d4d4d", 1.0);
 	public static Color menuRectColorSelected = Color.rgb(0, 0, 0);
 	public static Color menuRectBorderSelected = Color.ORANGERED;
 	public static Color menuRectBorder = Color.rgb(25, 25, 25);
-	public static Color menuRectTextColor = Color.rgb(200, 200, 200);
+	public static Color menuRectTextColor = Color.rgb(255, 255, 255);
 	public static Color menuRectTextSelected = Color.rgb(200, 200, 200);
-	public static Color menuBackColor = Color.rgb(40, 40, 40);
+	public static Color menuBackColor = Color.web("#666666", 1.0);
 
 	public static String lblStyle = "-fx-font-family:\"Helvetica\";\n" + "    -fx-font-size: 18px;\n"
 			+ "  -fx-font-weight: bold;  -fx-text-fill: white;";
@@ -36,12 +37,13 @@ public class Helper {
 	public static int workTextFieldArraySize = 4;
 	public static int infoLabelWidth = 750;
 	public static int workbtnWidth = 100;
-
+	public static int txtFieldWidth = 300;
 	public static double workWidth = 2000;
 	public static double workHeight = 1000;
 
 	public static int startX = 5;
 	public static int startY = 5;
+	public static int rectOffset = 55;
 
 	public static int menuStartY = 5;
 
@@ -68,7 +70,7 @@ public class Helper {
 	public static int rectHeight = 50;
 
 	public static String spaces = "     ";
-	public static int menuSize = 10;
+	public static int menuSize = 11;
 	public static int quitMenu = 0;
 	public static int addPerson = 1;
 	public static int findPerson = 2;
@@ -79,11 +81,13 @@ public class Helper {
 	public static int connectPerson = 7;
 	public static int findFriends = 8;
 	public static int findFamily = 9;
+	public static int findClassmates = 10;
 
 	public static int friend = 0;
 	public static int spouse = 1;
 	public static int father = 2;
 	public static int mother = 3;
+	public static int classmate = 3;
 
 	public static Boolean showDetails = true;
 	public static Boolean suppressDetails = false;
@@ -92,11 +96,11 @@ public class Helper {
 	public static int babyAge = 2;
 	public static int ageGap = 3;
 
-	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother" };
+	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother", "Classmate" };
 
 	public static String menuDesc[] = { "Quit", "Add Person", "Find Person", "Display Single Profile",
 			"Display All Profile(s)", "Update Profile", "Delete Person", "Connect Person", "Find Friends",
-			"Find Family" };
+			"Find Family", "Find Classmate" };
 
 	public static String getDate() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -315,8 +319,8 @@ public class Helper {
 	public static DropShadow dropShadow() {
 		// DropShadow effect
 		DropShadow dropShadow = new DropShadow();
-		dropShadow.setOffsetX(5);
-		dropShadow.setOffsetY(5);
+		dropShadow.setOffsetX(3);
+		dropShadow.setOffsetY(3);
 		return dropShadow;
 	}
 }

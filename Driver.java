@@ -2,6 +2,8 @@ package AP_Assignment2;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.TextField;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -20,6 +22,86 @@ public class Driver {
 
 		// start: initial set up of network for demo
 		// otherwise constructor is normally empty
+
+		// creating people
+		Adult rudi = new Adult("Rudi Basiran", 48, "M", "Systems Analyst");
+		Adult ahysa = new Adult("Ahysa Ahmad", 45, "F");
+		Child rida = new Child("Rida Aqyda", 7, "F");
+
+		Adult arthur = new Adult("Arthur Simanjuntak", 45, "M", "Wave Engineer");
+		Adult sheree = new Adult("Sheree Reaver", 45, "F", "Civil Engineer");
+		Child rangi = new Child("Rangi Simanjuntak", 8, "M");
+		Child tane = new Child("Tane Simanjuntak", 6, "M");
+
+		Adult andrew = new Adult("Andrew James", 45, "M", "HR Officer");
+		Adult nat = new Adult("Nat James", 45, "F");
+		Child callum = new Child("Callum James", 8, "M");
+
+		Adult rasyid = new Adult("Rasyid", 42, "M");
+		Adult amalina = new Adult("Amalina", 42, "F");
+		Child sabrina = new Child("Sabrina", 15, "F");
+		Child riyan = new Child("Riyan", 13, "M");
+
+		Adult sherri = new Adult("Sherri McRae", 43, "F", "Student");
+		Adult huani = new Adult("Huani Neupane", 28, "F", "Student");
+		Adult chloe = new Adult("Chloe Loh", 25, "F", "Student");
+		Adult wanyi = new Adult("Wanyi Beh", 32, "F", "Student");
+
+		// adding people to the network
+		network.add(rudi);
+		network.add(ahysa);
+		network.add(rida);
+		network.add(arthur);
+		network.add(sheree);
+		network.add(rangi);
+		network.add(tane);
+
+		network.add(andrew);
+		network.add(nat);
+		network.add(callum);
+
+		network.add(rasyid);
+		network.add(amalina);
+		network.add(sabrina);
+		network.add(riyan);
+
+		network.add(sherri);
+		network.add(huani);
+		network.add(chloe);
+		network.add(wanyi);
+
+		// adding connections
+		connection.add(new Relationship(rudi, Helper.spouse, ahysa));
+		connection.add(new Relationship(rudi, Helper.father, rida));
+		connection.add(new Relationship(ahysa, Helper.mother, rida));
+
+		connection.add(new Relationship(arthur, Helper.spouse, sheree));
+		connection.add(new Relationship(arthur, Helper.father, rangi));
+		connection.add(new Relationship(sheree, Helper.mother, rangi));
+
+		connection.add(new Relationship(arthur, Helper.father, tane));
+		connection.add(new Relationship(sheree, Helper.mother, tane));
+
+		connection.add(new Relationship(andrew, Helper.father, callum));
+
+		connection.add(new Relationship(rasyid, Helper.spouse, amalina));
+		connection.add(new Relationship(rasyid, Helper.father, sabrina));
+		connection.add(new Relationship(amalina, Helper.mother, sabrina));
+		connection.add(new Relationship(rasyid, Helper.father, riyan));
+		connection.add(new Relationship(amalina, Helper.mother, riyan));
+
+		connection.add(new Relationship(rudi, Helper.friend, sherri));
+		connection.add(new Relationship(rudi, Helper.friend, huani));
+		connection.add(new Relationship(rudi, Helper.friend, chloe));
+
+		connection.add(new Relationship(rida, Helper.friend, rangi));
+
+		// end: initial set up of network
+	}
+
+	public void loadData(ArrayList<Person> network, ArrayList<Relationship> connection) {
+
+		// start: initial set up of network for demo
 
 		// creating people
 		Adult rudi = new Adult("Rudi Basiran", 48, "M", "Systems Analyst");
@@ -632,11 +714,25 @@ public class Driver {
 	}
 
 	public void findPerson(ArrayList<Person> nt) {
+
 		String name = Helper.getStringInput("Enter Person's Name: ");
 		if (findPerson(nt, name))
 			System.out.println("[" + nt.get(getIndexByProperty(nt, name)).getName() + "] found");
 		else
 			System.out.println("[" + name + "] not found");
+
+	}
+
+	public String findPerson(ArrayList<Person> nt, TextField t[]) {
+		String output = "";
+
+		String name = t[0].getText().toString();
+		if (findPerson(nt, name)) {
+			output = "[" + nt.get(getIndexByProperty(nt, name)).getName() + "] found.";
+		} else
+			output = "[" + name + "] not found.";
+
+		return output;
 	}
 
 	public int getIndexByProperty(ArrayList<Person> nt, String name) {

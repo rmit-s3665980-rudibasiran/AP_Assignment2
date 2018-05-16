@@ -1,55 +1,253 @@
 package AP_Assignment2;
 
+import java.util.ArrayList;
+
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
 - Rudi Basiran <s3665980@student.rmit.edu.au> 
-Date Created: 18 March 2018 
-Description: Menu Class 
+Date Created: 5 May 2018 
+Description: Menu Class controlling the GUI
 Notes: --
+
+Change History: 
+- Rudi Basiran <s3665980@student.rmit.edu.au> : 16 May 2018 : Updated GUI
+
  */
 
-public class Menu {
-	private int _choice;
-	private Boolean _quit;
+public class Menu extends Application {
 
-	private String[] _menuItems = new String[Helper.menuSize];
+	ArrayList<Person> _network = new ArrayList<Person>();
+	ArrayList<Relationship> _relationship = new ArrayList<Relationship>();
+	Driver _driver = new Driver(_network, _relationship);
 
 	public Menu() {
-		_choice = 1;
-		_quit = false;
+	}
+
+	public void go() {
+		_driver.loadData(_network, _relationship);
+		launch();
+	}
+
+	@Override // Override the start method in the Application class
+	public void start(Stage primaryStage) {
+		double SCENEWIDTH = 2048;
+		double SCENEHEIGHT = 1536;
+
+		Pane pane = new Pane();
+
+		Rectangle backRectangle = new Rectangle(0, 0, SCENEWIDTH, SCENEHEIGHT);
+		backRectangle.setFill(Helper.menuBackColor);
+		pane.getChildren().add(backRectangle);
+
+		Rectangle brandRectangle = new Rectangle();
+		brandRectangle.setFill(Helper.menuRectColor);
+		brandRectangle.setStroke(Helper.menuRectBorder);
+		brandRectangle.setHeight(Helper.rectHeight);
+		brandRectangle.setWidth(Helper.rectWidth * 7);
+		Helper.doRectEffect(brandRectangle);
+
+		Label brandLabel = new Label("MiniNet");
+		brandLabel.setStyle(Helper.lblStyle);
+		brandLabel.setEffect(Helper.dropShadow());
+
+		StackPane brandPane = new StackPane();
+		brandPane.setLayoutX(Helper.startX);
+		brandPane.setLayoutY(Helper.startY);
+
+		brandPane.getChildren().addAll(brandRectangle, brandLabel);
+
+		pane.getChildren().add(brandPane);
+
+		// work window begin
+		GridPane workPane = new GridPane();
+		Rectangle workWindow = new Rectangle(0, 0, Helper.workWidth, Helper.workHeight);
+		workWindow.setEffect(Helper.dropShadow());
+		workWindow.setFill(Helper.menuBackColor);
+
+		workWindow.setFill(Helper.menuRectColor);
+		workWindow.setStroke(Helper.menuRectBorder);
+		workWindow.setHeight(Helper.rectHeight * 15);
+		workWindow.setWidth(Helper.rectWidth * 5.75);
+		workWindow.setId("workRectangle");
+		Helper.doRectEffect(workWindow);
+
+		workPane.add(workWindow, 0, 0);
+
+		workPane.setVisible(false);
+		workPane.setLayoutX(Helper.rectWidth + 20);
+		workPane.setLayoutY(Helper.startY + Helper.rectHeight + 20);
+		pane.getChildren().add(workPane);
+
+		// work window ends
+
+		String[] _menuItems = new String[Helper.menuSize];
 
 		for (int i = 0; i < Helper.menuSize; i++)
 			_menuItems[i] = Helper.menuDesc[i];
 
+		for (int i = 0; i < _menuItems.length; i++) {
+
+			Rectangle menuRectangle = new Rectangle();
+			Label menuLabel = new Label();
+			StackPane menuPane = new StackPane();
+
+			menuRectangle.setFill(Helper.menuRectColor);
+			menuRectangle.setStroke(Helper.menuRectBorder);
+			menuRectangle.setHeight(Helper.rectHeight);
+			menuRectangle.setWidth(Helper.rectWidth);
+			menuRectangle.setId(_menuItems[i]);
+			Helper.doRectEffect(menuRectangle);
+
+			menuLabel.setTextFill(Helper.menuRectTextColor);
+			menuLabel.setMaxWidth(Double.MAX_VALUE);
+			menuLabel.setAlignment(Pos.CENTER_LEFT);
+			menuLabel.setText(Helper.spaces + _menuItems[i]);
+			menuLabel.setEffect(Helper.dropShadow());
+			menuLabel.setId(_menuItems[i]);
+
+			menuPane.setId(_menuItems[i]);
+			menuPane.getChildren().addAll(menuRectangle, menuLabel);
+
+			menuPane.setLayoutX(Helper.startX);
+
+			if (i == 0)
+				menuPane.setLayoutY(Helper.menuStartY + (_menuItems.length * Helper.rectOffset));
+			else
+				menuPane.setLayoutY(Helper.menuStartY + (i * Helper.rectOffset));
+
+			menuPane.addEventHandler(MouseEvent.MOUSE_ENTERED, (event) -> Helper.rectMouseEntered(menuPane));
+
+			menuPane.addEventHandler(MouseEvent.MOUSE_EXITED, (event) -> Helper.rectMouseExited(menuPane));
+
+			menuPane.addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> Helper.rectMousePressed(menuPane));
+
+			menuPane.addEventHandler(MouseEvent.MOUSE_RELEASED,
+					(event) -> menuAction(primaryStage, workPane, menuRectangle.getId()));
+
+			pane.getChildren().add(menuPane);
+		}
+
+		Rectangle bottomRectangle = new Rectangle();
+		bottomRectangle.setFill(Helper.menuRectColor);
+		bottomRectangle.setStroke(Helper.menuRectBorder);
+		bottomRectangle.setHeight(Helper.rectHeight * 4.5);
+		bottomRectangle.setWidth(Helper.rectWidth);
+		bottomRectangle.setLayoutY(Helper.menuStartY + ((_menuItems.length + 1) * Helper.rectOffset));
+		bottomRectangle.setLayoutX(Helper.startX);
+		Helper.doRectEffect(bottomRectangle);
+		pane.getChildren().add(bottomRectangle);
+
+		Scene scene = new Scene(pane, SCENEWIDTH, SCENEHEIGHT);
+		primaryStage.setTitle("MiniNet"); // Set the stage title
+		primaryStage.setScene(scene); // Place the scene in the stage
+		primaryStage.show(); // Display the stage
 	}
 
-	public int getOption() {
-		return _choice;
-	}
+	public void menuAction(Stage primaryStage, GridPane wp, String menuClicked) {
 
-	public void displayMenu() {
+		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
+			primaryStage.close();
+		} else {
 
-		Helper.drawLine();
+			// menuRectangle.setId(_menuItems[i]);
 
-		System.out.println("MiniNet Menu");
+			String labels[] = new String[Helper.workTextFieldArraySize];
+			for (int i = 0; i < Helper.workTextFieldArraySize; i++)
+				labels[i] = "";
+			String actionButton = "";
+			int actionItem = -1;
 
-		Helper.drawLine();
+			if (menuClicked.equals(Helper.menuDesc[Helper.addPerson])) {
+				labels[0] = "Enter Full Name: ";
+				labels[1] = "Enter Gender: ";
+				labels[2] = "Enter Age: ";
+				labels[3] = "Enter Info: ";
+				actionButton = "Save";
+				actionItem = Helper.addPerson;
 
-		for (int i = 1; i < _menuItems.length; i++)
-			System.out.println((i) + ": " + _menuItems[i]);
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.findPerson])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.findPerson;
 
-		System.out.println((0) + ": " + _menuItems[0]);
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.displayProfile])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.displayProfile;
 
-		_choice = Helper.getIntegerInput("Enter Option: ", 0, _menuItems.length);
-		if (_choice == 0)
-			_quit = true;
-		Helper.drawLine();
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.displayAllProfile])) {
 
-	}
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.updateProfile])) {
+				labels[0] = "Enter Full Name: ";
+				labels[1] = "Update Gender: ";
+				labels[2] = "Update Age: ";
+				labels[3] = "Update Info: ";
+				actionButton = "Save";
+				actionItem = Helper.updateProfile;
 
-	public Boolean exitMenu() {
-		return _quit;
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.deletePerson])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.deletePerson;
+
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.connectPerson])) {
+				labels[0] = "Enter Full Name of 1st Person: ";
+				labels[1] = "Enter Full Name of 1st Person: ";
+				labels[2] = "Enter Relationship: ";
+				actionButton = "Save";
+				actionItem = Helper.connectPerson;
+
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.findFriends])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.findFriends;
+
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.findFamily])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.findFamily;
+
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.findClassmates])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.findClassmates;
+			}
+
+			Boolean createPane = false;
+			for (int i = 0; i < Helper.workTextFieldArraySize; i++)
+				if (!labels[i].equals(""))
+					createPane = true;
+
+			if (createPane) {
+
+				UIHelper workBox = new UIHelper(labels, actionButton, "Close");
+				BorderPane workBorderPane = new BorderPane();
+				workBorderPane = workBox.constructPane(_driver, _network, _relationship, actionItem, wp);
+				wp.getChildren().add(workBorderPane);
+				wp.setVisible(true);
+
+			}
+
+			// Alert alert = new Alert(AlertType.INFORMATION, menuClicked,
+			// ButtonType.CLOSE);
+			// alert.showAndWait();
+
+			// wp.setVisible(false);
+			// setMenu(wp, true);
+		}
 	}
 
 }

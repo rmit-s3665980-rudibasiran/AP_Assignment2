@@ -14,15 +14,21 @@ Notes: --
 public class MiniNet {
 
 	public static void main(String[] args) {
-		ArrayList<Person> _network = new ArrayList<>();
-		ArrayList<Relationship> _relationship = new ArrayList<>();
 
-		Menu menu = new Menu();
-		Driver driver = new Driver(_network, _relationship);
+		if (Helper.runTextMode) {
 
-		while (!menu.exitMenu()) {
-			menu.displayMenu();
-			driver.menuAction(menu.getOption(), _network, _relationship);
+			ArrayList<Person> _network = new ArrayList<>();
+			ArrayList<Relationship> _relationship = new ArrayList<>();
+			Driver driver = new Driver(_network, _relationship);
+			oldMenu omenu = new oldMenu();
+
+			while (!omenu.exitMenu()) {
+				omenu.displayMenu();
+				driver.menuAction(omenu.getOption(), _network, _relationship);
+			}
+		} else {
+			Menu menu = new Menu();
+			menu.go();
 		}
 	}
 
