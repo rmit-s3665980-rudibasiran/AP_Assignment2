@@ -182,7 +182,7 @@ public class UIHelper {
 					_info.setText(d.findConnection(_txt));
 
 				} else if (menuItem == Helper.findFamily) {
-
+					_info.setText(d.findFamily(_txt));
 				}
 
 				else if (menuItem == Helper.findClassmates) {

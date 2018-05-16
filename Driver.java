@@ -472,7 +472,7 @@ public class Driver {
 				// test 2 adults set as parents to each other
 				if (p instanceof Adult & q instanceof Adult & (conn == Helper.father | conn == Helper.mother)) {
 					output = output + p.getName() + " and " + q.getName()
-							+ " are adults; they cannot have parent/child relatonships.\n";
+							+ " are adults; they cannot have parent/child relationships.\n";
 					proceed = false;
 				}
 				// test child connect friend (child inside family)
@@ -680,4 +680,79 @@ public class Driver {
 		}
 		return output;
 	}
+
+	public String findFamily(TextField t[]) {
+		String output = "";
+		String name = t[0].getText().toString();
+
+		if (!findPerson(name)) {
+			output = "[" + name + "] not found.\n";
+		} else {
+			Person p = _network.get(getIndexByProperty(name));
+
+			if (p instanceof Adult) {
+				Adult a = (Adult) p;
+
+				if (haveSpouse(a))
+					output = output + "\n" + findSpouse(a);
+
+				if (haveChildren(a))
+					output = output + "\n" + findChildren(a);
+			}
+			if (p instanceof Child) {
+				Child c = (Child) p;
+				if (haveParents(c))
+					output = output + "\n" + findParents(c);
+
+				if (haveSiblings(p))
+					output = output + "\n" + findSiblings(p);
+			}
+		}
+
+		if (output.equals(""))
+			output = "No family members saved in MiniNet.\n";
+		return output;
+	}
+
+	public Boolean haveSiblings(Person p) {
+		return (findSiblings(p).equals("") ? false : true);
+	}
+
+	public String findSiblings(Person p) {
+		Boolean found = false;
+		String output = "";
+		ArrayList<Person> siblings = new ArrayList<>();
+
+		for (int i = 0; i < _relationship.size(); i++) {
+			// find parents of child first
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+					& (_relationship.get(i).getConn() == Helper.father
+							| _relationship.get(i).getConn() == Helper.mother)) {
+
+				for (int j = 0; j < _relationship.size(); j++) {
+					// match Person A and then get Person B (sibling) if it's not the same as
+					// child's
+					if (_relationship.get(j).getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
+							& (_relationship.get(j).getConn() == Helper.father
+									| _relationship.get(j).getConn() == Helper.mother)
+							& !_relationship.get(j).getPersonB().getName().equals(p.getName())) {
+						// if not already in, add into arraylist
+						if (!siblings.contains(_relationship.get(j).getPersonB()))
+							siblings.add(_relationship.get(j).getPersonB());
+					}
+				}
+			}
+		}
+		int count = 0;
+		for (int i = 0; i < siblings.size(); i++) {
+			count++;
+			found = true;
+			output = output + ((count == 1) ? "Siblings :\n-" : "\n-") + siblings.get(i).getName();
+		}
+
+		if (!found)
+			output = "";
+		return output;
+	}
+
 }
