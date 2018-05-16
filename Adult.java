@@ -14,16 +14,12 @@ public class Adult extends Person {
 	String _info;
 
 	public Adult(String name, int age, String g, String info) {
-		super.setName(name);
-		super.setAge(age);
-		super.setGender(g);
+		super(name, age, g);
 		_info = info;
 	}
 
 	public Adult(String name, int age, String g) {
-		super.setName(name);
-		super.setAge(age);
-		super.setGender(g);
+		super(name, age, g);
 	}
 
 	public Adult(String name, int age) {

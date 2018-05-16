@@ -10,10 +10,25 @@ Notes: --
  */
 
 public class Child extends Person {
+
+	String _info;
+
 	public Child(String name, int age, String g) {
-		super.setName(name);
-		super.setAge(age);
-		super.setGender(g);
+		super(name, age, g);
+
+	}
+
+	public Child(String name, int age, String g, String i) {
+		super(name, age, g);
+		_info = i;
+	}
+
+	public void setInfo(String info) {
+		_info = info;
+	}
+
+	public String getInfo() {
+		return _info;
 	}
 
 }

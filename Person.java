@@ -17,6 +17,12 @@ public abstract class Person {
 	public Person() {
 	}
 
+	public Person(String n, int a, String g) {
+		_name = n;
+		_age = a;
+		_gender = g;
+	}
+
 	public String getName() {
 		return _name;
 	}

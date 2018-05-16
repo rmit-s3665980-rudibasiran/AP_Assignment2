@@ -1,21 +1,22 @@
-Rudi Basiran;48;M;Systems Analyst;
-Ahysa Ahmad;45;F;;
-Rida Aqyda;7;F;;
-Arthur Simanjuntak;45;M;Wave Engineer;
-Sheree Reaver;45;F;Civil Engineer;
-Rangi Simanjuntak;8;M;;
-Tane Simanjuntak;6;M;;
-Andrew James;45;M;HR Officer;
-Nat James;45;F;;
-Callum James;8;M;;
-Rasyid;42;M;;
-Amalina;42;F;;
-Sabrina;15;F;;
-Riyan;13;M;;
-Sherri McRae;43;F;Student;
-Huani Neupane;28;F;Student;
-Chloe Loh;25;F;Student;
-Wanyi Beh;32;F;Student;
+Rudi Basiran;48;M;Systems Analyst
+Ahysa Ahmad;45;F;
+Rida Aqyda;7;F;
+Arthur Simanjuntak;45;M;Wave Engineer
+Sheree Reaver;45;F;Civil Engineer
+Rangi Simanjuntak;8;M;
+Tane Simanjuntak;6;M;
+Andrew James;45;M;HR Officer
+Nat James;45;F;
+Callum James;8;M;
+Dianne James;65;F;Retired
+Rasyid;42;M;
+Amalina;42;F;
+Sabrina;15;F;
+Riyan;13;M;
+Sherri McRae;43;F;Student
+Huani Neupane;28;F;Student
+Chloe Loh;25;F;Student
+Wanyi Beh;30;F;Student
 Sulhan Juman;45;M;MobiStudios
 Rozianah Talib;45;F;Finance Accountant
 Aisyah Sulhan;16;F;Student
@@ -23,4 +24,4 @@ Ismail Nasrak;47;M;Museum Curator
 Siti Haron;45;F;IT Consultant
 Adam Ismail;20;M;Civil Defence Officer
 Hanna Ismail;17;F;Student
-Natasha Ismail;14;Student
+Natasha Ismail;15;F;Student

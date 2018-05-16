@@ -11,9 +11,8 @@ Notes: --
 
 public class YoungChild extends Person {
 	public YoungChild(String name, int age, String g) {
-		super.setName(name);
-		super.setAge(age);
-		super.setGender(g);
+		super(name, age, g);
+
 	}
 
 }

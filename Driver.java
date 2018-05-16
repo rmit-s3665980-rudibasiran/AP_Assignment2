@@ -1,6 +1,9 @@
 package AP_Assignment2;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javafx.scene.control.TextField;
 
@@ -22,161 +25,77 @@ public class Driver {
 
 		// start: initial set up of network for demo
 		// otherwise constructor is normally empty
-
+		loadData(network, connection);
 		// creating people
-		Adult rudi = new Adult("Rudi Basiran", 48, "M", "Systems Analyst");
-		Adult ahysa = new Adult("Ahysa Ahmad", 45, "F");
-		Child rida = new Child("Rida Aqyda", 7, "F");
-
-		Adult arthur = new Adult("Arthur Simanjuntak", 45, "M", "Wave Engineer");
-		Adult sheree = new Adult("Sheree Reaver", 45, "F", "Civil Engineer");
-		Child rangi = new Child("Rangi Simanjuntak", 8, "M");
-		Child tane = new Child("Tane Simanjuntak", 6, "M");
-
-		Adult andrew = new Adult("Andrew James", 45, "M", "HR Officer");
-		Adult nat = new Adult("Nat James", 45, "F");
-		Child callum = new Child("Callum James", 8, "M");
-
-		Adult rasyid = new Adult("Rasyid", 42, "M");
-		Adult amalina = new Adult("Amalina", 42, "F");
-		Child sabrina = new Child("Sabrina", 15, "F");
-		Child riyan = new Child("Riyan", 13, "M");
-
-		Adult sherri = new Adult("Sherri McRae", 43, "F", "Student");
-		Adult huani = new Adult("Huani Neupane", 28, "F", "Student");
-		Adult chloe = new Adult("Chloe Loh", 25, "F", "Student");
-		Adult wanyi = new Adult("Wanyi Beh", 32, "F", "Student");
-
-		// adding people to the network
-		network.add(rudi);
-		network.add(ahysa);
-		network.add(rida);
-		network.add(arthur);
-		network.add(sheree);
-		network.add(rangi);
-		network.add(tane);
-
-		network.add(andrew);
-		network.add(nat);
-		network.add(callum);
-
-		network.add(rasyid);
-		network.add(amalina);
-		network.add(sabrina);
-		network.add(riyan);
-
-		network.add(sherri);
-		network.add(huani);
-		network.add(chloe);
-		network.add(wanyi);
-
-		// adding connections
-		connection.add(new Relationship(rudi, Helper.spouse, ahysa));
-		connection.add(new Relationship(rudi, Helper.father, rida));
-		connection.add(new Relationship(ahysa, Helper.mother, rida));
-
-		connection.add(new Relationship(arthur, Helper.spouse, sheree));
-		connection.add(new Relationship(arthur, Helper.father, rangi));
-		connection.add(new Relationship(sheree, Helper.mother, rangi));
-
-		connection.add(new Relationship(arthur, Helper.father, tane));
-		connection.add(new Relationship(sheree, Helper.mother, tane));
-
-		connection.add(new Relationship(andrew, Helper.father, callum));
-
-		connection.add(new Relationship(rasyid, Helper.spouse, amalina));
-		connection.add(new Relationship(rasyid, Helper.father, sabrina));
-		connection.add(new Relationship(amalina, Helper.mother, sabrina));
-		connection.add(new Relationship(rasyid, Helper.father, riyan));
-		connection.add(new Relationship(amalina, Helper.mother, riyan));
-
-		connection.add(new Relationship(rudi, Helper.friend, sherri));
-		connection.add(new Relationship(rudi, Helper.friend, huani));
-		connection.add(new Relationship(rudi, Helper.friend, chloe));
-
-		connection.add(new Relationship(rida, Helper.friend, rangi));
-
 		// end: initial set up of network
 	}
 
 	public void loadData(ArrayList<Person> network, ArrayList<Relationship> connection) {
 
+		String path = "/Users/rudibasiran/Google Drive/RMIT/Java/oxygen/JavaFX/AP_Assignment2/";
 		// start: initial set up of network for demo
+		try {
 
-		// creating people
-		Adult rudi = new Adult("Rudi Basiran", 48, "M", "Systems Analyst");
-		Adult ahysa = new Adult("Ahysa Ahmad", 45, "F");
-		Child rida = new Child("Rida Aqyda", 7, "F");
+			Scanner input = new Scanner(new File(path + "people.txt"));
+			input.useDelimiter(";|\n");
 
-		Adult arthur = new Adult("Arthur Simanjuntak", 45, "M", "Wave Engineer");
-		Adult sheree = new Adult("Sheree Reaver", 45, "F", "Civil Engineer");
-		Child rangi = new Child("Rangi Simanjuntak", 8, "M");
-		Child tane = new Child("Tane Simanjuntak", 6, "M");
+			while (input.hasNext()) {
+				String name = input.next();
+				String strAge = input.next();
+				int age = Integer.parseInt(strAge);
+				String gender = input.next();
+				String info = input.next();
 
-		Adult andrew = new Adult("Andrew James", 45, "M", "HR Officer");
-		Adult nat = new Adult("Nat James", 45, "F");
-		Child callum = new Child("Callum James", 8, "M");
+				if (age > Helper.minorAge) {
+					Adult a = new Adult(name, age, gender, info);
+					network.add(a);
+				} else if (age <= Helper.minorAge & age > Helper.babyAge) {
+					Child c = new Child(name, age, gender, info);
+					network.add(c);
+				} else if (age >= Helper.babyAge) {
+					YoungChild y = new YoungChild(name, age, gender);
+					network.add(y);
+				}
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		Adult rasyid = new Adult("Rasyid", 42, "M");
-		Adult amalina = new Adult("Amalina", 42, "F");
-		Child sabrina = new Child("Sabrina", 15, "F");
-		Child riyan = new Child("Riyan", 13, "M");
+		try {
 
-		Adult sherri = new Adult("Sherri McRae", 43, "F", "Student");
-		Adult huani = new Adult("Huani Neupane", 28, "F", "Student");
-		Adult chloe = new Adult("Chloe Loh", 25, "F", "Student");
-		Adult wanyi = new Adult("Wanyi Beh", 32, "F", "Student");
+			Scanner input = new Scanner(new File(path + "relationships.txt"));
+			input.useDelimiter(";|\n");
 
-		// adding people to the network
-		network.add(rudi);
-		network.add(ahysa);
-		network.add(rida);
-		network.add(arthur);
-		network.add(sheree);
-		network.add(rangi);
-		network.add(tane);
+			while (input.hasNext()) {
 
-		network.add(andrew);
-		network.add(nat);
-		network.add(callum);
+				String person1 = input.next();
+				String conn = input.next();
+				String person2 = input.next();
 
-		network.add(rasyid);
-		network.add(amalina);
-		network.add(sabrina);
-		network.add(riyan);
+				int relationship = -1;
+				for (int i = 0; i < Helper.roleDesc.length; i++)
+					if (Helper.roleDesc[i].equals(conn))
+						relationship = i;
 
-		network.add(sherri);
-		network.add(huani);
-		network.add(chloe);
-		network.add(wanyi);
+				if (findPerson(network, person1) & findPerson(network, person2)) {
+					Person p1 = network.get(getIndexByProperty(network, person1));
+					Person p2 = network.get(getIndexByProperty(network, person2));
+					connection.add(new Relationship(p1, relationship, p2));
+				}
 
-		// adding connections
-		connection.add(new Relationship(rudi, Helper.spouse, ahysa));
-		connection.add(new Relationship(rudi, Helper.father, rida));
-		connection.add(new Relationship(ahysa, Helper.mother, rida));
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		connection.add(new Relationship(arthur, Helper.spouse, sheree));
-		connection.add(new Relationship(arthur, Helper.father, rangi));
-		connection.add(new Relationship(sheree, Helper.mother, rangi));
-
-		connection.add(new Relationship(arthur, Helper.father, tane));
-		connection.add(new Relationship(sheree, Helper.mother, tane));
-
-		connection.add(new Relationship(andrew, Helper.father, callum));
-
-		connection.add(new Relationship(rasyid, Helper.spouse, amalina));
-		connection.add(new Relationship(rasyid, Helper.father, sabrina));
-		connection.add(new Relationship(amalina, Helper.mother, sabrina));
-		connection.add(new Relationship(rasyid, Helper.father, riyan));
-		connection.add(new Relationship(amalina, Helper.mother, riyan));
-
-		connection.add(new Relationship(rudi, Helper.friend, sherri));
-		connection.add(new Relationship(rudi, Helper.friend, huani));
-		connection.add(new Relationship(rudi, Helper.friend, chloe));
-
-		connection.add(new Relationship(rida, Helper.friend, rangi));
-
-		// end: initial set up of network
 	}
 
 	public void menuAction(int menuItem, ArrayList<Person> network, ArrayList<Relationship> connection) {
