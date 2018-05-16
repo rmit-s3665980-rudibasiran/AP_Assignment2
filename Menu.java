@@ -189,6 +189,8 @@ public class Menu extends Application {
 				actionItem = Helper.displayProfile;
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.displayAllProfile])) {
+				actionButton = "Show";
+				actionItem = Helper.displayAllProfile;
 
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.updateProfile])) {
 				labels[0] = "Enter Full Name: ";
@@ -228,8 +230,10 @@ public class Menu extends Application {
 
 			Boolean createPane = false;
 			for (int i = 0; i < Helper.workTextFieldArraySize; i++)
-				if (!labels[i].equals(""))
+				if (!labels[i].equals("") | actionItem == Helper.displayAllProfile) {
 					createPane = true;
+					break;
+				}
 
 			if (createPane) {
 
@@ -248,6 +252,10 @@ public class Menu extends Application {
 			// wp.setVisible(false);
 			// setMenu(wp, true);
 		}
+	}
+
+	public void disableMenu(Pane pn) {
+
 	}
 
 }
