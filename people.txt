@@ -16,3 +16,11 @@ Sherri McRae;43;F;Student;
 Huani Neupane;28;F;Student;
 Chloe Loh;25;F;Student;
 Wanyi Beh;32;F;Student;
+Sulhan Juman;45;M;MobiStudios
+Rozianah Talib;45;F;Finance Accountant
+Aisyah Sulhan;16;F;Student
+Ismail Nasrak;47;M;Museum Curator
+Siti Haron;45;F;IT Consultant
+Adam Ismail;20;M;Civil Defence Officer
+Hanna Ismail;17;F;Student
+Natasha Ismail;14;Student
