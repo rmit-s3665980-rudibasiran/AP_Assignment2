@@ -188,6 +188,10 @@ public class UIHelper {
 				else if (menuItem == Helper.findClassmates) {
 					// not_done_yet
 				}
+
+				else if (menuItem == Helper.findColleagues) {
+					// not_done_yet
+				}
 			}
 		});
 

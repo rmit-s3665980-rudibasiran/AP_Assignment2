@@ -1,0 +1,38 @@
+Rudi Basiran;Ahysa Ahmad;Spouse
+Rudi Basiran;Rida Aqyda;Father
+Ahysa Ahmad;Rida Aqyda;Mother
+Arthur Simanjuntak;Sheree Reaver;Spouse
+Arthur Simanjuntak;Rangi Simanjuntak;Father
+Sheree Reaver;Rangi Simanjuntak;Mother
+Arthur Simanjuntak;Tane Simanjuntak;Father
+Sheree Reaver;Tane Simanjuntak;Mother
+Andrew James;Callum James;Father
+Rasyid;Amalina;Spouse
+Rasyid;Sabrina Rasyid;Father
+Amalina;Sabrina Rasyid;Mother
+Rasyid;Riyan Rasyid;Father
+Amalina;Riyan Rasyid;Mother
+Rudi Basiran;Sherri McRae;Friend
+Rudi Basiran;Huani Neupane;Friend
+Rudi Basiran;Chloe Loh;Friend
+Rudi Basiran;Wanyi Beh;Friend
+Rida Aqyda;Rangi Simanjuntak;Classmate
+Rida Aqyda;Callum James;Classmate
+Ismail Nasrak;Siti Haron;Spouse
+Ismail Nasrak;Adam Ismail;Father
+Siti Haron;Adam Ismail;Mother
+Ismail Nasrak;Hanna Ismail;Father
+Siti Haron;Hanna Ismail;Mother
+Ismail Nasrak;Natasha Ismail;Father
+Siti Haron;Natasha Ismail;Mother
+Sulhan Juman;Rozianah Talib;Spouse
+Sulhan Juman;Aisyah Sulhan;Father
+Rozianah Talib;Aisyah Sulhan;Mother
+John Doe;Jane Doe;Spouse
+John Doe;Jack Doe;Father
+Jane Doe;Jack Doe;Mother
+John Doe;Jill Doe;Father
+Jane Doe;Jill Doe;Mother
+Rudi Basiran;Sulhan Juman;Colleague
+Rudi Basiran;Rasyid;Colleague
+Rudi Basiran;Ismail Nasrak;Colleague

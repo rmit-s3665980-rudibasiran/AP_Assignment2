@@ -35,7 +35,7 @@ public class Helper {
 			+ "  -fx-font-weight: bold;  -fx-text-fill: white;";
 	public static String workScreenStyle = "-fx-background-color: #4d4d4d;";
 	public static String workScrollStyle = "-fx-background: rgb(80,80,80);";
-	public static int workTextFieldArraySize = 4;
+	public static int workTextFieldArraySize = 5;
 	public static int infoLabelWidth = 750;
 	public static int infoLabelHeight = 200;
 	public static int workbtnWidth = 100;
@@ -72,7 +72,7 @@ public class Helper {
 	public static int rectHeight = 50;
 
 	public static String spaces = "     ";
-	public static int menuSize = 11;
+	public static int menuSize = 12;
 	public static int quitMenu = 0;
 	public static int addPerson = 1;
 	public static int findPerson = 2;
@@ -84,25 +84,29 @@ public class Helper {
 	public static int findConnection = 8;
 	public static int findFamily = 9;
 	public static int findClassmates = 10;
+	public static int findColleagues = 11;
 
 	public static int friend = 0;
 	public static int spouse = 1;
 	public static int father = 2;
 	public static int mother = 3;
-	public static int classmate = 3;
+	public static int classmate = 4;
+	public static int colleague = 5;
 
 	public static Boolean showDetails = true;
 	public static Boolean suppressDetails = false;
 
-	public static int minorAge = 16;
-	public static int babyAge = 2;
+	public static int ChildAge = 16;
+	public static int YoungChildAge = 2;
 	public static int ageGap = 3;
 
-	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother", "Classmate" };
+	public static String roleDesc[] = { "Friend", "Spouse", "Father", "Mother", "Classmate", "Colleague" };
+
+	public static String stateDesc[] = { "ACT", "NSW", "NT", "QLD", "SA", "TAS", "VIC", "WA" };
 
 	public static String menuDesc[] = { "Quit", "Add Person", "Find Person", "Display Single Profile",
 			"Display All Profile(s)", "Update Profile", "Delete Person", "Connect Person", "Find Connection",
-			"Find Family", "Find Classmate" };
+			"Find Family", "Find Classmate", "Find Colleague" };
 
 	public static String getDate() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

@@ -10,8 +10,19 @@ Notes: --
  */
 
 public class YoungChild extends Person {
+
+	public YoungChild(String name, int age, String g, String i, String s) {
+		super(name, age, g, i, s);
+
+	}
+
 	public YoungChild(String name, int age, String g) {
 		super(name, age, g);
+
+	}
+
+	public YoungChild(String name, int age, String g, String i) {
+		super(name, age, g, i);
 
 	}
 

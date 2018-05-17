@@ -11,11 +11,18 @@ Notes: --
 
 public class Adult extends Person {
 
-	String _info;
+	public Adult() {
 
-	public Adult(String name, int age, String g, String info) {
-		super(name, age, g);
-		_info = info;
+	}
+
+	public Adult(String name, int age, String g, String i, String s) {
+		super(name, age, g, i, s);
+
+	}
+
+	public Adult(String name, int age, String g, String i) {
+		super(name, age, g, i);
+
 	}
 
 	public Adult(String name, int age, String g) {
@@ -25,14 +32,6 @@ public class Adult extends Person {
 	public Adult(String name, int age) {
 		super.setName(name);
 		super.setAge(age);
-	}
-
-	public void setInfo(String info) {
-		_info = info;
-	}
-
-	public String getInfo() {
-		return _info;
 	}
 
 }

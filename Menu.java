@@ -173,6 +173,7 @@ public class Menu extends Application {
 				labels[1] = "Enter Age: ";
 				labels[2] = "Enter Gender: ";
 				labels[3] = "Enter Info: ";
+				labels[4] = "Enter State: ";
 				actionButton = "Save";
 				actionItem = Helper.addPerson;
 

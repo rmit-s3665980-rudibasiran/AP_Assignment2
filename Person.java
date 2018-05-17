@@ -13,6 +13,8 @@ public abstract class Person {
 	private String _name;
 	private int _age;
 	private String _gender;
+	private String _info;
+	private String _state;
 
 	public Person() {
 	}
@@ -21,6 +23,24 @@ public abstract class Person {
 		_name = n;
 		_age = a;
 		_gender = g;
+		_info = "";
+		_state = "";
+	}
+
+	public Person(String n, int a, String g, String i) {
+		_name = n;
+		_age = a;
+		_gender = g;
+		_info = i;
+		_state = "";
+	}
+
+	public Person(String n, int a, String g, String i, String s) {
+		_name = n;
+		_age = a;
+		_gender = g;
+		_info = i;
+		_state = s;
 	}
 
 	public String getName() {
@@ -45,5 +65,21 @@ public abstract class Person {
 
 	public void setGender(String g) {
 		_gender = g;
+	}
+
+	public String getInfo() {
+		return _info;
+	}
+
+	public void setInfo(String i) {
+		_info = i;
+	}
+
+	public String getState() {
+		return _state;
+	}
+
+	public void setState(String s) {
+		_state = s;
 	}
 }

@@ -1,27 +1,31 @@
-Rudi Basiran;48;M;Lead Systems Analyst
-Ahysa Ahmad;45;F;
-Rida Aqyda;7;F;
-Arthur Simanjuntak;45;M;Wave Engineer
-Sheree Reaver;45;F;Civil Engineer
-Rangi Simanjuntak;8;M;
-Tane Simanjuntak;6;M;
-Andrew James;45;M;HR Officer
-Nat James;45;F;
-Callum James;8;M;
-Dianne James;65;F;Retired
-Rasyid;42;M;
-Amalina;42;F;
-Sabrina;15;F;
-Riyan;13;M;
-Sherri McRae;43;F;Student
-Huani Neupane;28;F;Student
-Chloe Loh;25;F;Student
-Wanyi Beh;30;F;Student
-Sulhan Juman;45;M;MobiStudios
-Rozianah Talib;45;F;Finance Accountant
-Aisyah Sulhan;16;F;Student
-Ismail Nasrak;47;M;Museum Curator
-Siti Haron;45;F;IT Consultant
-Adam Ismail;20;M;Civil Defence Officer
-Hanna Ismail;17;F;Student
-Natasha Ismail;15;F;Student
+Rudi Basiran;rb.jpg;Lead Systems Analyst;M;48;VIC
+Ahysa Ahmad;aa.jpg;;F;45;VIC
+Rida Aqyda;ra.jpg;;F;7;VIC
+Arthur Simanjuntak;as.jpg;Wave Engineer;M;45;WA
+Sheree Reaver;sr.jpg;Civil Engineer;F;45;WA
+Rangi Simanjuntak;rs.jpg;;M;8;WA
+Tane Simanjuntak;ts.jpg;;M;6;WA
+Andrew James;aj.jpg;HR Officer;M;45;SA
+Nat James;nj.jpg;;F;45;SA
+Callum James;cj.jpg;;M;8;SA
+Dianne James;dj.jpg;Retired;F;65;SA
+Rasyid;r.jpg;Construction;M;42;VIC
+Amalina;a.jpg;Architect;F;42;VIC
+Sabrina Rasyid;s.jpg;;F;15;VIC
+Riyan Rasyid;rr.jpg;;M;13;VIC
+Sherri McRae;sm.jpg;Student;F;43;SA
+Huani Neupane;hn.jpg;Student;F;28;VIC
+Chloe Loh;cl.jpg;Student;F;25;VIC
+Wanyi Beh;wb.jpb;Student;F;30;VIC
+Sulhan Juman;sj.jpg;MobiStudios;M;45;VIC
+Rozianah Talib;rt.jpg;Finance Accountant;F;45;VIC
+Aisyah Sulhan;as.jpg;Student;F;16;VIC
+Ismail Nasrak;in.jpg;Museum Curator;M;47;VIC
+Siti Haron;sh.jpg;IT Consultant;F;45;VIC
+Adam Ismail;ai.jpg;Civil Defence Officer;M;20;VIC
+Hanna Ismail;hi.jpg;Student;F;17;VIC
+Natasha Ismail;ni.jpg;Student;F;15;VIC
+John Doe;jd.jpg;Man;M;45;NSW
+Jane Doe;jd.jpg;Woman;F;45;NSW
+Jack Doe;jd.jpg;Baby Boy;M;2;NSW
+Jill Doe;jd.jpg;Baby Girl;M;1;NSW

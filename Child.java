@@ -11,7 +11,10 @@ Notes: --
 
 public class Child extends Person {
 
-	String _info;
+	public Child(String name, int age, String g, String i, String s) {
+		super(name, age, g, i, s);
+
+	}
 
 	public Child(String name, int age, String g) {
 		super(name, age, g);
@@ -19,16 +22,8 @@ public class Child extends Person {
 	}
 
 	public Child(String name, int age, String g, String i) {
-		super(name, age, g);
-		_info = i;
-	}
+		super(name, age, g, i);
 
-	public void setInfo(String info) {
-		_info = info;
-	}
-
-	public String getInfo() {
-		return _info;
 	}
 
 }
