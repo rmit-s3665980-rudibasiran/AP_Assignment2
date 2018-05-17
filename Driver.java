@@ -3,6 +3,8 @@ package AP_Assignment2;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javafx.scene.control.TextField;
@@ -263,17 +265,25 @@ public class Driver {
 					& _relationship.get(i).getConn() == type) {
 				count++;
 				found = true;
-				output = output + ((count == 1) ? Helper.roleDesc[type] + " :\n-" : "\n-")
+				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n-" : "\n-")
 						+ _relationship.get(i).getPersonB().getName();
+
+				findConnections(_relationship.get(i).getPersonB(), type);
 			}
+		}
+
+		for (int i = 0; i < _relationship.size(); i++) {
 			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
 					& _relationship.get(i).getConn() == type) {
 				count++;
 				found = true;
-				output = output + ((count == 1) ? Helper.roleDesc[type] + " :\n-" : "\n-")
+				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n-" : "\n-")
 						+ _relationship.get(i).getPersonA().getName();
+
+				// findConnections(_relationship.get(i).getPersonA(), type);
 			}
 		}
+
 		if (!found)
 			output = "";
 		return output;
@@ -750,37 +760,33 @@ public class Driver {
 	public String findSiblings(Person p) {
 		Boolean found = false;
 		String output = "";
-		ArrayList<Person> siblings = new ArrayList<>();
+		HashMap<String, String> siblings = new HashMap<>();
 
 		for (int i = 0; i < _relationship.size(); i++) {
 			// find parents of child first
-			if (_relationship.get(i).getPersonB().getName().equals(p.getName())
-					& (_relationship.get(i).getConn() == Helper.father
-							| _relationship.get(i).getConn() == Helper.mother)) {
+			if (_relationship.get(i).getPersonB().getName().equals(p.getName())) {
 
-				for (int j = 0; j < _relationship.size(); j++) {
-					// match Person A and then get Person B (sibling) if it's not the same as
-					// child's
-					if (_relationship.get(j).getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
-							& (_relationship.get(j).getConn() == Helper.father
-									| _relationship.get(j).getConn() == Helper.mother)
-							& !_relationship.get(j).getPersonB().getName().equals(p.getName())) {
-						// if not already in, add into arraylist
-						if (!siblings.contains(_relationship.get(j).getPersonB()))
-							siblings.add(_relationship.get(j).getPersonB());
+				if (_relationship.get(i).getConn() == Helper.father) {
+					Adult father = (Adult) _relationship.get(i).getPersonA();
+					for (int j = 0; j < _relationship.size(); j++) {
+						if (_relationship.get(j).getPersonA().getName().equals(father.getName())) {
+							Person q = _relationship.get(j).getPersonB();
+							siblings.put(q.getName(), q.getName());
+						}
 					}
 				}
 			}
 		}
+
+		siblings.remove(p.getName());
+
 		int count = 0;
-		for (int i = 0; i < siblings.size(); i++) {
+
+		for (Entry<String, String> entry : siblings.entrySet()) {
 			count++;
-			found = true;
-			output = output + ((count == 1) ? "Siblings :\n-" : "\n-") + siblings.get(i).getName();
+			output = output + ((count == 1) ? "Siblings :\n-" : "-") + entry.getValue();
 		}
 
-		if (!found)
-			output = "";
 		return output;
 	}
 

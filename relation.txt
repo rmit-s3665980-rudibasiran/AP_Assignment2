@@ -13,7 +13,7 @@ Amalina;Sabrina Rasyid;Mother
 Rasyid;Riyan Rasyid;Father
 Amalina;Riyan Rasyid;Mother
 Rudi Basiran;Sherri McRae;Friend
-Rudi Basiran;Huani Neupane;Friend
+Huani Neupane;Rudi Basiran;Friend
 Rudi Basiran;Chloe Loh;Friend
 Rudi Basiran;Wanyi Beh;Friend
 Rida Aqyda;Rangi Simanjuntak;Classmate
