@@ -258,23 +258,22 @@ public class Driver {
 		return output;
 	}
 
-	public Boolean haveConnections(Person p, int type) {
-		return (findConnections(p, type).equals("") ? false : true);
-	}
-
 	public String findConnections(TextField t[], int type) {
 		String output = "";
 
 		String name = t[0].getText().toString();
 
 		if (findPerson(name)) {
-			// if (haveConnections(p, type))
 			Person p = _network.get(getIndexByProperty(name));
-			output = output + "\n" + findConnections(p, type);
-
+			if (haveConnections(p, type))
+				output = output + "\n" + findConnections(p, type);
 		} else
 			output = "[" + name + "] not found.";
 		return output;
+	}
+
+	public Boolean haveConnections(Person p, int type) {
+		return (findConnections(p, type).equals("") ? false : true);
 	}
 
 	public String findConnections(Person p, int type) {
@@ -289,8 +288,6 @@ public class Driver {
 				found = true;
 				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n- " : "\n- ")
 						+ _relationship.get(i).getPersonB().getName();
-
-				findConnections(_relationship.get(i).getPersonB(), type);
 			}
 		}
 
@@ -301,8 +298,6 @@ public class Driver {
 				found = true;
 				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n- " : "\n- ")
 						+ _relationship.get(i).getPersonA().getName();
-
-				// findConnections(_relationship.get(i).getPersonA(), type);
 			}
 		}
 

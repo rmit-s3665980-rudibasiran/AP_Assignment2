@@ -211,10 +211,10 @@ public class UIHelper {
 					_info.setText(d.findFamily(_txt));
 
 				} else if (menuItem == Helper.findClassmates) {
-					_info.setText(d.findConnections(_txt, menuItem));
+					_info.setText(d.findConnections(_txt, Helper.classmate));
 
 				} else if (menuItem == Helper.findColleagues) {
-					_info.setText(d.findConnections(_txt, menuItem));
+					_info.setText(d.findConnections(_txt, Helper.colleague));
 				}
 			}
 		});
