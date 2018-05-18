@@ -24,6 +24,9 @@ public class UIHelper {
 	private Button _buttonExe = new Button();
 	private Button _buttonClose = new Button();
 
+	private ComboBox<String> _stateComboBox = new ComboBox<String>();
+	private ComboBox<String> _connComboBox = new ComboBox<String>();
+
 	public UIHelper(String lbl[], String be, String bc) {
 
 		for (int i = 0; i < _lbl.length; i++) {
@@ -87,13 +90,21 @@ public class UIHelper {
 		_info.setPrefWidth(Helper.infoLabelWidth);
 		_info.setWrapText(true);
 
+		for (int i = 0; i < Helper.stateDesc.length; i++) {
+			_stateComboBox.getItems().add(Helper.stateDesc[i]);
+		}
+		_stateComboBox.setValue(Helper.stateDesc[0]);
+
+		for (int i = 0; i < Helper.roleDesc.length; i++) {
+			_connComboBox.getItems().add(Helper.roleDesc[i]);
+		}
+		_connComboBox.setValue(Helper.roleDesc[0]);
+
 	}
 
 	public BorderPane constructPane(Driver d, int menuItem, GridPane wp, Pane p) {
 
 		wp.setVisible(true);
-		ComboBox<String> stateComboBox = new ComboBox<String>();
-		ComboBox<String> connComboBox = new ComboBox<String>();
 
 		for (int i = 0; i < p.getChildren().size(); i++)
 			if (p.getChildren().get(i) instanceof StackPane)
@@ -127,19 +138,12 @@ public class UIHelper {
 				queryPane.add(l, 0, i + 1);
 
 				if (menuItem == Helper.addPerson & i == 4) {
-					for (int j = 0; j < Helper.stateDesc.length; j++) {
-						stateComboBox.getItems().add(Helper.stateDesc[j]);
-					}
-					stateComboBox.setValue(Helper.stateDesc[0]);
-					queryPane.add(stateComboBox, 1, i + 1);
+
+					queryPane.add(_stateComboBox, 1, i + 1);
 
 				} else if (menuItem == Helper.connectPerson & i == 2) {
 
-					for (int j = 0; j < Helper.roleDesc.length; j++) {
-						connComboBox.getItems().add(Helper.roleDesc[j]);
-					}
-					connComboBox.setValue(Helper.roleDesc[0]);
-					queryPane.add(connComboBox, 1, i + 1);
+					queryPane.add(_connComboBox, 1, i + 1);
 				}
 
 				else
@@ -180,7 +184,7 @@ public class UIHelper {
 
 				if (menuItem == Helper.addPerson) {
 
-					_info.setText(d.addPerson(_txt, stateComboBox));
+					_info.setText(d.addPerson(_txt, _stateComboBox));
 
 				} else if (menuItem == Helper.findPerson) {
 					_info.setText(d.findPerson(_txt));
@@ -198,7 +202,7 @@ public class UIHelper {
 					_info.setText(d.deletePerson(_txt));
 
 				} else if (menuItem == Helper.connectPerson) {
-					_info.setText(d.connectPerson(_txt, connComboBox));
+					_info.setText(d.connectPerson(_txt, _connComboBox));
 
 				} else if (menuItem == Helper.findConnection) {
 					_info.setText(d.findConnection(_txt));
