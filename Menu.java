@@ -163,6 +163,7 @@ public class Menu extends Application {
 			// menuRectangle.setId(_menuItems[i]);
 
 			String labels[] = new String[Helper.workTextFieldArraySize];
+
 			for (int i = 0; i < Helper.workTextFieldArraySize; i++)
 				labels[i] = "";
 			String actionButton = "";
@@ -173,7 +174,7 @@ public class Menu extends Application {
 				labels[1] = "Enter Age: ";
 				labels[2] = "Enter Gender: ";
 				labels[3] = "Enter Info: ";
-				labels[4] = "Enter State: ";
+				// labels[4] = "Enter State: ";
 				actionButton = "Save";
 				actionItem = Helper.addPerson;
 
@@ -207,12 +208,6 @@ public class Menu extends Application {
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.connectPerson])) {
 				labels[0] = "Enter Full Name of 1st Person \n[Parent first if 2nd Person is a Child]: ";
 				labels[1] = "Enter Full Name of 2nd Person: ";
-
-				String options = "Enter Relationship: ";
-				for (int i = 0; i < Helper.roleDesc.length; i++) {
-					options = options + (i % 3 == 0 ? "\n" : "") + "[" + i + "] " + Helper.roleDesc[i] + " ";
-				}
-				labels[2] = options;
 				actionButton = "Save";
 				actionItem = Helper.connectPerson;
 

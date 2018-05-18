@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -115,6 +116,7 @@ public class UIHelper {
 
 		queryPane.add(lblWindow, 0, 0);
 
+		int comboBoxPosition = 0;
 		for (int i = 0; i < _lbl.length; i++) {
 			if (!_lbl[i].getText().equals("")) {
 				Label l = new Label();
@@ -123,7 +125,43 @@ public class UIHelper {
 				t = _txt[i];
 				queryPane.add(l, 0, i + 1);
 				queryPane.add(t, 1, i + 1);
+
+				comboBoxPosition = i;
 			}
+		}
+
+		ComboBox<String> stateComboBox = new ComboBox<String>();
+
+		if (menuItem == Helper.addPerson) {
+
+			for (int i = 0; i < Helper.stateDesc.length; i++) {
+				stateComboBox.getItems().add(Helper.stateDesc[i]);
+			}
+			stateComboBox.setValue(Helper.stateDesc[0]);
+
+			Label l = new Label("Select State: ");
+			l.setTextFill(Helper.menuRectTextColor);
+			l.setEffect(Helper.dropShadow());
+			queryPane.add(l, 0, comboBoxPosition + 2);
+			queryPane.add(stateComboBox, 1, comboBoxPosition + 2);
+
+		}
+
+		ComboBox<String> connComboBox = new ComboBox<String>();
+
+		if (menuItem == Helper.connectPerson) {
+
+			for (int i = 0; i < Helper.roleDesc.length; i++) {
+				connComboBox.getItems().add(Helper.roleDesc[i]);
+			}
+			connComboBox.setValue(Helper.roleDesc[0]);
+
+			Label l = new Label("Select Connection: ");
+			l.setTextFill(Helper.menuRectTextColor);
+			l.setEffect(Helper.dropShadow());
+			queryPane.add(l, 0, comboBoxPosition + 2);
+			queryPane.add(connComboBox, 1, comboBoxPosition + 2);
+
 		}
 
 		ScrollPane infoPane = new ScrollPane();
@@ -158,7 +196,7 @@ public class UIHelper {
 
 				if (menuItem == Helper.addPerson) {
 
-					_info.setText(d.addPerson(_txt));
+					_info.setText(d.addPerson(_txt, stateComboBox));
 
 				} else if (menuItem == Helper.findPerson) {
 					_info.setText(d.findPerson(_txt));
@@ -176,7 +214,7 @@ public class UIHelper {
 					_info.setText(d.deletePerson(_txt));
 
 				} else if (menuItem == Helper.connectPerson) {
-					_info.setText(d.connectPerson(_txt));
+					_info.setText(d.connectPerson(_txt, connComboBox));
 
 				} else if (menuItem == Helper.findConnection) {
 					_info.setText(d.findConnection(_txt));
