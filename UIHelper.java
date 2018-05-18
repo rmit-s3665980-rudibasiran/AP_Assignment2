@@ -138,15 +138,15 @@ public class UIHelper {
 				queryPane.add(l, 0, i + 1);
 
 				if (menuItem == Helper.addPerson & i == 4) {
-
 					queryPane.add(_stateComboBox, 1, i + 1);
 
 				} else if (menuItem == Helper.connectPerson & i == 2) {
-
 					queryPane.add(_connComboBox, 1, i + 1);
 				}
 
-				else
+				else if (menuItem == Helper.updateProfile & i == 4) {
+					queryPane.add(_stateComboBox, 1, i + 1);
+				} else
 					queryPane.add(t, 1, i + 1);
 
 			}
@@ -196,7 +196,7 @@ public class UIHelper {
 					_info.setText(d.displayAllProfile());
 
 				} else if (menuItem == Helper.updateProfile) {
-					_info.setText(d.updateProfile(_txt));
+					_info.setText(d.updateProfile(_txt, _stateComboBox));
 
 				} else if (menuItem == Helper.deletePerson) {
 					_info.setText(d.deletePerson(_txt));

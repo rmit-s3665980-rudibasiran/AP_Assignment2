@@ -197,6 +197,7 @@ public class Menu extends Application {
 				labels[1] = "Update Age: ";
 				labels[2] = "Update Gender: ";
 				labels[3] = "Update Info: ";
+				labels[4] = "Update State: ";
 				actionButton = "Save";
 				actionItem = Helper.updateProfile;
 

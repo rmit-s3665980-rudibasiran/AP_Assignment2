@@ -266,9 +266,10 @@ public class Driver {
 		String output = "";
 
 		String name = t[0].getText().toString();
-		Person p = _network.get(getIndexByProperty(name));
+
 		if (findPerson(name)) {
 			// if (haveConnections(p, type))
+			Person p = _network.get(getIndexByProperty(name));
 			output = output + "\n" + findConnections(p, type);
 
 		} else
@@ -344,7 +345,7 @@ public class Driver {
 		return output;
 	}
 
-	public String updateProfile(TextField t[]) {
+	public String updateProfile(TextField t[], ComboBox<String> connComboBox) {
 		Boolean proceed = true;
 		String output = "";
 
@@ -354,7 +355,7 @@ public class Driver {
 			int newAge = Integer.parseInt(strAge);
 			String newGender = t[2].getText().toString();
 			String newInfo = t[3].getText().toString();
-			String newState = t[4].getText().toString();
+			String newState = connComboBox.getValue();
 
 			proceed = false;
 			for (int i = 0; i < Helper.stateDesc.length; i++) {
@@ -372,99 +373,104 @@ public class Driver {
 			}
 
 			if (proceed) {
-				Person p = _network.get(getIndexByProperty(name));
+				if (findPerson(name)) {
+					Person p = _network.get(getIndexByProperty(name));
 
-				if (p instanceof Adult) {
-					Adult a = (Adult) p;
+					if (p instanceof Adult) {
+						Adult a = (Adult) p;
 
-					if (newAge <= Helper.ChildAge) {
-						// test adult with spouse change age
-						if (haveSpouse(p)) {
-							output = output + "You cannot change your age to " + newAge + " as you have a spouse.\n";
-							proceed = false;
-						}
-						// test adult with spouse change age
-						if (haveChildren(p)) {
-							output = output + "You cannot change your age to " + newAge + " as you have children.\n";
-							proceed = false;
-						}
-
-					}
-
-					if (!newGender.equals(p.getGender())) {
-						if (haveSpouse(p)) {
-							output = output + "You cannot change your gender to " + newGender
-									+ " as you have a spouse.\n";
-							proceed = false;
-						}
-
-						if (haveChildren(p)) {
-							output = output + "You cannot change your gender to " + newGender
-									+ " as you have children.\n";
-							proceed = false;
-						}
-
-						if (!newGender.equals("M") | !newGender.equals("F")) {
-							output = output + "Gender should be M or F only.\n";
-							proceed = false;
-						}
-					}
-
-					if (proceed) {
-						a.setAge(newAge);
-						a.setGender(newGender);
-						a.setState(newState);
-						a.setInfo(newInfo);
-					}
-
-					// need to upgrade/downgrade person: not_done_yet
-
-				} else if (p instanceof Child) {
-					Child c = (Child) p;
-
-					if (newAge <= Helper.YoungChildAge) {
-						// test child change age to baby
-						if (haveConnections(p, Helper.friend)) {
-							output = output + "You cannot change your age to " + newAge
-									+ " as you have friends; children below " + Helper.YoungChildAge
-									+ " cannot have friends.\n";
-							proceed = false;
-						}
-					} else if (newAge > Helper.ChildAge) {
-						// test child with parents change age
-						if (haveParents(p)) {
-							output = output + "You cannot change your age to above " + Helper.ChildAge
-									+ " as you have linked parents.\n";
-							proceed = false;
-						}
-
-						// test child change age who has friends within age-gap
-						for (int i = 0; i < _relationship.size(); i++) {
-
-							if ((_relationship.get(i).getPersonA().getName().equals(p.getName())
-									& _relationship.get(i).getConn() == Helper.friend
-									& Math.abs((_relationship.get(i).getPersonB().getAge() - newAge)) > Helper.ageGap)
-									| (_relationship.get(i).getPersonB().getName().equals(p.getName())
-											& _relationship.get(i).getConn() == Helper.friend
-											& Math.abs((_relationship.get(i).getPersonA().getAge()
-													- newAge)) > Helper.ageGap)) {
+						if (newAge <= Helper.ChildAge) {
+							// test adult with spouse change age
+							if (haveSpouse(p)) {
 								output = output + "You cannot change your age to " + newAge
-										+ " as you have friends who are within the " + Helper.ageGap
-										+ "-year age gap.\n";
+										+ " as you have a spouse.\n";
+								proceed = false;
+							}
+							// test adult with spouse change age
+							if (haveChildren(p)) {
+								output = output + "You cannot change your age to " + newAge
+										+ " as you have children.\n";
+								proceed = false;
+							}
+
+						}
+
+						if (!newGender.equals(p.getGender())) {
+							if (haveSpouse(p)) {
+								output = output + "You cannot change your gender to " + newGender
+										+ " as you have a spouse.\n";
+								proceed = false;
+							}
+
+							if (haveChildren(p)) {
+								output = output + "You cannot change your gender to " + newGender
+										+ " as you have children.\n";
+								proceed = false;
+							}
+
+							if (!newGender.equals("M") | !newGender.equals("F")) {
+								output = output + "Gender should be M or F only.\n";
 								proceed = false;
 							}
 						}
-					}
 
-					if (proceed) {
-						if (newAge <= Helper.ChildAge) {
-							YoungChild y = (YoungChild) p;
-							// need to clone, rebuild all relationships & delete old instance : not_done_yet
-							y.setAge(newAge);
+						if (proceed) {
+							a.setAge(newAge);
+							a.setGender(newGender);
+							a.setState(newState);
+							a.setInfo(newInfo);
 						}
-						c.setGender(newGender);
-						c.setState(newState);
-						c.setInfo(newInfo);
+
+						// need to upgrade/downgrade person: not_done_yet
+
+					} else if (p instanceof Child) {
+						Child c = (Child) p;
+
+						if (newAge <= Helper.YoungChildAge) {
+							// test child change age to baby
+							if (haveConnections(p, Helper.friend)) {
+								output = output + "You cannot change your age to " + newAge
+										+ " as you have friends; children below " + Helper.YoungChildAge
+										+ " cannot have friends.\n";
+								proceed = false;
+							}
+						} else if (newAge > Helper.ChildAge) {
+							// test child with parents change age
+							if (haveParents(p)) {
+								output = output + "You cannot change your age to above " + Helper.ChildAge
+										+ " as you have linked parents.\n";
+								proceed = false;
+							}
+
+							// test child change age who has friends within age-gap
+							for (int i = 0; i < _relationship.size(); i++) {
+
+								if ((_relationship.get(i).getPersonA().getName().equals(p.getName())
+										& _relationship.get(i).getConn() == Helper.friend
+										& Math.abs(
+												(_relationship.get(i).getPersonB().getAge() - newAge)) > Helper.ageGap)
+										| (_relationship.get(i).getPersonB().getName().equals(p.getName())
+												& _relationship.get(i).getConn() == Helper.friend
+												& Math.abs((_relationship.get(i).getPersonA().getAge()
+														- newAge)) > Helper.ageGap)) {
+									output = output + "You cannot change your age to " + newAge
+											+ " as you have friends who are within the " + Helper.ageGap
+											+ "-year age gap.\n";
+									proceed = false;
+								}
+							}
+						}
+
+						if (proceed) {
+							if (newAge <= Helper.ChildAge) {
+								YoungChild y = (YoungChild) p;
+								// need to clone, rebuild all relationships & delete old instance : not_done_yet
+								y.setAge(newAge);
+							}
+							c.setGender(newGender);
+							c.setState(newState);
+							c.setInfo(newInfo);
+						}
 					}
 				}
 			}
@@ -482,8 +488,9 @@ public class Driver {
 		String output = "";
 
 		String name = t[0].getText().toString();
-		Person p = _network.get(getIndexByProperty(name));
+
 		if (findPerson(name)) {
+			Person p = _network.get(getIndexByProperty(name));
 			for (int i = _relationship.size() - 1; i >= 0; i--) {
 				if (_relationship.get(i).getPersonA().getName().equals(p.getName()))
 					_relationship.remove(i);
