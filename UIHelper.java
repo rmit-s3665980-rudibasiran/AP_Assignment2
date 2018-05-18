@@ -211,7 +211,7 @@ public class UIHelper {
 				ArrayList<Person> n = d.getNetwork();
 				ArrayList<Relationship> r = d.getRelationship();
 				infoPane.setVisible(true);
-				_info.setText(Helper.menuDesc[menuItem] + ": Issue!");
+				_info.setText(Helper.menuDesc[menuItem] + ": Checking/Message");
 
 				if (menuItem == Helper.addPerson) {
 

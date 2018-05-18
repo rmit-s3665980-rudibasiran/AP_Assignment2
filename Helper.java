@@ -1,5 +1,6 @@
 package AP_Assignment2;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -30,6 +31,8 @@ public class Helper {
 	public static Color menuRectTextColor = Color.rgb(255, 255, 255);
 	public static Color menuRectTextSelected = Color.rgb(200, 200, 200);
 	public static Color menuBackColor = Color.web("#666666", 1.0);
+
+	public static String path = new File("").getAbsolutePath() + "/AP_Assignment2/";
 
 	public static String lblStyle = "-fx-font-family:\"Helvetica\";\n" + "    -fx-font-size: 18px;\n"
 			+ "  -fx-font-weight: bold;  -fx-text-fill: white;";

@@ -2,6 +2,7 @@ package AP_Assignment2;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 public class AlertDialog extends Stage {
 
 	private final int WIDTH_DEFAULT = 300;
+	private final int HEIGHT_DEFAULT = 200;
 
 	public static final int ICON_INFO = 0;
 	public static final int ICON_ERROR = 1;
@@ -26,11 +28,13 @@ public class AlertDialog extends Stage {
 
 		Label label = new Label(msg);
 		label.setWrapText(true);
-		label.setGraphicTextGap(20);
 		label.setTextFill(Helper.menuRectTextColor);
 		label.setEffect(Helper.dropShadow());
 
 		Button button = new Button("OK");
+		button.setEffect(Helper.dropShadow());
+		button.setStyle(Helper.btnStyle);
+		button.setPrefWidth(Helper.workbtnWidth);
 
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -40,26 +44,27 @@ public class AlertDialog extends Stage {
 		});
 
 		BorderPane borderPane = new BorderPane();
-		borderPane.setTop(label);
+		borderPane.setCenter(label);
 		borderPane.setStyle(Helper.alertBtnStyle);
 		borderPane.setEffect(Helper.dropShadow());
 
-		HBox hbox2 = new HBox();
-		hbox2.setAlignment(Pos.CENTER);
-		hbox2.getChildren().add(button);
-		borderPane.setBottom(hbox2);
+		HBox hbox = new HBox();
+		hbox.setAlignment(Pos.BASELINE_CENTER);
+		hbox.getChildren().add(button);
+		hbox.setPadding(new Insets(20, 20, 20, 20));
+		borderPane.setBottom(hbox);
 
 		// calculate width of string
 		final Text text = new Text(msg);
 		text.snapshot(null, null);
 
-		// + 20 because there is padding 10 left and right
+		// + 40 to pad it
 		int width = (int) text.getLayoutBounds().getWidth() + 40;
 
 		if (width < WIDTH_DEFAULT)
 			width = WIDTH_DEFAULT;
 
-		int height = 100;
+		int height = HEIGHT_DEFAULT;
 
 		final Scene scene = new Scene(borderPane, width, height);
 		scene.setFill(Color.TRANSPARENT);

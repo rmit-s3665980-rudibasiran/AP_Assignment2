@@ -43,14 +43,22 @@ public class Driver {
 		return _relationship;
 	}
 
+	public void loadDataDB() {
+
+	}
+
+	public void writeDataDB() {
+
+	}
+
 	public void loadData() {
 		// String path = "/Users/rudibasiran/Google
 		// Drive/RMIT/Java/oxygen/JavaFX/AP_Assignment2/";
-		String path = new File("").getAbsolutePath() + "/AP_Assignment2/";
+
 		// start: initial set up of network for demo
 		try {
 
-			Scanner input = new Scanner(new File(path + "people.txt"));
+			Scanner input = new Scanner(new File(Helper.path + "people.txt"));
 			input.useDelimiter(";|\n");
 
 			while (input.hasNext()) {
@@ -71,7 +79,7 @@ public class Driver {
 		}
 
 		try {
-			Scanner input = new Scanner(new File(path + "relation.txt"));
+			Scanner input = new Scanner(new File(Helper.path + "relation.txt"));
 			input.useDelimiter(";|\n");
 
 			while (input.hasNext()) {
@@ -648,15 +656,12 @@ public class Driver {
 
 			// test connect spouse (spouse already exists)
 			if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
-				try {
-					if (haveSpouse(p)) {
-						output = output + p.getName() + " already has a spouse; please get divorced first.\n";
-						proceed = false;
-						throw new NoAvailableException(output);
 
-					}
-				} catch (Exception e) {
+				if (haveSpouse(p)) {
+					output = output + p.getName() + " already has a spouse; please get divorced first.\n";
+					proceed = false;
 				}
+
 				if (haveSpouse(q)) {
 					output = output + q.getName() + " already has a spouse; please get divorced first.\n";
 					proceed = false;
@@ -664,6 +669,14 @@ public class Driver {
 				if (p.getGender().equals(q.getGender())) {
 					output = "While we support your rights, our system doesn't cater to that yet.\n";
 					proceed = false;
+				}
+
+				// NoAvailableException
+				try {
+					if (!proceed) {
+						throw new NoAvailableException(output);
+					}
+				} catch (Exception e) {
 				}
 
 			}
