@@ -29,3 +29,9 @@ John Doe;jd.jpg;Man;M;45;NSW
 Jane Doe;jd.jpg;Woman;F;45;NSW
 Jack Doe;jd.jpg;Baby Boy;M;2;NSW
 Jill Doe;jd.jpg;Baby Girl;M;1;NSW
+Vito Corleone;vc.jpg;Godfather;M;75;ACT
+Carmela Corleone;cc.jpg;Godmother;F;70;ACT
+Santino Corleone;sc.jpg;Rebellion Son;M;50;ACT
+Fredrico Corleone;fc.jpg;Pious Son;M;45;ACT
+Micheal Corleone;mc.jpg;Prodigal Son;M;45;ACT
+Connie Corleone;sc.jpg;Favorite Child;F;40;ACT
