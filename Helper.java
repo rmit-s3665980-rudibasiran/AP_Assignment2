@@ -35,6 +35,7 @@ public class Helper {
 			+ "  -fx-font-weight: bold;  -fx-text-fill: white;";
 	public static String workScreenStyle = "-fx-background-color: #4d4d4d;";
 	public static String workScrollStyle = "-fx-background: rgb(80,80,80);";
+	public static String alertBtnStyle = "-fx-background: #4d4d4d;-fx-border-color: white";
 	public static int workTextFieldArraySize = 5;
 	public static int infoLabelWidth = 750;
 	public static int infoLabelHeight = 200;

@@ -152,6 +152,7 @@ public class Menu extends Application {
 		primaryStage.setTitle("MiniNet"); // Set the stage title
 		primaryStage.setScene(scene); // Place the scene in the stage
 		primaryStage.show(); // Display the stage
+
 	}
 
 	public void menuAction(Stage primaryStage, GridPane wp, Pane p, String menuClicked) {

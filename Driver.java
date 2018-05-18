@@ -650,14 +650,15 @@ public class Driver {
 			if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
 				try {
 					if (haveSpouse(p)) {
-						output = output + p.getName() + " already have a spouse; please get divorced first.\n";
+						output = output + p.getName() + " already has a spouse; please get divorced first.\n";
 						proceed = false;
 						throw new NoAvailableException(output);
+
 					}
 				} catch (Exception e) {
 				}
 				if (haveSpouse(q)) {
-					output = output + q.getName() + " already have a spouse; please get divorced first.\n";
+					output = output + q.getName() + " already has a spouse; please get divorced first.\n";
 					proceed = false;
 				}
 				if (p.getGender().equals(q.getGender())) {
