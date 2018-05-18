@@ -6,7 +6,8 @@ Arthur Simanjuntak;Rangi Simanjuntak;Father
 Sheree Reaver;Rangi Simanjuntak;Mother
 Arthur Simanjuntak;Tane Simanjuntak;Father
 Sheree Reaver;Tane Simanjuntak;Mother
-Andrew James;Callum James;Father
+Andrew Steward;Nat James;Spouse
+Nat James;Callum James;Mother
 Rasyid;Amalina;Spouse
 Rasyid;Sabrina Rasyid;Father
 Amalina;Sabrina Rasyid;Mother

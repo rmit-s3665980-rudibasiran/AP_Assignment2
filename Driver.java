@@ -84,7 +84,7 @@ public class Driver {
 						break;
 					}
 
-				if (findPerson(person1) & findPerson(person2)) {
+				if (findPerson(person1) & findPerson(person2) & relationship >= 0) {
 					Person p1 = _network.get(getIndexByProperty(person1));
 					Person p2 = _network.get(getIndexByProperty(person2));
 					_relationship.add(new Relationship(p1, relationship, p2));
@@ -174,8 +174,14 @@ public class Driver {
 			if (haveSpouse(p))
 				output = output + "\n" + findSpouse(p);
 
+			if (haveParents(p))
+				output = output + "\n" + findParents(p);
+
 			if (haveChildren(p))
 				output = output + "\n" + findChildren(p);
+
+			if (haveSiblings(p))
+				output = output + "\n" + findSiblings(p);
 
 			if (haveConnections(p, Helper.friend))
 				output = output + "\n" + findConnections(p, Helper.friend);
@@ -241,7 +247,7 @@ public class Driver {
 							| _relationship.get(i).getConn() == Helper.mother)) {
 				count++;
 				found = true;
-				output = output + ((count == 1) ? "Children :\n-" : "\n-")
+				output = output + ((count == 1) ? "Children :\n- " : "\n- ")
 						+ _relationship.get(i).getPersonB().getName();
 			}
 		}
@@ -265,7 +271,7 @@ public class Driver {
 					& _relationship.get(i).getConn() == type) {
 				count++;
 				found = true;
-				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n-" : "\n-")
+				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n- " : "\n- ")
 						+ _relationship.get(i).getPersonB().getName();
 
 				findConnections(_relationship.get(i).getPersonB(), type);
@@ -277,7 +283,7 @@ public class Driver {
 					& _relationship.get(i).getConn() == type) {
 				count++;
 				found = true;
-				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n-" : "\n-")
+				output = output + ((count == 1) ? Helper.roleDesc[type] + "(s)" + " :\n- " : "\n- ")
 						+ _relationship.get(i).getPersonA().getName();
 
 				// findConnections(_relationship.get(i).getPersonA(), type);
@@ -347,7 +353,7 @@ public class Driver {
 
 			output = output + "Valid states are:-";
 			for (int i = 0; i < Helper.stateDesc.length; i++) {
-				output = output + (i == 0 ? "-" : "\n-") + Helper.stateDesc[i];
+				output = output + (i == 0 ? "-" : "\n- ") + Helper.stateDesc[i];
 			}
 
 			if (proceed) {
@@ -760,18 +766,23 @@ public class Driver {
 	public String findSiblings(Person p) {
 		Boolean found = false;
 		String output = "";
-		HashMap<String, String> siblings = new HashMap<>();
+		HashMap<String, Person> siblings = new HashMap<>();
 
-		for (int i = 0; i < _relationship.size(); i++) {
-			// find parents of child first
-			if (_relationship.get(i).getPersonB().getName().equals(p.getName())) {
+		int tParent[] = { Helper.father, Helper.mother };
 
-				if (_relationship.get(i).getConn() == Helper.father) {
-					Adult father = (Adult) _relationship.get(i).getPersonA();
+		for (int x = 0; x < tParent.length; x++) {
+			for (int i = 0; i < _relationship.size(); i++) {
+				// find parents of child first
+				if (_relationship.get(i).getPersonB().getName().equals(p.getName())
+						& (_relationship.get(i).getConn() == tParent[x])) {
+
+					Person parent = _relationship.get(i).getPersonA();
+
 					for (int j = 0; j < _relationship.size(); j++) {
-						if (_relationship.get(j).getPersonA().getName().equals(father.getName())) {
-							Person q = _relationship.get(j).getPersonB();
-							siblings.put(q.getName(), q.getName());
+						if (_relationship.get(j).getPersonA().getName().equals(parent.getName())
+								& (_relationship.get(j).getConn() == tParent[x])) {
+							Person child = _relationship.get(j).getPersonB();
+							siblings.put(child.getName(), child);
 						}
 					}
 				}
@@ -781,12 +792,14 @@ public class Driver {
 		siblings.remove(p.getName());
 
 		int count = 0;
-
-		for (Entry<String, String> entry : siblings.entrySet()) {
+		for (Entry<String, Person> entry : siblings.entrySet()) {
 			count++;
-			output = output + ((count == 1) ? "Siblings :\n-" : "-") + entry.getValue();
+			found = true;
+			output = output + ((count == 1) ? "Sibling(s) " + " :\n- " : "\n- ") + entry.getValue().getName();
 		}
 
+		if (!found)
+			output = "";
 		return output;
 	}
 

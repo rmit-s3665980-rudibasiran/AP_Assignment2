@@ -5,7 +5,7 @@ Arthur Simanjuntak;as.jpg;Wave Engineer;M;45;WA
 Sheree Reaver;sr.jpg;Civil Engineer;F;45;WA
 Rangi Simanjuntak;rs.jpg;;M;8;WA
 Tane Simanjuntak;ts.jpg;;M;6;WA
-Andrew James;aj.jpg;HR Officer;M;45;SA
+Andrew Steward;as.jpg;HR Officer;M;45;SA
 Nat James;nj.jpg;;F;45;SA
 Callum James;cj.jpg;;M;8;SA
 Dianne James;dj.jpg;Retired;F;65;SA
