@@ -192,7 +192,7 @@ public class UIHelper {
 				ArrayList<Person> n = d.getNetwork();
 				ArrayList<Relationship> r = d.getRelationship();
 				infoPane.setVisible(true);
-				_info.setText(Helper.menuDesc[menuItem] + ": Not Done Yet!!");
+				_info.setText(Helper.menuDesc[menuItem] + ": Error!!");
 
 				if (menuItem == Helper.addPerson) {
 
@@ -221,14 +221,12 @@ public class UIHelper {
 
 				} else if (menuItem == Helper.findFamily) {
 					_info.setText(d.findFamily(_txt));
-				}
 
-				else if (menuItem == Helper.findClassmates) {
-					// not_done_yet
-				}
+				} else if (menuItem == Helper.findClassmates) {
+					_info.setText(d.findConnections(_txt, menuItem));
 
-				else if (menuItem == Helper.findColleagues) {
-					// not_done_yet
+				} else if (menuItem == Helper.findColleagues) {
+					_info.setText(d.findConnections(_txt, menuItem));
 				}
 			}
 		});

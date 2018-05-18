@@ -262,6 +262,20 @@ public class Driver {
 		return (findConnections(p, type).equals("") ? false : true);
 	}
 
+	public String findConnections(TextField t[], int type) {
+		String output = "";
+
+		String name = t[0].getText().toString();
+		Person p = _network.get(getIndexByProperty(name));
+		if (findPerson(name)) {
+			// if (haveConnections(p, type))
+			output = output + "\n" + findConnections(p, type);
+
+		} else
+			output = "[" + name + "] not found.";
+		return output;
+	}
+
 	public String findConnections(Person p, int type) {
 		int count = 0;
 		String output = "";

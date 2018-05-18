@@ -221,11 +221,14 @@ public class Menu extends Application {
 				labels[0] = "Enter Full Name: ";
 				actionButton = "Search";
 				actionItem = Helper.findFamily;
-
 			} else if (menuClicked.equals(Helper.menuDesc[Helper.findClassmates])) {
 				labels[0] = "Enter Full Name: ";
 				actionButton = "Search";
 				actionItem = Helper.findClassmates;
+			} else if (menuClicked.equals(Helper.menuDesc[Helper.findColleagues])) {
+				labels[0] = "Enter Full Name: ";
+				actionButton = "Search";
+				actionItem = Helper.findColleagues;
 			}
 
 			Boolean createPane = false;
