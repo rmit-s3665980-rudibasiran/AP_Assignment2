@@ -92,6 +92,8 @@ public class UIHelper {
 	public BorderPane constructPane(Driver d, int menuItem, GridPane wp, Pane p) {
 
 		wp.setVisible(true);
+		ComboBox<String> stateComboBox = new ComboBox<String>();
+		ComboBox<String> connComboBox = new ComboBox<String>();
 
 		for (int i = 0; i < p.getChildren().size(); i++)
 			if (p.getChildren().get(i) instanceof StackPane)
@@ -116,7 +118,6 @@ public class UIHelper {
 
 		queryPane.add(lblWindow, 0, 0);
 
-		int comboBoxPosition = 0;
 		for (int i = 0; i < _lbl.length; i++) {
 			if (!_lbl[i].getText().equals("")) {
 				Label l = new Label();
@@ -124,44 +125,27 @@ public class UIHelper {
 				TextField t = new TextField();
 				t = _txt[i];
 				queryPane.add(l, 0, i + 1);
-				queryPane.add(t, 1, i + 1);
 
-				comboBoxPosition = i;
+				if (menuItem == Helper.addPerson & i == 4) {
+					for (int j = 0; j < Helper.stateDesc.length; j++) {
+						stateComboBox.getItems().add(Helper.stateDesc[j]);
+					}
+					stateComboBox.setValue(Helper.stateDesc[0]);
+					queryPane.add(stateComboBox, 1, i + 1);
+
+				} else if (menuItem == Helper.connectPerson & i == 2) {
+
+					for (int j = 0; j < Helper.roleDesc.length; j++) {
+						connComboBox.getItems().add(Helper.roleDesc[j]);
+					}
+					connComboBox.setValue(Helper.roleDesc[0]);
+					queryPane.add(connComboBox, 1, i + 1);
+				}
+
+				else
+					queryPane.add(t, 1, i + 1);
+
 			}
-		}
-
-		ComboBox<String> stateComboBox = new ComboBox<String>();
-
-		if (menuItem == Helper.addPerson) {
-
-			for (int i = 0; i < Helper.stateDesc.length; i++) {
-				stateComboBox.getItems().add(Helper.stateDesc[i]);
-			}
-			stateComboBox.setValue(Helper.stateDesc[0]);
-
-			Label l = new Label("Select State: ");
-			l.setTextFill(Helper.menuRectTextColor);
-			l.setEffect(Helper.dropShadow());
-			queryPane.add(l, 0, comboBoxPosition + 2);
-			queryPane.add(stateComboBox, 1, comboBoxPosition + 2);
-
-		}
-
-		ComboBox<String> connComboBox = new ComboBox<String>();
-
-		if (menuItem == Helper.connectPerson) {
-
-			for (int i = 0; i < Helper.roleDesc.length; i++) {
-				connComboBox.getItems().add(Helper.roleDesc[i]);
-			}
-			connComboBox.setValue(Helper.roleDesc[0]);
-
-			Label l = new Label("Select Connection: ");
-			l.setTextFill(Helper.menuRectTextColor);
-			l.setEffect(Helper.dropShadow());
-			queryPane.add(l, 0, comboBoxPosition + 2);
-			queryPane.add(connComboBox, 1, comboBoxPosition + 2);
-
 		}
 
 		ScrollPane infoPane = new ScrollPane();
