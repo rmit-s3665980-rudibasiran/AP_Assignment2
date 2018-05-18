@@ -8,9 +8,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -26,6 +28,11 @@ public class UIHelper {
 
 	private ComboBox<String> _stateComboBox = new ComboBox<String>();
 	private ComboBox<String> _connComboBox = new ComboBox<String>();
+
+	private ToggleGroup _rbgGender = new ToggleGroup();
+
+	private RadioButton _rbMale = new RadioButton();
+	private RadioButton _rbFemale = new RadioButton();
 
 	public UIHelper(String lbl[], String be, String bc) {
 
@@ -100,6 +107,19 @@ public class UIHelper {
 		}
 		_connComboBox.setValue(Helper.roleDesc[0]);
 
+		_rbgGender = new ToggleGroup();
+		_rbMale = new RadioButton("Male");
+		_rbFemale = new RadioButton("Female");
+		_rbMale.setToggleGroup(_rbgGender);
+		_rbMale.setSelected(true);
+		_rbFemale.setToggleGroup(_rbgGender);
+
+		_rbMale.setEffect(Helper.dropShadow());
+		_rbMale.setTextFill(Helper.menuRectTextColor);
+
+		_rbFemale.setEffect(Helper.dropShadow());
+		_rbFemale.setTextFill(Helper.menuRectTextColor);
+
 	}
 
 	public BorderPane constructPane(Driver d, int menuItem, GridPane wp, Pane p) {
@@ -137,15 +157,26 @@ public class UIHelper {
 				t = _txt[i];
 				queryPane.add(l, 0, i + 1);
 
-				if (menuItem == Helper.addPerson & i == 4) {
+				if (menuItem == Helper.addPerson & i == 2) {
+					GridPane radioPane = new GridPane();
+					radioPane.add(_rbMale, 1, 0);
+					radioPane.add(_rbFemale, 3, 0);
+					queryPane.add(radioPane, 1, i + 1);
+				} else if (menuItem == Helper.addPerson & i == 4) {
 					queryPane.add(_stateComboBox, 1, i + 1);
 
 				} else if (menuItem == Helper.connectPerson & i == 2) {
 					queryPane.add(_connComboBox, 1, i + 1);
-				}
 
-				else if (menuItem == Helper.updateProfile & i == 4) {
+				} else if (menuItem == Helper.updateProfile & i == 2) {
+					GridPane radioPane = new GridPane();
+					radioPane.add(_rbMale, 1, 0);
+					radioPane.add(_rbFemale, 3, 0);
+					queryPane.add(radioPane, 1, i + 1);
+
+				} else if (menuItem == Helper.updateProfile & i == 4) {
 					queryPane.add(_stateComboBox, 1, i + 1);
+
 				} else
 					queryPane.add(t, 1, i + 1);
 
@@ -184,7 +215,7 @@ public class UIHelper {
 
 				if (menuItem == Helper.addPerson) {
 
-					_info.setText(d.addPerson(_txt, _stateComboBox));
+					_info.setText(d.addPerson(_txt, _stateComboBox, _rbgGender));
 
 				} else if (menuItem == Helper.findPerson) {
 					_info.setText(d.findPerson(_txt));
@@ -196,7 +227,7 @@ public class UIHelper {
 					_info.setText(d.displayAllProfile());
 
 				} else if (menuItem == Helper.updateProfile) {
-					_info.setText(d.updateProfile(_txt, _stateComboBox));
+					_info.setText(d.updateProfile(_txt, _stateComboBox, _rbgGender));
 
 				} else if (menuItem == Helper.deletePerson) {
 					_info.setText(d.deletePerson(_txt));

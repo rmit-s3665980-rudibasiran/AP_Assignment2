@@ -8,7 +8,9 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 /*
 Title: RMIT Advanced Programming Assignment 2
@@ -126,14 +128,16 @@ public class Driver {
 		}
 	}
 
-	public String addPerson(TextField t[], ComboBox<String> sCombobox) {
+	public String addPerson(TextField t[], ComboBox<String> sCombobox, ToggleGroup rbgGender) {
 		String output = "";
 
 		try {
 			String name = t[0].getText().toString();
 			String strAge = t[1].getText().toString();
 			int age = Integer.parseInt(strAge);
-			String gender = t[2].getText().toString();
+			RadioButton chkGender = (RadioButton) rbgGender.getSelectedToggle();
+			String strGender = chkGender.getText();
+			String gender = String.valueOf(strGender.charAt(0));
 			String info = t[3].getText().toString();
 			String state = sCombobox.getValue();
 
@@ -340,7 +344,15 @@ public class Driver {
 		return output;
 	}
 
-	public String updateProfile(TextField t[], ComboBox<String> connComboBox) {
+	public void updateProfile(Person p, String name, int age, String info, String state, String gender) {
+		p.setName(name);
+		p.setAge(age);
+		p.setGender(gender);
+		p.setState(state);
+		p.setInfo(info);
+	}
+
+	public String updateProfile(TextField t[], ComboBox<String> connComboBox, ToggleGroup rbgGender) {
 		Boolean proceed = true;
 		String output = "";
 
@@ -348,7 +360,11 @@ public class Driver {
 			String name = t[0].getText().toString();
 			String strAge = t[1].getText().toString();
 			int newAge = Integer.parseInt(strAge);
-			String newGender = t[2].getText().toString();
+
+			RadioButton chkGender = (RadioButton) rbgGender.getSelectedToggle();
+			String strGender = chkGender.getText();
+			String newGender = String.valueOf(strGender.charAt(0));
+
 			String newInfo = t[3].getText().toString();
 			String newState = connComboBox.getValue();
 
@@ -359,12 +375,12 @@ public class Driver {
 					break;
 				}
 			}
-			if (!proceed)
-				output = "[" + newState + "] is not a valid state.\n";
-
-			output = output + "Valid states are:-";
-			for (int i = 0; i < Helper.stateDesc.length; i++) {
-				output = output + (i == 0 ? "-" : "\n- ") + Helper.stateDesc[i];
+			if (!proceed) {
+				output = output + "[" + newState + "] is not a valid state.\n";
+				output = output + "Valid states are:-";
+				for (int i = 0; i < Helper.stateDesc.length; i++) {
+					output = output + (i == 0 ? "-" : "\n- ") + Helper.stateDesc[i];
+				}
 			}
 
 			if (proceed) {
@@ -392,28 +408,20 @@ public class Driver {
 
 						if (!newGender.equals(p.getGender())) {
 							if (haveSpouse(p)) {
-								output = output + "You cannot change your gender to " + newGender
+								output = output + "You cannot change your gender to " + strGender
 										+ " as you have a spouse.\n";
 								proceed = false;
 							}
 
 							if (haveChildren(p)) {
-								output = output + "You cannot change your gender to " + newGender
+								output = output + "You cannot change your gender to " + strGender
 										+ " as you have children.\n";
-								proceed = false;
-							}
-
-							if (!newGender.equals("M") | !newGender.equals("F")) {
-								output = output + "Gender should be M or F only.\n";
 								proceed = false;
 							}
 						}
 
 						if (proceed) {
-							a.setAge(newAge);
-							a.setGender(newGender);
-							a.setState(newState);
-							a.setInfo(newInfo);
+							updateProfile(a, a.getName(), newAge, newInfo, newState, newGender);
 						}
 
 						// need to upgrade/downgrade person: not_done_yet
@@ -460,11 +468,8 @@ public class Driver {
 							if (newAge <= Helper.ChildAge) {
 								YoungChild y = (YoungChild) p;
 								// need to clone, rebuild all relationships & delete old instance : not_done_yet
-								y.setAge(newAge);
 							}
-							c.setGender(newGender);
-							c.setState(newState);
-							c.setInfo(newInfo);
+							updateProfile(c, c.getName(), newAge, newInfo, newState, newGender);
 						}
 					}
 				}
@@ -643,11 +648,15 @@ public class Driver {
 
 			// test connect spouse (spouse already exists)
 			if ((p instanceof Adult & q instanceof Adult) & conn == Helper.spouse) {
-				if (haveSpouse(p)) {
-					output = output + p.getName() + " already have a spouse; please get divorced first.\n";
-					proceed = false;
+				try {
+					if (haveSpouse(p)) {
+						output = output + p.getName() + " already have a spouse; please get divorced first.\n";
+						proceed = false;
+						throw new NoAvailableException(output);
+					}
+				} catch (Exception e) {
 				}
-				if (haveSpouse(p)) {
+				if (haveSpouse(q)) {
 					output = output + q.getName() + " already have a spouse; please get divorced first.\n";
 					proceed = false;
 				}
@@ -655,6 +664,7 @@ public class Driver {
 					output = "While we support your rights, our system doesn't cater to that yet.\n";
 					proceed = false;
 				}
+
 			}
 
 			// test connect spouse (no spouse yet, both adults)
