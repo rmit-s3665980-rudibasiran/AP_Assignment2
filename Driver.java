@@ -138,6 +138,7 @@ public class Driver {
 
 	public String addPerson(TextField t[], ComboBox<String> sCombobox, ToggleGroup rbgGender) {
 		String output = "";
+		Boolean proceed = false;
 
 		try {
 			String name = t[0].getText().toString();
@@ -152,8 +153,26 @@ public class Driver {
 			if (findPerson(name)) {
 				output = "[" + _network.get(getIndexByProperty(name)).getName() + "] already exists.";
 			} else {
-				addPerson(name, age, gender, info, state);
-				output = "[" + name + "] has been added to MiniNet.";
+
+				proceed = false;
+				for (int i = 0; i < Helper.stateDesc.length; i++) {
+					if (state.equals(Helper.stateDesc[i])) {
+						proceed = true;
+						break;
+					}
+				}
+
+				if (!proceed) {
+					output = output + "[" + state + "] is not a valid state.\n";
+					output = output + "Valid states are:-\n";
+					for (int i = 0; i < Helper.stateDesc.length; i++) {
+						output = output + (i == 0 ? "-" : "\n- ") + Helper.stateDesc[i];
+					}
+				}
+				if (proceed) {
+					addPerson(name, age, gender, info, state);
+					output = "[" + name + "] has been added to MiniNet.";
+				}
 			}
 		} catch (NumberFormatException e) {
 			output = "Age should be integer.";
@@ -385,7 +404,7 @@ public class Driver {
 			}
 			if (!proceed) {
 				output = output + "[" + newState + "] is not a valid state.\n";
-				output = output + "Valid states are:-";
+				output = output + "Valid states are:-\n";
 				for (int i = 0; i < Helper.stateDesc.length; i++) {
 					output = output + (i == 0 ? "-" : "\n- ") + Helper.stateDesc[i];
 				}

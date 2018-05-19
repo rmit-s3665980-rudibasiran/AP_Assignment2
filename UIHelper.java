@@ -97,15 +97,19 @@ public class UIHelper {
 		_info.setPrefWidth(Helper.infoLabelWidth);
 		_info.setWrapText(true);
 
+		_stateComboBox.getItems().add("-");
 		for (int i = 0; i < Helper.stateDesc.length; i++) {
 			_stateComboBox.getItems().add(Helper.stateDesc[i]);
 		}
-		_stateComboBox.setValue(Helper.stateDesc[0]);
+		// _stateComboBox.setValue(Helper.stateDesc[0]);
+		_stateComboBox.getSelectionModel().selectFirst();
 
+		_connComboBox.getItems().add("-");
 		for (int i = 0; i < Helper.roleDesc.length; i++) {
 			_connComboBox.getItems().add(Helper.roleDesc[i]);
 		}
-		_connComboBox.setValue(Helper.roleDesc[0]);
+		// _connComboBox.setValue(Helper.roleDesc[0]);
+		_connComboBox.getSelectionModel().selectFirst();
 
 		_rbgGender = new ToggleGroup();
 		_rbMale = new RadioButton("Male");
