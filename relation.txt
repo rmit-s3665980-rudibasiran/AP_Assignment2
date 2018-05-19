@@ -46,3 +46,11 @@ Vito Corleone;Micheal Corleone;Father
 Carmela Corleone;Micheal Corleone;Mother
 Vito Corleone;Connie Corleone;Father
 Carmela Corleone;Connie Corleone;Mother
+Sherri McRae;Jacqui McRae;Sibling
+Sherri McRae;Jeanne McRae;Mother
+Sherri McRae;Keith McRae;Father
+Sherri McRae;Stephanie Call;Friend
+Terhi Kuusisto;Mikko Kuusisto;Spouse
+Terhi Kuusisto;Julius Kuusisto;Child
+Terhi Kuusisto;Lumi Kuusisto;Child
+Sherri McRae;Terhi Kuusisto;Friend
