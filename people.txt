@@ -9,10 +9,10 @@ Andrew Steward;;HR Officer;M;45;SA
 Nat James;;;F;45;SA
 Callum James;;;M;8;SA
 Dianne James;;Retired;F;65;SA
-Rasyid;;Construction;M;42;VIC
-Amalina;;Architect;F;42;VIC
-Sabrina Rasyid;;;F;15;VIC
-Riyan Rasyid;;;M;13;VIC
+Al Rasyid Abdul Wahab;;Construction;M;42;VIC
+Nor Amalina Abdul Rahman;;Building Project Manager;F;42;VIC
+Nurul Sabrina Al Rasyid;;;F;15;VIC
+Riyan Firdaus Al Rasyid;;;M;13;VIC
 Sherri McRae;;Student;F;43;SA
 Huani Neupane;;Student;F;28;VIC
 Chloe Loh;;Student;F;25;VIC
@@ -35,3 +35,9 @@ Santino Corleone;;Rebellion Son;M;50;ACT
 Fredrico Corleone;;Pious Son;M;45;ACT
 Micheal Corleone;;Prodigal Son;M;45;ACT
 Connie Corleone;;Favorite Child;F;40;ACT
+
+
+
+
+
+

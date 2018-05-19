@@ -8,11 +8,11 @@ Arthur Simanjuntak;Tane Simanjuntak;Father
 Sheree Reaver;Tane Simanjuntak;Mother
 Andrew Steward;Nat James;Spouse
 Nat James;Callum James;Mother
-Rasyid;Amalina;Spouse
-Rasyid;Sabrina Rasyid;Father
-Amalina;Sabrina Rasyid;Mother
-Rasyid;Riyan Rasyid;Father
-Amalina;Riyan Rasyid;Mother
+Al Rasyid Abdul Wahab;Nor Amalina Abdul Rahman;Spouse
+Al Rasyid Abdul Wahab;Nurul Sabrina Al Rasyid;Father
+Nor Amalina Abdul Rahman;Nurul Sabrina Al Rasyid;Mother
+Al Rasyid Abdul Wahab;Riyan Firdaus Al Rasyid;Father
+Nor Amalina Abdul Rahman;Riyan Firdaus Al Rasyid;Mother
 Rudi Basiran;Sherri McRae;Friend
 Huani Neupane;Rudi Basiran;Friend
 Rudi Basiran;Chloe Loh;Friend
