@@ -35,3 +35,11 @@ Santino Corleone;;Rebellion Son;M;50;ACT
 Fredrico Corleone;;Pious Son;M;45;ACT
 Micheal Corleone;;Prodigal Son;M;45;ACT
 Connie Corleone;;Favorite Child;F;40;ACT
+Jacqui McRae;;Research Scientist;F;41;SA
+Jeanne McRae;;Retired;F;71;VIC
+Keith McRae;;Retired;M;69;VIC
+Terhi Kuusisto;;Author;F;42;VIC
+Mikko Kuusisto;;Biologist;M;42;VIC
+Lumi Kuusisto;;;F;10;VIC
+Julius Kuusisto;;;M;15;VIC
+Stephani Call;;Archivist;F;41;VIC
