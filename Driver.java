@@ -19,14 +19,11 @@ Developer(s):
 Date Created: 16 May 2018 
 Description: New Driver
 Notes: --
-
 Change History: 
 - Rudi Basiran <s3665980@student.rmit.edu.au> : 16 May 2018 : Created based on old driver
-
  */
 
 public class Driver {
-
 	private ArrayList<Person> _network = new ArrayList<Person>();
 	private ArrayList<Relationship> _relationship = new ArrayList<Relationship>();
 
@@ -123,7 +120,7 @@ public class Driver {
 		return output;
 	}
 
-	public void addPerson(String name, int age, String gender, String info, String state) {
+	public void addPerson(String name, int age, String gender, String info, String state)throws NoSuchAgeException {
 		if (age > Helper.ChildAge) {
 			Adult a = new Adult(name, age, gender, info, state);
 			_network.add(a);
@@ -133,6 +130,13 @@ public class Driver {
 		} else if (age <= Helper.YoungChildAge) {
 			YoungChild y = new YoungChild(name, age, gender, info, state);
 			_network.add(y);
+		} else if (age < 0 || age > 150) {
+					throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
+			}
+
+							
+						
+			
 		}
 	}
 
@@ -581,6 +585,13 @@ public class Driver {
 						+ " are adults; they cannot have parent/child relationships.\n";
 				proceed = false;
 			}
+			// NotToBeCoupledException
+			try {
+				if (!proceed) {
+					throw new NotToBeCoupled(output);
+				}
+			} catch (Exception e) {
+			}
 			// test child connect friend (child inside family)
 			if (p instanceof Child & q instanceof Child) {
 				for (int i = 0; i < _relationship.size(); i++) {
@@ -626,6 +637,13 @@ public class Driver {
 					proceed = false;
 				}
 			}
+			// NotToBeFriendsException
+				try {
+					if (!proceed) {
+						throw new NotToBeFriends(output);
+					}
+				} catch (Exception e) {
+				}
 
 			// test child connect adult as parent, should be other way
 			if ((conn == Helper.father || conn == Helper.mother) & (p instanceof Child & q instanceof Adult)) {
@@ -659,6 +677,14 @@ public class Driver {
 				proceed = false;
 
 			}
+			// NotToBeFriendsException
+			try {
+				if (!proceed) {
+					throw new NotToBeFriends(output);
+					}
+				} catch (Exception e) {
+			}
+			
 			// test child below 2 connect friend
 			if ((p instanceof Child | q instanceof Child) & conn == Helper.friend) {
 				if (p.getAge() <= Helper.YoungChildAge | q.getAge() <= Helper.YoungChildAge) {
@@ -666,11 +692,25 @@ public class Driver {
 					proceed = false;
 				}
 			}
+			// TooYoungException
+			try {
+				if (!proceed) {
+					throw new TooYoungException(output);
+					}
+				} catch (Exception e) {
+			}
 
 			// test connect spouse (1 not adult)
 			if ((p instanceof Child | q instanceof Child) & conn == Helper.spouse) {
 				output = output + "Children cannot have spouses.\n";
 				proceed = false;
+			}
+			// NotToBeCoupledException
+			try {
+				if (!proceed) {
+					throw new NotToBeCoupledException(output);
+					}
+				} catch (Exception e) {
 			}
 
 			// test connect spouse (spouse already exists)
