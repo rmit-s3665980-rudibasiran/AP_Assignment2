@@ -68,7 +68,11 @@ public class Driver {
 				int age = Integer.parseInt(strAge);
 				String state = input.next();
 
-				addPerson(name, age, gender, info, state);
+				try {
+					addPerson(name, age, gender, info, state);
+				} catch (NoSuchAgeException e) {
+
+				}
 
 			}
 		} catch (NumberFormatException e) {
@@ -120,7 +124,7 @@ public class Driver {
 		return output;
 	}
 
-	public void addPerson(String name, int age, String gender, String info, String state)throws NoSuchAgeException {
+	public void addPerson(String name, int age, String gender, String info, String state) throws NoSuchAgeException {
 		if (age > Helper.ChildAge) {
 			Adult a = new Adult(name, age, gender, info, state);
 			_network.add(a);
@@ -131,13 +135,9 @@ public class Driver {
 			YoungChild y = new YoungChild(name, age, gender, info, state);
 			_network.add(y);
 		} else if (age < 0 || age > 150) {
-					throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
-			}
-
-							
-						
-			
+			throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
 		}
+
 	}
 
 	public String addPerson(TextField t[], ComboBox<String> sCombobox, ToggleGroup rbgGender) {
@@ -174,7 +174,10 @@ public class Driver {
 					}
 				}
 				if (proceed) {
-					addPerson(name, age, gender, info, state);
+					try {
+						addPerson(name, age, gender, info, state);
+					} catch (NoSuchAgeException e) {
+					}
 					output = "[" + name + "] has been added to MiniNet.";
 				}
 			}
@@ -588,7 +591,7 @@ public class Driver {
 			// NotToBeCoupledException
 			try {
 				if (!proceed) {
-					throw new NotToBeCoupled(output);
+					throw new NotToBeCoupledException(output);
 				}
 			} catch (Exception e) {
 			}
@@ -638,12 +641,12 @@ public class Driver {
 				}
 			}
 			// NotToBeFriendsException
-				try {
-					if (!proceed) {
-						throw new NotToBeFriends(output);
-					}
-				} catch (Exception e) {
+			try {
+				if (!proceed) {
+					throw new NotToBeFriendsException(output);
 				}
+			} catch (Exception e) {
+			}
 
 			// test child connect adult as parent, should be other way
 			if ((conn == Helper.father || conn == Helper.mother) & (p instanceof Child & q instanceof Adult)) {
@@ -680,11 +683,11 @@ public class Driver {
 			// NotToBeFriendsException
 			try {
 				if (!proceed) {
-					throw new NotToBeFriends(output);
-					}
-				} catch (Exception e) {
+					throw new NotToBeFriendsException(output);
+				}
+			} catch (Exception e) {
 			}
-			
+
 			// test child below 2 connect friend
 			if ((p instanceof Child | q instanceof Child) & conn == Helper.friend) {
 				if (p.getAge() <= Helper.YoungChildAge | q.getAge() <= Helper.YoungChildAge) {
@@ -696,8 +699,8 @@ public class Driver {
 			try {
 				if (!proceed) {
 					throw new TooYoungException(output);
-					}
-				} catch (Exception e) {
+				}
+			} catch (Exception e) {
 			}
 
 			// test connect spouse (1 not adult)
@@ -709,8 +712,8 @@ public class Driver {
 			try {
 				if (!proceed) {
 					throw new NotToBeCoupledException(output);
-					}
-				} catch (Exception e) {
+				}
+			} catch (Exception e) {
 			}
 
 			// test connect spouse (spouse already exists)
