@@ -19,7 +19,8 @@ jar cmf AP_Assignment2/MANIFEST.MF AP_Assignment2.jar AP_Assignment2/*.class
 
 To execute:
 1) Create folder AP_Assignment2
-2) Place AP_Assignment2.jar in folder AP_Assignment2
+2) Place all *.* there
+2) Place AP_Assignment2.jar in folder below AP_Assignment2
 3) Run: java -jar AP_Assignment2.jar
 
 Further notes:
