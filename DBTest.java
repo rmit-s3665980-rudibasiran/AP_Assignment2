@@ -21,29 +21,25 @@ public class DBTest {
 		hsqlServer = new Server();
 		hsqlServer.setLogWriter(null);
 		hsqlServer.setSilent(true);
-		hsqlServer.setDatabaseName(0, "TestDB");
-		hsqlServer.setDatabasePath(0, "file:MYDB");
+		hsqlServer.setDatabaseName(0, "MiniNetDB");
+		hsqlServer.setDatabasePath(0, Helper.path + "file:MYDB");
 		hsqlServer.start();
 
 		try {
-
 			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:TestDB", "sa", "123");
-			connection.prepareStatement("drop table barcodes if exists;").execute();
-			connection.prepareStatement("create or replace table barcodes (id integer, barcode varchar(20) not null);")
-					.execute();
+			connection = DriverManager.getConnection("jdbc:hsqldb:MiniNetDB", "admin", "adminpassword");
+			connection.prepareStatement("drop table person if exists;").execute();
+			connection.prepareStatement("create table person (name varchar(20) not null, age integer);").execute();
+			connection.prepareStatement("insert into person (name, age)" + "values ('Rudi', 48);").execute();
 
-			connection.prepareStatement("insert into barcodes (id, barcode)" + "values (1, '12345577');").execute();
-			rs = connection.prepareStatement("select id, barcode from barcodes;").executeQuery();
+			rs = connection.prepareStatement("select name, age from person;").executeQuery();
 			rs.next();
-			System.out.println(String.format("ID: %1d, Name:%1s", rs.getInt(1), rs.getString(2)));
+			System.out.println(String.format("ID: Name: %1s, %1d", rs.getString(1), rs.getInt(2)));
+
 			connection.commit();
 
-		} catch (SQLException e2) {
-			e2.printStackTrace();
-		} catch (ClassNotFoundException e2) {
-			e2.printStackTrace();
+		} catch (ClassNotFoundException e) {
+		} catch (SQLException e) {
 		}
-
 	}
 }
