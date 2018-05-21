@@ -26,15 +26,38 @@ public class DBTest {
 		hsqlServer.start();
 
 		try {
+
 			Class.forName("org.hsqldb.jdbcDriver");
 			connection = DriverManager.getConnection("jdbc:hsqldb:MiniNetDB", "admin", "adminpassword");
 			connection.prepareStatement("drop table person if exists;").execute();
-			connection.prepareStatement("create table person (name varchar(20) not null, age integer);").execute();
-			connection.prepareStatement("insert into person (name, age)" + "values ('Rudi', 48);").execute();
 
-			rs = connection.prepareStatement("select name, age from person;").executeQuery();
-			rs.next();
-			System.out.println(String.format("ID: Name: %1s, %1d", rs.getString(1), rs.getInt(2)));
+			String sql = "";
+			sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
+					+ "info varchar(100), " + "gender varchar(1), " + "age integer, " + "state varchar(5)" + ");";
+			connection.prepareStatement(sql).execute();
+
+			sql = "insert into person (name, photo, info, gender, age, state)"
+					+ "values ('Rudi', 'rudi.jpg', 'LSA', 'M', 48, 'VIC');";
+			connection.prepareStatement(sql).execute();
+
+			sql = "insert into person (name, photo, info, gender, age, state)"
+					+ "values ('Ahysa', 'ahysa.jpg', 'Housewife', 'F', 45, 'VIC');";
+			connection.prepareStatement(sql).execute();
+
+			sql = "select name, photo, info, gender, age, state " + "from person order by name desc;";
+			rs = connection.prepareStatement(sql).executeQuery();
+			while (rs.next()) {
+				System.out.println(String.format(
+						"Name: %1s, Photo: %1s, Info: %1s,  Gender: %1s,  Age: %1d, State: %1s", rs.getString(1),
+						rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
+			}
+
+			sql = "select table_name "
+					+ "from INFORMATION_SCHEMA.SYSTEM_TABLES where table_name = 'person' order by 1 desc;";
+			rs = connection.prepareStatement(sql).executeQuery();
+			while (rs.next()) {
+				System.out.println("Table name = " + rs.getString(1));
+			}
 
 			connection.commit();
 

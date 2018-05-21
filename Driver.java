@@ -83,8 +83,6 @@ public class Driver {
 	}
 
 	public void loadData() {
-		// String path = "/Users/rudibasiran/Google
-		// Drive/RMIT/Java/oxygen/JavaFX/AP_Assignment2/";
 
 		// start: initial set up of network for demo
 		try {
