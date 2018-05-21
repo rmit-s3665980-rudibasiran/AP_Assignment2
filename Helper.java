@@ -15,10 +15,12 @@ import javafx.scene.shape.Rectangle;
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
-Rudi Basiran <s3665980@student.rmit.edu.au> 
-Date Created: 9 April 2018 
+- Rudi Basiran <s3665980@student.rmit.edu.au> 
+- Sherri McRae <s3117889@student.rmit.edu.au> 
+Date Created:  9 April 2018 
 Description: Helper Class
-Notes: 
+Notes: --
+Change History: 
  */
 
 public class Helper {

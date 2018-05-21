@@ -16,11 +16,11 @@ import javafx.stage.Stage;
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
 - Rudi Basiran <s3665980@student.rmit.edu.au> 
-Date Created: 5 May 2018 
+- Sherri McRae <s3117889@student.rmit.edu.au> 
+Date Created:  5 May 2018 
 Description: Menu Class controlling the GUI
 Notes: --
-
-Change History:
+Change History: 
 - [16 May 2018] Rudi Basiran  : Updated GUI
  */
 
@@ -243,7 +243,7 @@ public class Menu extends Application {
 
 			if (createPane) {
 
-				UIHelper workBox = new UIHelper(labels, actionButton, "Close");
+				Controller workBox = new Controller(labels, actionButton, "Close");
 				BorderPane workBorderPane = new BorderPane();
 				workBorderPane = workBox.constructPane(_driver, actionItem, wp, p);
 				wp.getChildren().add(workBorderPane);

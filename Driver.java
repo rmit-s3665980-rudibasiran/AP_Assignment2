@@ -16,11 +16,13 @@ import javafx.scene.control.ToggleGroup;
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
 - Rudi Basiran <s3665980@student.rmit.edu.au> 
+- Sherri McRae <s3117889@student.rmit.edu.au> 
 Date Created: 16 May 2018 
-Description: New Driver
+Description: New Driver based on AP1
 Notes: --
 Change History: 
 - Rudi Basiran <s3665980@student.rmit.edu.au> : 16 May 2018 : Created based on old driver
+- Sherri McRae <s3117889@student.rmit.edu.au> : 19 May 2018 : Added Exception Classes
  */
 
 public class Driver {

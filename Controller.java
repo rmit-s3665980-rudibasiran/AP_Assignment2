@@ -19,7 +19,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-public class UIHelper {
+/*
+Title: RMIT Advanced Programming Assignment 2
+Developer(s): 
+- Rudi Basiran <s3665980@student.rmit.edu.au> 
+- Sherri McRae <s3117889@student.rmit.edu.au> 
+Date Created: 16 May 2018 
+Description: Controller class for controlling the GUI
+Notes: --
+Change History:
+ */
+
+public class Controller {
 	private Label _lbl[] = new Label[Helper.workTextFieldArraySize];
 	private TextField _txt[] = new TextField[Helper.workTextFieldArraySize];
 	private Label _info = new Label();
@@ -34,7 +45,7 @@ public class UIHelper {
 	private RadioButton _rbMale = new RadioButton();
 	private RadioButton _rbFemale = new RadioButton();
 
-	public UIHelper(String lbl[], String be, String bc) {
+	public Controller(String lbl[], String be, String bc) {
 
 		for (int i = 0; i < _lbl.length; i++) {
 			_lbl[i] = new Label("");
