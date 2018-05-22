@@ -63,8 +63,6 @@ public class Driver {
 				try {
 					reloadDatabaseintoDriver();
 				} catch (NoSuchAgeException e) {
-
-					e.printStackTrace();
 				}
 				reset = false;
 			}
@@ -74,9 +72,8 @@ public class Driver {
 
 			else if (DatabasePopulated() & _network.size() > 0)
 				reset = false;
-		}
-
-		reset = true;
+		} else
+			reset = true;
 
 		if (reset) {
 			try {
@@ -99,27 +96,29 @@ public class Driver {
 					String strAge = input.next();
 					int age = Integer.parseInt(strAge);
 					String state = input.next();
+					if (findPerson(name)) {
 
-					if (age > Helper.ChildAge) {
-						Adult a = new Adult(name, age, gender, info, state);
-						_network.add(a);
+					} else {
+						if (age > Helper.ChildAge) {
+							Adult a = new Adult(name, age, gender, info, state);
+							_network.add(a);
 
-					} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
-						Child c = new Child(name, age, gender, info, state);
-						_network.add(c);
+						} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
+							Child c = new Child(name, age, gender, info, state);
+							_network.add(c);
 
-					} else if (age <= Helper.YoungChildAge) {
-						YoungChild y = new YoungChild(name, age, gender, info, state);
-						_network.add(y);
+						} else if (age <= Helper.YoungChildAge) {
+							YoungChild y = new YoungChild(name, age, gender, info, state);
+							_network.add(y);
 
+						}
+						// addPerson(name, age, gender, info, state);
+
+						if (Helper.doDatabase) {
+							System.out.println("Verifying Person(s) in Database: " + name);
+							loadDatabasePerson(name, photo, info, gender, age, state);
+						}
 					}
-					// addPerson(name, age, gender, info, state);
-
-					if (Helper.doDatabase) {
-						System.out.println("Verifying Person(s) in Database: " + name);
-						loadDatabasePerson(name, photo, info, gender, age, state);
-					}
-
 				}
 			} catch (NumberFormatException e) {
 
@@ -966,11 +965,41 @@ public class Driver {
 		return output;
 	}
 
+	public Boolean isConnected(Person p, Person q, int conn) {
+		Boolean connected = false;
+
+		Relationship r = new Relationship(p, conn, q);
+
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (r.getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
+					& r.getConn() == _relationship.get(i).getConn()
+					& r.getPersonB().getName().equals(_relationship.get(i).getPersonB().getName())) {
+
+				connected = true;
+			}
+		}
+
+		// test connect relationship already exists (other way)
+		for (int i = 0; i < _relationship.size(); i++) {
+			if (r.getPersonA().getName().equals(_relationship.get(i).getPersonB().getName())
+					& r.getConn() == _relationship.get(i).getConn()
+					& r.getPersonB().getName().equals(_relationship.get(i).getPersonA().getName())) {
+
+				connected = true;
+			}
+		}
+		return connected;
+	}
+
 	public String connectPerson(Person p, Person q, int conn) {
 		String output = "";
-		_relationship.add(new Relationship(p, conn, p));
-		if (Helper.doDatabase)
-			loadDatabaseRelations(p.getName(), q.getName(), conn);
+
+		if (!isConnected(p, q, conn)) {
+			_relationship.add(new Relationship(p, conn, p));
+			if (Helper.doDatabase)
+				loadDatabaseRelations(p.getName(), q.getName(), conn);
+		}
+
 		return output;
 	}
 
@@ -1209,34 +1238,17 @@ public class Driver {
 				}
 			}
 
-			// test connect friends (connections already exists) 999
-			Relationship r = new Relationship(p, conn, q);
-
-			for (int i = 0; i < _relationship.size(); i++) {
-				if (r.getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
-						& r.getConn() == _relationship.get(i).getConn()
-						& r.getPersonB().getName().equals(_relationship.get(i).getPersonB().getName())) {
-					output = output + "Connection already exists:\n";
-					output = output + p.getName() + " < " + Helper.roleDesc[_relationship.get(i).getConn()] + "> "
-							+ q.getName() + "\n";
-					proceed = false;
-				}
+			if (isConnected(p, q, conn)) {
+				output = output + "Connection already exists:\n";
+				output = output + p.getName() + " < " + Helper.roleDesc[conn] + "> " + q.getName() + "\n";
+				proceed = false;
 			}
 
-			// test connect relationship already exists (other way)
-			for (int i = 0; i < _relationship.size(); i++) {
-				if (r.getPersonA().getName().equals(_relationship.get(i).getPersonB().getName())
-						& r.getConn() == _relationship.get(i).getConn()
-						& r.getPersonB().getName().equals(_relationship.get(i).getPersonA().getName())) {
-					output = output + "Connection already exists:\n";
-					output = output + p.getName() + " < " + Helper.roleDesc[_relationship.get(i).getConn()] + "> "
-							+ q.getName() + "\n";
-					proceed = false;
-				}
-			}
 			if (proceed) {
 
-				connectPerson(p, q, conn);
+				// test connect friends (connections already exists) 999
+				Relationship r = new Relationship(p, conn, q);
+				_relationship.add(r);
 
 				for (int i = 0; i < _relationship.size(); i++) {
 					if (r.getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
