@@ -27,6 +27,13 @@ public class Helper {
 
 	public static String path = new File("").getAbsolutePath() + "/AP_Assignment2/";
 
+	public static String databaseName = "MiniNetDB";
+	public static String jdbc = "org.hsqldb.jdbcDriver";
+	public static String jdbcConn = "jdbc:hsqldb:MiniNetDB";
+	public static String dbUser = "admin";
+	public static String dbUserPwd = "12345678";
+	public static String DatabaseFileName = "file:MYDB";
+
 	public static Boolean runTextMode = false;
 	public static Color menuRectColor = Color.web("#4d4d4d", 1.0);
 	public static Color menuRectColorSelected = Color.rgb(0, 0, 0);

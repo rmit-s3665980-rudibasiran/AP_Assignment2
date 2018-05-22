@@ -48,135 +48,14 @@ public class Driver {
 		return _relationship;
 	}
 
-	public String viewDataDB(String name) {
-
-		String output = "";
-		String sql = "";
-		Boolean found = false;
-
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, "MiniNetDB");
-			String path = new File("").getAbsolutePath() + "/application/";
-			hsqlServer.setDatabasePath(0, path + "file:MYDB");
-			hsqlServer.start();
-
-			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:MiniNetDB", "admin", "adminpassword");
-			connection.prepareStatement("drop table person if exists;").execute();
-
-			sql = "select name, photo, info, gender, age, state " + "from person where lower(name) like lower('%" + name
-					+ "%') order by name desc;";
-
-			rs = connection.prepareStatement(sql).executeQuery();
-			while (rs.next()) {
-				found = true;
-				output = output + rs.getString(1) + Helper.separator + rs.getString(2) + Helper.separator
-						+ rs.getString(3) + Helper.separator + rs.getString(4) + Helper.separator + rs.getInt(5)
-						+ Helper.separator + rs.getString(6) + "\n";
-			}
-			connection.commit();
-			connection.close();
-			hsqlServer.stop();
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		}
-
-		if (!found)
-			output = "";
-		return output;
-	}
-
-	public void createDB() {
-		Server hsqlServer = null;
-		Connection connection = null;
-		ResultSet rs = null;
-
-		hsqlServer = new Server();
-		hsqlServer.setLogWriter(null);
-		hsqlServer.setSilent(true);
-		hsqlServer.setDatabaseName(0, "MiniNetDB");
-		String path = new File("").getAbsolutePath() + "/application/";
-		hsqlServer.setDatabasePath(0, path + "file:MYDB");
-		hsqlServer.start();
-
-		String output = "";
-		try {
-
-			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:MiniNetDB", "admin", "adminpassword");
-			connection.prepareStatement("drop table person if exists;").execute();
-
-			String sql = "";
-			sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
-					+ "info varchar(100), " + "gender varchar(1), " + "age integer, " + "state varchar(5)" + ");";
-			connection.prepareStatement(sql).execute();
-
-			connection.commit();
-			connection.close();
-			hsqlServer.stop();
-
-		} catch (
-
-		ClassNotFoundException e) {
-		} catch (SQLException e) {
-		}
-	}
-
-	public void loadDataDB(String name, String photo, String info, String gender, int age, String state) {
-		Server hsqlServer = null;
-		Connection connection = null;
-		ResultSet rs = null;
-
-		hsqlServer = new Server();
-		hsqlServer.setLogWriter(null);
-		hsqlServer.setSilent(true);
-		hsqlServer.setDatabaseName(0, "MiniNetDB");
-		String path = new File("").getAbsolutePath() + "/application/";
-		hsqlServer.setDatabasePath(0, path + "file:MYDB");
-		hsqlServer.start();
-
-		String output = "";
-		try {
-
-			Class.forName("org.hsqldb.jdbcDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:MiniNetDB", "admin", "adminpassword");
-
-			String sql = "insert into person (name, photo, info, gender, age, state)" + "values ('" + name + "','"
-					+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
-			connection.prepareStatement(sql).execute();
-
-			connection.commit();
-			connection.close();
-			hsqlServer.stop();
-
-		} catch (
-
-		ClassNotFoundException e) {
-		} catch (SQLException e) {
-		}
-	}
-
-	public void writeDataDB() {
-
-	}
-
 	public void loadData() {
 
-		// start: initial set up of network for demo
 		try {
-
 			Scanner input = new Scanner(new File(Helper.path + "people.txt"));
 			input.useDelimiter(";|\n");
-			createDB();
+
+			// createDB();
+
 			while (input.hasNext()) {
 				// Name;Photo;Info;Gender;Age;State
 				String name = input.next();
@@ -187,20 +66,15 @@ public class Driver {
 				int age = Integer.parseInt(strAge);
 				String state = input.next();
 
-				try {
-					addPerson(name, age, gender, info, state);
-				} catch (NoSuchAgeException e) {
-
-					try {
-						loadDataDB(name, photo, info, gender, age, state);
-					} catch (Exception e1) {
-
-					}
-				}
+				addPerson(name, age, gender, info, state);
 
 			}
 		} catch (NumberFormatException e) {
+
 		} catch (FileNotFoundException e) {
+
+		} catch (NoSuchAgeException e) {
+
 		}
 
 		try {
@@ -226,9 +100,113 @@ public class Driver {
 					_relationship.add(new Relationship(p1, relationship, p2));
 				}
 			}
-		} catch (NumberFormatException e) {
 		} catch (FileNotFoundException e) {
 		}
+
+	}
+
+	public void createDB() {
+
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			connection.prepareStatement("drop table person if exists;").execute();
+
+			String sql = "";
+			sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
+					+ "info varchar(100), " + "gender varchar(1), " + "age integer, " + "state varchar(5)" + ");";
+			connection.prepareStatement(sql).execute();
+
+			connection.commit();
+			connection.close();
+			hsqlServer.stop();
+
+		} catch (
+
+		ClassNotFoundException e) {
+		} catch (SQLException e) {
+		}
+	}
+
+	public void loadDB(String name, String photo, String info, String gender, int age, String state) {
+
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			String sql = "insert into person (name, photo, info, gender, age, state)" + "values ('" + name + "','"
+					+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
+
+			connection.prepareStatement(sql).execute();
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+	}
+
+	public String viewDB(String name) {
+
+		String output = "";
+		String sql = "";
+		Boolean found = false;
+
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			sql = "select name " + "from person where lower(name) like lower('%" + name + "%') order by name desc;";
+
+			rs = connection.prepareStatement(sql).executeQuery();
+			while (rs.next()) {
+
+				output = output + rs.getString(1) + "\n";
+				found = true;
+			}
+			connection.commit();
+			connection.close();
+			hsqlServer.stop();
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+		if (!found)
+			output = "";
+		return output;
+	}
+
+	public void writeDataDB() {
 
 	}
 
@@ -236,25 +214,25 @@ public class Driver {
 		return ((getIndexByProperty(name) >= 0) ? true : false);
 	}
 
-	public String findPerson(String name, int sourceType) {
-		String output = "";
-
-		if (sourceType == Helper.findInDB) {
-			output = output + viewDataDB(name);
-		}
-
-		return output;
-	}
-
 	public String findPerson(TextField t[]) {
 		String output = "";
 
 		String name = t[0].getText().toString();
 		if (findPerson(name)) {
-			output = output + "[" + _network.get(getIndexByProperty(name)).getName() + "] found.";
+			output = output + "[" + _network.get(getIndexByProperty(name)).getName() + "] found in network.\n";
 			output = output + "[" + findPerson(name, Helper.findInDB) + "] found in DB.";
 		} else
 			output = "[" + name + "] not found.";
+
+		return output;
+	}
+
+	public String findPerson(String name, int sourceType) {
+		String output = "";
+
+		if (sourceType == Helper.findInDB) {
+			// output = output + viewDB(name);
+		}
 
 		return output;
 	}
