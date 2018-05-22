@@ -18,5 +18,4 @@ public class MiniNet {
 		Menu menu = new Menu();
 		menu.go();
 	}
-
 }

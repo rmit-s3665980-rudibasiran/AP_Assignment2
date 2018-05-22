@@ -159,7 +159,8 @@ public class Menu extends Application {
 
 		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
 			if (Helper.doDatabase)
-				moveDriverToDatabase();
+
+				_driver.moveDriverToDatabase();
 			primaryStage.close();
 		} else {
 

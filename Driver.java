@@ -50,26 +50,32 @@ public class Driver {
 	}
 
 	public void moveDriverToDatabase() {
+		String output = "";
 		if (Helper.doDatabase) {
 			if (Helper.doDatabase) {
 
+				destroyDatabase(); // flush the database
+
+				createDatabase(); // re-create the database
+
 				for (int i = 0; i < _network.size(); i++) {
-					System.out.println("Verifying Person(s) in Database: " + _network.get(i).getName());
+					output = output + "Verifying Person(s) in Database: " + _network.get(i).getName();
 					loadDatabasePerson(_network.get(i).getName(), "", _network.get(i).getInfo(),
 							_network.get(i).getGender(), _network.get(i).getAge(), _network.get(i).getState());
 				}
 
 				for (int i = 0; i < _relationship.size(); i++) {
-					System.out.println(
-							"Forging Relationships(s) in Database: " + _relationship.get(i).getPersonA().getName()
-									+ " <<" + Helper.roleDesc[_relationship.get(i).getConn()] + ">> "
-									+ _relationship.get(i).getPersonB().getName());
+					output = output + "Forging Relationships(s) in Database: "
+							+ _relationship.get(i).getPersonA().getName() + " <<"
+							+ Helper.roleDesc[_relationship.get(i).getConn()] + ">> "
+							+ _relationship.get(i).getPersonB().getName();
 
 					loadDatabaseRelations(_relationship.get(i).getPersonA().getName(),
 							_relationship.get(i).getPersonB().getName(), _relationship.get(i).getConn());
 				}
 			}
 		}
+
 	}
 
 	public void loadData() {
@@ -95,15 +101,11 @@ public class Driver {
 
 			else if (DatabasePopulated() & _network.size() > 0)
 				reset = false;
-		} else
+		}
+		if (!Helper.doDatabase)
 			reset = true;
-
 		if (reset) {
 			try {
-				destroyDatabase(); // flush the database
-
-				if (Helper.doDatabase)
-					createDatabase();
 
 				peopleFile = "people.txt";
 				relationsFile = "relation.txt";
@@ -518,7 +520,6 @@ public class Driver {
 		String name = t[0].getText().toString();
 		if (findPerson(name)) {
 			output = output + "[" + _network.get(getIndexByProperty(name)).getName() + "] found in network.\n";
-			output = output + "[" + findPerson(name, Helper.findInDB) + "] found in DB.";
 		} else
 			output = "[" + name + "] not found.";
 
