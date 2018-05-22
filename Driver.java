@@ -80,7 +80,8 @@ public class Driver {
 
 		if (reset) {
 			try {
-				destroyDatabase();
+				destroyDatabase(); // flush the database
+
 				if (Helper.doDatabase)
 					createDatabase();
 
@@ -185,6 +186,7 @@ public class Driver {
 			connection.commit();
 			connection.close();
 			hsqlServer.stop();
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
