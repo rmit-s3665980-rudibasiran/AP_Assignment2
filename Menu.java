@@ -158,6 +158,8 @@ public class Menu extends Application {
 	public void menuAction(Stage primaryStage, GridPane wp, Pane p, String menuClicked) {
 
 		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
+			if (Helper.doDatabase)
+				moveDriverToDatabase();
 			primaryStage.close();
 		} else {
 

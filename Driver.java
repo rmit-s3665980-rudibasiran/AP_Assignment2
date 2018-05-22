@@ -49,6 +49,29 @@ public class Driver {
 		return _relationship;
 	}
 
+	public void moveDriverToDatabase() {
+		if (Helper.doDatabase) {
+			if (Helper.doDatabase) {
+
+				for (int i = 0; i < _network.size(); i++) {
+					System.out.println("Verifying Person(s) in Database: " + _network.get(i).getName());
+					loadDatabasePerson(_network.get(i).getName(), "", _network.get(i).getInfo(),
+							_network.get(i).getGender(), _network.get(i).getAge(), _network.get(i).getState());
+				}
+
+				for (int i = 0; i < _relationship.size(); i++) {
+					System.out.println(
+							"Forging Relationships(s) in Database: " + _relationship.get(i).getPersonA().getName()
+									+ " <<" + Helper.roleDesc[_relationship.get(i).getConn()] + ">> "
+									+ _relationship.get(i).getPersonB().getName());
+
+					loadDatabaseRelations(_relationship.get(i).getPersonA().getName(),
+							_relationship.get(i).getPersonB().getName(), _relationship.get(i).getConn());
+				}
+			}
+		}
+	}
+
 	public void loadData() {
 		String peopleFile = "";
 		String relationsFile = "";
@@ -112,12 +135,7 @@ public class Driver {
 							_network.add(y);
 
 						}
-						// addPerson(name, age, gender, info, state);
 
-						if (Helper.doDatabase) {
-							System.out.println("Verifying Person(s) in Database: " + name);
-							loadDatabasePerson(name, photo, info, gender, age, state);
-						}
 					}
 				}
 			} catch (NumberFormatException e) {
@@ -147,15 +165,8 @@ public class Driver {
 						Person p1 = _network.get(getIndexByProperty(person1));
 						Person p2 = _network.get(getIndexByProperty(person2));
 
-						// connectPerson(p1, p2, relationship);
 						_relationship.add(new Relationship(p1, relationship, p2));
 
-						if (Helper.doDatabase) {
-							System.out.println("Forging Relationships(s) in Database: " + person1 + " <<"
-									+ Helper.roleDesc[relationship] + ">> " + person2);
-
-							loadDatabaseRelations(p1.getName(), p2.getName(), relationship);
-						}
 					}
 				}
 			} catch (FileNotFoundException e) {
