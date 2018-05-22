@@ -52,26 +52,36 @@ public class Driver {
 	public void loadData() {
 		String peopleFile = "";
 		String relationsFile = "";
-		Boolean reset = true;// set to true to start from scratch
+		Boolean reset = true;
 
-		createDB();
+		// 4 possible scenarios
+		if (Helper.doDB) {
+			if (!DatabasePopulated() & _network.size() <= 0)
+				reset = true;
 
-		if (!DBPopulated() & _network.size() <= 0)
-			reset = true;
-		else if (DBPopulated() & _network.size() <= 0)
-			reloadDBintoDriver();
-		else if (DBPopulated() & _network.size() > 0)
-			reset = false;
+			else if (DatabasePopulated() & _network.size() <= 0) {
+				// reloadDBintoDriver();
+				reset = false;
+			}
+
+			else if (!DatabasePopulated() & _network.size() > 0)
+				reset = true;
+
+			else if (DatabasePopulated() & _network.size() > 0)
+				reset = false;
+		}
+		reset = true;
 
 		if (reset) {
 			try {
+				if (Helper.doDB)
+					createDatabase();
 
 				peopleFile = "people.txt";
 				relationsFile = "relation.txt";
 				Scanner input = new Scanner(new File(Helper.path + peopleFile));
 				input.useDelimiter(";|\n");
 
-				int count = 0;
 				while (input.hasNext()) {
 					// Name;Photo;Info;Gender;Age;State
 					String name = input.next();
@@ -84,8 +94,8 @@ public class Driver {
 
 					addPerson(name, age, gender, info, state);
 
-					count++;
-					System.out.println("Verifying Person(s) in DB: " + name);
+					if (Helper.doDB)
+						System.out.println("Verifying Person(s) in Database: " + name);
 
 				}
 			} catch (NumberFormatException e) {
@@ -99,7 +109,7 @@ public class Driver {
 			try {
 				Scanner input = new Scanner(new File(Helper.path + relationsFile));
 				input.useDelimiter(";|\n");
-				int count = 0;
+
 				while (input.hasNext()) {
 
 					String person1 = input.next();
@@ -119,9 +129,9 @@ public class Driver {
 
 						connectPerson(p1, p2, relationship);
 
-						count++;
-						System.out.println("Forging Relationships(s) in DB: " + person1 + " <<"
-								+ Helper.roleDesc[relationship] + ">> " + person2);
+						if (Helper.doDB)
+							System.out.println("Forging Relationships(s) in Database: " + person1 + " <<"
+									+ Helper.roleDesc[relationship] + ">> " + person2);
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -130,229 +140,235 @@ public class Driver {
 
 	}
 
-	public void createDB() {
-
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-			connection.prepareStatement("drop table person if exists;").execute();
-			connection.prepareStatement("drop table relations if exists;").execute();
-
-			String sql = "";
-			sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
-					+ "info varchar(100), " + "gender varchar(1), " + "age integer, "
-					+ "state varchar(5), primary key (name));";
+	public void createDatabase() {
+		if (Helper.doDB) {
 			try {
-				connection.prepareStatement(sql).execute();
-			} catch (Exception e) {
+				Server hsqlServer = null;
+				Connection connection = null;
+				ResultSet rs = null;
+				hsqlServer = new Server();
+				hsqlServer.setLogWriter(null);
+				hsqlServer.setSilent(true);
+				hsqlServer.setDatabaseName(0, Helper.databaseName);
+				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+				hsqlServer.start();
+				Class.forName(Helper.jdbc);
+				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
 
-			}
-			sql = "create table relations (name1 varchar(50) not null, name2 varchar(50) not null, conn integer, primary key (name1,name2));";
-			try {
-				connection.prepareStatement(sql).execute();
-			} catch (Exception e) {
+				connection.prepareStatement("drop table person if exists;").execute();
+				connection.prepareStatement("drop table relations if exists;").execute();
 
-			}
-
-			connection.commit();
-			connection.close();
-			hsqlServer.stop();
-
-		} catch (
-
-		ClassNotFoundException e) {
-		} catch (SQLException e) {
-		}
-	}
-
-	public void reloadDBintoDriver() {
-
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-			String sql = "select name, photo, info, gender, age, state from person order by name desc;";
-
-			rs = connection.prepareStatement(sql).executeQuery();
-			while (rs.next()) {
-				String name = rs.getString(1);
-				String photo = rs.getString(2);
-				String info = rs.getString(3);
-				String gender = rs.getString(4);
-				int age = rs.getInt(5);
-				String state = rs.getString(6);
-
+				String sql = "";
+				sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
+						+ "info varchar(100), " + "gender varchar(1), " + "age integer, "
+						+ "state varchar(5), primary key (name));";
 				try {
-					addPerson(name, age, gender, info, state);
-				} catch (NoSuchAgeException e) {
+					connection.prepareStatement(sql).execute();
+				} catch (Exception e) {
+
+				}
+				sql = "create table relations (name1 varchar(50) not null, name2 varchar(50) not null, conn integer, primary key (name1,name2));";
+				try {
+					connection.prepareStatement(sql).execute();
+				} catch (Exception e) {
+
 				}
 
-			}
-			connection.commit();
-
-			sql = "select name1, name2, conn from relations order by name1 desc;";
-
-			rs = connection.prepareStatement(sql).executeQuery();
-			while (rs.next()) {
-				String person1 = rs.getString(1);
-				String person2 = rs.getString(2);
-				int conn = rs.getInt(3);
-
-				Person p1 = _network.get(getIndexByProperty(person1));
-				Person p2 = _network.get(getIndexByProperty(person2));
-
-				connectPerson(p1, p2, conn);
-			}
-			connection.commit();
-
-			connection.close();
-			hsqlServer.stop();
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		}
-
-	}
-
-	public void loadDBPerson(String name, String photo, String info, String gender, int age, String state) {
-
-		try {
-
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-			String sql = "insert into person (name, photo, info, gender, age, state)" + "values ('" + name + "','"
-					+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
-			try {
-				connection.prepareStatement(sql).execute();
 				connection.commit();
-			} catch (Exception e) {
+				connection.close();
+				hsqlServer.stop();
 
+			} catch (
+
+			ClassNotFoundException e) {
+			} catch (SQLException e) {
 			}
-
-			connection.close();
-			hsqlServer.stop();
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
 		}
-
 	}
 
-	public void loadDBRelations(String name1, String name2, int conn) {
-
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-			String sql = "insert into relations (name1, name2, conn) " + "values ('" + name1 + "','" + name2 + "',"
-					+ conn + ");";
-
+	public void reloadDatabaseintoDriver() {
+		if (Helper.doDB) {
 			try {
-				connection.prepareStatement(sql).execute();
+				Server hsqlServer = null;
+				Connection connection = null;
+				ResultSet rs = null;
+				hsqlServer = new Server();
+				hsqlServer.setLogWriter(null);
+				hsqlServer.setSilent(true);
+				hsqlServer.setDatabaseName(0, Helper.databaseName);
+				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+				hsqlServer.start();
+				Class.forName(Helper.jdbc);
+				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+				String sql = "select name, photo, info, gender, age, state from person order by name desc;";
+
+				rs = connection.prepareStatement(sql).executeQuery();
+				while (rs.next()) {
+					String name = rs.getString(1);
+					String photo = rs.getString(2);
+					String info = rs.getString(3);
+					String gender = rs.getString(4);
+					int age = rs.getInt(5);
+					String state = rs.getString(6);
+
+					try {
+						addPerson(name, age, gender, info, state);
+					} catch (NoSuchAgeException e) {
+					}
+
+				}
 				connection.commit();
-			} catch (Exception e) {
+
+				sql = "select name1, name2, conn from relations order by name1 desc;";
+
+				rs = connection.prepareStatement(sql).executeQuery();
+				while (rs.next()) {
+					String person1 = rs.getString(1);
+					String person2 = rs.getString(2);
+					int conn = rs.getInt(3);
+
+					Person p1 = _network.get(getIndexByProperty(person1));
+					Person p2 = _network.get(getIndexByProperty(person2));
+
+					connectPerson(p1, p2, conn);
+				}
+				connection.commit();
+
+				connection.close();
+				hsqlServer.stop();
+			} catch (ClassNotFoundException e) {
+
+			} catch (SQLException e) {
 
 			}
-
-			connection.close();
-			hsqlServer.stop();
-
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
 		}
-
 	}
 
-	public Boolean DBPopulated() {
+	public void loadDatabasePerson(String name, String photo, String info, String gender, int age, String state) {
+
+		if (Helper.doDB) {
+			try {
+
+				Server hsqlServer = null;
+				Connection connection = null;
+				ResultSet rs = null;
+				hsqlServer = new Server();
+				hsqlServer.setLogWriter(null);
+				hsqlServer.setSilent(true);
+				hsqlServer.setDatabaseName(0, Helper.databaseName);
+				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+				hsqlServer.start();
+				Class.forName(Helper.jdbc);
+				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+				String sql = "insert into person (name, photo, info, gender, age, state)" + "values ('" + name + "','"
+						+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
+				try {
+					connection.prepareStatement(sql).execute();
+					connection.commit();
+				} catch (Exception e) {
+
+				}
+
+				connection.close();
+				hsqlServer.stop();
+
+			} catch (ClassNotFoundException e) {
+
+			} catch (SQLException e) {
+
+			}
+		}
+	}
+
+	public void loadDatabaseRelations(String name1, String name2, int conn) {
+		if (Helper.doDB) {
+			try {
+				Server hsqlServer = null;
+				Connection connection = null;
+				ResultSet rs = null;
+				hsqlServer = new Server();
+				hsqlServer.setLogWriter(null);
+				hsqlServer.setSilent(true);
+				hsqlServer.setDatabaseName(0, Helper.databaseName);
+				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+				hsqlServer.start();
+				Class.forName(Helper.jdbc);
+				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+				String sql = "insert into relations (name1, name2, conn) " + "values ('" + name1 + "','" + name2 + "',"
+						+ conn + ");";
+
+				try {
+					connection.prepareStatement(sql).execute();
+					connection.commit();
+				} catch (Exception e) {
+
+				}
+
+				connection.close();
+				hsqlServer.stop();
+
+			} catch (ClassNotFoundException e) {
+
+			} catch (SQLException e) {
+
+			}
+		}
+	}
+
+	public Boolean DatabasePopulated() {
 
 		Boolean tablesPopulated = false;
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
 
-			int countPeople = 0;
-			int countRelations = 0;
+		if (Helper.doDB) {
 
-			String sql = "select count(*) from person;";
-			rs = connection.prepareStatement(sql).executeQuery();
-			rs.next();
-			countPeople = rs.getInt(1);
-			System.out.println("No. of Person(s) in DB: " + countPeople);
+			try {
+				Server hsqlServer = null;
+				Connection connection = null;
+				ResultSet rs = null;
+				hsqlServer = new Server();
+				hsqlServer.setLogWriter(null);
+				hsqlServer.setSilent(true);
+				hsqlServer.setDatabaseName(0, Helper.databaseName);
+				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+				hsqlServer.start();
+				Class.forName(Helper.jdbc);
+				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
 
-			if (countPeople >= 1)
-				tablesPopulated = true;
+				int countPeople = 0;
+				int countRelations = 0;
 
-			sql = "select count(*) from relations;";
-			rs = connection.prepareStatement(sql).executeQuery();
-			rs.next();
-			countRelations = rs.getInt(1);
-			System.out.println("No. of Relationship(s) in DB: " + countRelations);
-			if (countRelations >= 1)
-				tablesPopulated = true;
+				String sql = "select count(*) from person;";
+				rs = connection.prepareStatement(sql).executeQuery();
+				rs.next();
+				countPeople = rs.getInt(1);
+				System.out.println("No. of Person(s) in DB: " + countPeople);
 
-			connection.close();
-			hsqlServer.stop();
-		} catch (ClassNotFoundException e) {
+				if (countPeople >= 1)
+					tablesPopulated = true;
 
-		} catch (SQLException e) {
+				sql = "select count(*) from relations;";
+				rs = connection.prepareStatement(sql).executeQuery();
+				rs.next();
+				countRelations = rs.getInt(1);
+				System.out.println("No. of Relationship(s) in DB: " + countRelations);
+				if (countRelations >= 1)
+					tablesPopulated = true;
 
+				connection.close();
+				hsqlServer.stop();
+			} catch (ClassNotFoundException e) {
+
+			} catch (SQLException e) {
+
+			}
 		}
 		return tablesPopulated;
 	}
 
-	public String viewDB(String name) {
+	public String viewDatabase(String name) {
 
 		String output = "";
 		String sql = "";
@@ -393,7 +409,7 @@ public class Driver {
 		return output;
 	}
 
-	public void writeDataDB() {
+	public void writeDatabase() {
 
 	}
 
@@ -418,7 +434,7 @@ public class Driver {
 		String output = "";
 
 		if (sourceType == Helper.findInDB) {
-			output = output + viewDB(name);
+			output = output + viewDatabase(name);
 		}
 
 		return output;
@@ -431,7 +447,6 @@ public class Driver {
 		} else {
 			if (age > Helper.ChildAge) {
 				Adult a = new Adult(name, age, gender, info, state);
-
 				_network.add(a);
 				proceed = true;
 
@@ -452,7 +467,7 @@ public class Driver {
 			}
 		}
 		if (proceed)
-			loadDBPerson(name, "", info, gender, age, state);
+			loadDatabasePerson(name, "", info, gender, age, state);
 
 	}
 
@@ -867,7 +882,8 @@ public class Driver {
 	public String connectPerson(Person p, Person q, int conn) {
 		String output = "";
 		_relationship.add(new Relationship(p, conn, p));
-		loadDBRelations(p.getName(), q.getName(), conn);
+		if (Helper.doDB)
+			loadDatabaseRelations(p.getName(), q.getName(), conn);
 		return output;
 	}
 
