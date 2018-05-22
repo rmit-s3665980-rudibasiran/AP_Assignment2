@@ -1,5 +1,7 @@
 package AP_Assignment2;
 
+package AP_Assignment2;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -28,7 +30,7 @@ Description: New Driver based on AP1
 Notes: --
 Change History: 
 - Rudi Basiran <s3665980@student.rmit.edu.au> : 16 May 2018 : Created based on old driver
-- Sherri McRae <s3117889@student.rmit.edu.au> : 19 May 2018 : Added Exception Classes
+- Sherri McRae <s3117889@student.rmit.edu.au> : 22 May 2018 : Added Classmate and Colleague exceptions
  */
 
 public class Driver {
@@ -719,33 +721,34 @@ public class Driver {
 				}
 			} catch (Exception e) {
 			}
-
+			
 			// test child/adult connect as classmates
 			if (conn == Helper.classmate
 					& ((p instanceof Adult & q instanceof Child) | (p instanceof Child & q instanceof Adult))) {
-				output = output + "Adults cannot be classmates with Children.\n";
-				proceed = false;
-			}
-			// NotToBeClassmates
-			try {
-				if (!proceed) {
+					output = output + "Adults cannot be classmates with Children.\n";
+					proceed = false;
+					}
+				// NotToBeClassmates
+				try {
+					if (!proceed) {
 					throw new NotToBeClassmates(output);
+					}
+				} catch (Exception e) {
+			}
+				
+				// test child as colleagues
+				if (conn == Helper.colleague
+						& ((p instanceof Child | q instanceof Child))) {
+						output = output + "Children can not have colleagues.\n";
+						proceed = false;
+						}
+					// NotToBeColleagues
+					try {
+						if (!proceed) {
+						throw new NotToBeColleagues(output);
+						}
+					} catch (Exception e) {
 				}
-			} catch (Exception e) {
-			}
-
-			// test child as colleagues
-			if (conn == Helper.colleague & ((p instanceof Child | q instanceof Child))) {
-				output = output + "Children can not have colleagues.\n";
-				proceed = false;
-			}
-			// NotToBeColleagues
-			try {
-				if (!proceed) {
-					throw new NotToBeColleagues(output);
-				}
-			} catch (Exception e) {
-			}
 
 			// test child below 2 connect friend
 			if ((p instanceof Child | q instanceof Child) & conn == Helper.friend) {
