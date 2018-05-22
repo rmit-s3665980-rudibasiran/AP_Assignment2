@@ -33,7 +33,7 @@ public class Helper {
 	public static String dbUser = "admin";
 	public static String dbUserPwd = "12345678";
 	public static String DatabaseFileName = "file:MYDB";
-	public static Boolean doDB = false;
+	public static Boolean doDatabase = true;
 
 	public static Boolean runTextMode = false;
 	public static Color menuRectColor = Color.web("#4d4d4d", 1.0);

@@ -55,12 +55,17 @@ public class Driver {
 		Boolean reset = true;
 
 		// 4 possible scenarios
-		if (Helper.doDB) {
+		if (Helper.doDatabase) {
 			if (!DatabasePopulated() & _network.size() <= 0)
 				reset = true;
 
 			else if (DatabasePopulated() & _network.size() <= 0) {
-				// reloadDBintoDriver();
+				try {
+					reloadDatabaseintoDriver();
+				} catch (NoSuchAgeException e) {
+
+					e.printStackTrace();
+				}
 				reset = false;
 			}
 
@@ -70,11 +75,12 @@ public class Driver {
 			else if (DatabasePopulated() & _network.size() > 0)
 				reset = false;
 		}
+
 		reset = true;
 
 		if (reset) {
 			try {
-				if (Helper.doDB)
+				if (Helper.doDatabase)
 					createDatabase();
 
 				peopleFile = "people.txt";
@@ -107,8 +113,10 @@ public class Driver {
 					}
 					// addPerson(name, age, gender, info, state);
 
-					if (Helper.doDB)
+					if (Helper.doDatabase) {
 						System.out.println("Verifying Person(s) in Database: " + name);
+						loadDatabasePerson(name, photo, info, gender, age, state);
+					}
 
 				}
 			} catch (NumberFormatException e) {
@@ -141,9 +149,12 @@ public class Driver {
 						// connectPerson(p1, p2, relationship);
 						_relationship.add(new Relationship(p1, relationship, p2));
 
-						if (Helper.doDB)
+						if (Helper.doDatabase) {
 							System.out.println("Forging Relationships(s) in Database: " + person1 + " <<"
 									+ Helper.roleDesc[relationship] + ">> " + person2);
+
+							loadDatabaseRelations(p1.getName(), p2.getName(), relationship);
+						}
 					}
 				}
 			} catch (FileNotFoundException e) {
@@ -153,7 +164,7 @@ public class Driver {
 	}
 
 	public void createDatabase() {
-		if (Helper.doDB) {
+		if (Helper.doDatabase) {
 			try {
 				Server hsqlServer = null;
 				Connection connection = null;
@@ -198,8 +209,8 @@ public class Driver {
 		}
 	}
 
-	public void reloadDatabaseintoDriver() {
-		if (Helper.doDB) {
+	public void reloadDatabaseintoDriver() throws NoSuchAgeException {
+		if (Helper.doDatabase) {
 			try {
 				Server hsqlServer = null;
 				Connection connection = null;
@@ -224,13 +235,31 @@ public class Driver {
 					int age = rs.getInt(5);
 					String state = rs.getString(6);
 
-					try {
-						addPerson(name, age, gender, info, state);
-					} catch (NoSuchAgeException e) {
+					if (age > Helper.ChildAge) {
+						Adult a = new Adult(name, age, gender, info, state);
+						_network.add(a);
+
+					} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
+						Child c = new Child(name, age, gender, info, state);
+
+						_network.add(c);
+
+					} else if (age <= Helper.YoungChildAge) {
+						YoungChild y = new YoungChild(name, age, gender, info, state);
+
+						_network.add(y);
+
+					} else if (age < 0) {
+						throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
+					} else if (age > 150) {
+						throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
 					}
 
+					if (Helper.doDatabase) {
+						System.out.println("Re-creating Human(s) in Driver: " + name);
+
+					}
 				}
-				connection.commit();
 
 				sql = "select name1, name2, conn from relations order by name1 desc;";
 
@@ -238,12 +267,22 @@ public class Driver {
 				while (rs.next()) {
 					String person1 = rs.getString(1);
 					String person2 = rs.getString(2);
-					int conn = rs.getInt(3);
+					int relationship = rs.getInt(3);
 
-					Person p1 = _network.get(getIndexByProperty(person1));
-					Person p2 = _network.get(getIndexByProperty(person2));
+					if (findPerson(person1) & findPerson(person2) & relationship >= 0) {
+						Person p1 = _network.get(getIndexByProperty(person1));
+						Person p2 = _network.get(getIndexByProperty(person2));
 
-					connectPerson(p1, p2, conn);
+						// connectPerson(p1, p2, relationship);
+						_relationship.add(new Relationship(p1, relationship, p2));
+
+						if (Helper.doDatabase) {
+							System.out.println("Forging Relationships(s) in Driver: " + person1 + " <<"
+									+ Helper.roleDesc[relationship] + ">> " + person2);
+
+						}
+					}
+
 				}
 				connection.commit();
 
@@ -259,7 +298,7 @@ public class Driver {
 
 	public void loadDatabasePerson(String name, String photo, String info, String gender, int age, String state) {
 
-		if (Helper.doDB) {
+		if (Helper.doDatabase) {
 			try {
 
 				Server hsqlServer = null;
@@ -295,7 +334,7 @@ public class Driver {
 	}
 
 	public void loadDatabaseRelations(String name1, String name2, int conn) {
-		if (Helper.doDB) {
+		if (Helper.doDatabase) {
 			try {
 				Server hsqlServer = null;
 				Connection connection = null;
@@ -334,7 +373,7 @@ public class Driver {
 
 		Boolean tablesPopulated = false;
 
-		if (Helper.doDB) {
+		if (Helper.doDatabase) {
 
 			try {
 				Server hsqlServer = null;
@@ -480,7 +519,7 @@ public class Driver {
 				throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
 			}
 		}
-		if (proceed & Helper.doDB)
+		if (proceed & Helper.doDatabase)
 			loadDatabasePerson(name, "", info, gender, age, state);
 
 	}
@@ -896,7 +935,7 @@ public class Driver {
 	public String connectPerson(Person p, Person q, int conn) {
 		String output = "";
 		_relationship.add(new Relationship(p, conn, p));
-		if (Helper.doDB)
+		if (Helper.doDatabase)
 			loadDatabaseRelations(p.getName(), q.getName(), conn);
 		return output;
 	}
