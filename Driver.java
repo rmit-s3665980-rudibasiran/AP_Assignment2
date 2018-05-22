@@ -92,7 +92,20 @@ public class Driver {
 					int age = Integer.parseInt(strAge);
 					String state = input.next();
 
-					addPerson(name, age, gender, info, state);
+					if (age > Helper.ChildAge) {
+						Adult a = new Adult(name, age, gender, info, state);
+						_network.add(a);
+
+					} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
+						Child c = new Child(name, age, gender, info, state);
+						_network.add(c);
+
+					} else if (age <= Helper.YoungChildAge) {
+						YoungChild y = new YoungChild(name, age, gender, info, state);
+						_network.add(y);
+
+					}
+					// addPerson(name, age, gender, info, state);
 
 					if (Helper.doDB)
 						System.out.println("Verifying Person(s) in Database: " + name);
@@ -101,8 +114,6 @@ public class Driver {
 			} catch (NumberFormatException e) {
 
 			} catch (FileNotFoundException e) {
-
-			} catch (NoSuchAgeException e) {
 
 			}
 
@@ -127,7 +138,8 @@ public class Driver {
 						Person p1 = _network.get(getIndexByProperty(person1));
 						Person p2 = _network.get(getIndexByProperty(person2));
 
-						connectPerson(p1, p2, relationship);
+						// connectPerson(p1, p2, relationship);
+						_relationship.add(new Relationship(p1, relationship, p2));
 
 						if (Helper.doDB)
 							System.out.println("Forging Relationships(s) in Database: " + person1 + " <<"
@@ -462,11 +474,13 @@ public class Driver {
 				_network.add(y);
 				proceed = true;
 
-			} else if (age < 0 || age > 150) {
-				throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
+			} else if (age < 0) {
+				throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
+			} else if (age > 150) {
+				throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
 			}
 		}
-		if (proceed)
+		if (proceed & Helper.doDB)
 			loadDatabasePerson(name, "", info, gender, age, state);
 
 	}
