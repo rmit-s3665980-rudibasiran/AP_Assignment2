@@ -49,35 +49,6 @@ public class Driver {
 		return _relationship;
 	}
 
-	public void moveDriverToDatabase() {
-		String output = "";
-		if (Helper.doDatabase) {
-			if (Helper.doDatabase) {
-
-				destroyDatabase(); // flush the database
-
-				createDatabase(); // re-create the database
-
-				for (int i = 0; i < _network.size(); i++) {
-					output = output + "Verifying Person(s) in Database: " + _network.get(i).getName();
-					loadDatabasePerson(_network.get(i).getName(), "", _network.get(i).getInfo(),
-							_network.get(i).getGender(), _network.get(i).getAge(), _network.get(i).getState());
-				}
-
-				for (int i = 0; i < _relationship.size(); i++) {
-					output = output + "Forging Relationships(s) in Database: "
-							+ _relationship.get(i).getPersonA().getName() + " <<"
-							+ Helper.roleDesc[_relationship.get(i).getConn()] + ">> "
-							+ _relationship.get(i).getPersonB().getName();
-
-					loadDatabaseRelations(_relationship.get(i).getPersonA().getName(),
-							_relationship.get(i).getPersonB().getName(), _relationship.get(i).getConn());
-				}
-			}
-		}
-
-	}
-
 	public void loadData() {
 		String peopleFile = "";
 		String relationsFile = "";
@@ -102,8 +73,10 @@ public class Driver {
 			else if (DatabasePopulated() & _network.size() > 0)
 				reset = false;
 		}
-		if (!Helper.doDatabase)
+		if (!Helper.doDatabase) {
 			reset = true;
+			destroyDatabase(); // flush the database
+		}
 		if (reset) {
 			try {
 
@@ -205,6 +178,35 @@ public class Driver {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+
+	}
+
+	public void moveDriverToDatabase() {
+		String output = "";
+		if (Helper.doDatabase) {
+			if (Helper.doDatabase) {
+
+				destroyDatabase(); // flush the database
+
+				createDatabase(); // re-create the database
+
+				for (int i = 0; i < _network.size(); i++) {
+					output = output + "Verifying Person(s) in Database: " + _network.get(i).getName();
+					loadDatabasePerson(_network.get(i).getName(), "", _network.get(i).getInfo(),
+							_network.get(i).getGender(), _network.get(i).getAge(), _network.get(i).getState());
+				}
+
+				for (int i = 0; i < _relationship.size(); i++) {
+					output = output + "Forging Relationships(s) in Database: "
+							+ _relationship.get(i).getPersonA().getName() + " <<"
+							+ Helper.roleDesc[_relationship.get(i).getConn()] + ">> "
+							+ _relationship.get(i).getPersonB().getName();
+
+					loadDatabaseRelations(_relationship.get(i).getPersonA().getName(),
+							_relationship.get(i).getPersonB().getName(), _relationship.get(i).getConn());
+				}
+			}
 		}
 
 	}
