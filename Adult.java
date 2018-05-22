@@ -1,5 +1,4 @@
 package AP_Assignment2;
-
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -9,6 +8,7 @@ Date Created: 18 March 2018
 Description: Adult Class (Between 17 and 150 inclusive)
 Notes: --
 Change History:
+Test GitHub changes
  */
 
 public class Adult extends Person {
