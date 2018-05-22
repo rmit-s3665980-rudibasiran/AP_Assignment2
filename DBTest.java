@@ -10,7 +10,7 @@ import org.hsqldb.Server;
 public class DBTest {
 
 	public DBTest() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public static void main(String[] args) {
@@ -41,7 +41,7 @@ public class DBTest {
 			connection.prepareStatement(sql).execute();
 
 			sql = "insert into person (name, photo, info, gender, age, state)"
-					+ "values ('Ahysa', 'ahysa.jpg', 'Housewife', 'F', 45, 'VIC');";
+					+ "values ('Sherri McRae', 'sherri.jpg', 'RMIT', 'F', 43, 'VIC');";
 			connection.prepareStatement(sql).execute();
 
 			sql = "select name, photo, info, gender, age, state " + "from person order by name desc;";
