@@ -29,7 +29,7 @@ public class Menu extends Application {
 	private Driver _driver = new Driver();
 
 	public Menu() {
-		_driver = new Driver();
+		// _driver = new Driver();
 		_driver.loadData();
 	}
 

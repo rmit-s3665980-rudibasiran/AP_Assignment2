@@ -49,70 +49,83 @@ public class Driver {
 	}
 
 	public void loadData() {
+		String peopleFile = "";
+		String relationsFile = "";
+		Boolean reInitialize = true;// set to true to start from scratch
 
-		try {
-			Scanner input = new Scanner(new File(Helper.path + "people.txt"));
-			input.useDelimiter(";|\n");
-
+		if (reInitialize) {
 			createDB();
-			int count = 0;
-			while (input.hasNext()) {
-				// Name;Photo;Info;Gender;Age;State
-				String name = input.next();
-				String photo = input.next();
-				String info = input.next();
-				String gender = input.next();
-				String strAge = input.next();
-				int age = Integer.parseInt(strAge);
-				String state = input.next();
-
-				addPerson(name, age, gender, info, state);
-
-				loadDBPerson(name, photo, info, gender, age, state);
-
-				count++;
-				System.out.println("Creating Person(s) in DB :" + count);
-
-			}
-		} catch (NumberFormatException e) {
-
-		} catch (FileNotFoundException e) {
-
-		} catch (NoSuchAgeException e) {
-
+			peopleFile = "people.txt";
+			relationsFile = "relation.txt";
+		} else {
+			// set such that driver wont look for the data files
+			peopleFile = "people2.txt";
+			relationsFile = "relation2.txt";
 		}
 
-		try {
-			Scanner input = new Scanner(new File(Helper.path + "relation.txt"));
-			input.useDelimiter(";|\n");
-			int count = 0;
-			while (input.hasNext()) {
+		if (!DBPopulated()) {
+			try {
 
-				String person1 = input.next();
-				String person2 = input.next();
-				String conn = input.next();
+				Scanner input = new Scanner(new File(Helper.path + peopleFile));
+				input.useDelimiter(";|\n");
 
-				int relationship = -1;
-				for (int i = 0; i < Helper.roleDesc.length; i++)
-					if (Helper.roleDesc[i].toLowerCase().equals(conn.toLowerCase())) {
-						relationship = i;
-						break;
-					}
+				int count = 0;
+				while (input.hasNext()) {
+					// Name;Photo;Info;Gender;Age;State
+					String name = input.next();
+					String photo = input.next();
+					String info = input.next();
+					String gender = input.next();
+					String strAge = input.next();
+					int age = Integer.parseInt(strAge);
+					String state = input.next();
 
-				if (findPerson(person1) & findPerson(person2) & relationship >= 0) {
-					Person p1 = _network.get(getIndexByProperty(person1));
-					Person p2 = _network.get(getIndexByProperty(person2));
-					_relationship.add(new Relationship(p1, relationship, p2));
-
-					loadDBRelations(p1.getName(), p2.getName(), relationship);
+					addPerson(name, age, gender, info, state);
 
 					count++;
-					System.out.println("Forging Relationships(s) in DB :" + count);
+					System.out.println("Verifying Person(s) in DB: " + name);
 
 				}
+			} catch (NumberFormatException e) {
+
+			} catch (FileNotFoundException e) {
+
+			} catch (NoSuchAgeException e) {
+
 			}
-		} catch (FileNotFoundException e) {
-		}
+
+			try {
+				Scanner input = new Scanner(new File(Helper.path + relationsFile));
+				input.useDelimiter(";|\n");
+				int count = 0;
+				while (input.hasNext()) {
+
+					String person1 = input.next();
+					String person2 = input.next();
+					String conn = input.next();
+
+					int relationship = -1;
+					for (int i = 0; i < Helper.roleDesc.length; i++)
+						if (Helper.roleDesc[i].toLowerCase().equals(conn.toLowerCase())) {
+							relationship = i;
+							break;
+						}
+
+					if (findPerson(person1) & findPerson(person2) & relationship >= 0) {
+						Person p1 = _network.get(getIndexByProperty(person1));
+						Person p2 = _network.get(getIndexByProperty(person2));
+
+						connectPerson(p1, p2, relationship);
+
+						count++;
+						System.out.println("Forging Relationships(s) in DB: " + person1 + "<<"
+								+ Helper.roleDesc[relationship] + ">>" + person2);
+					}
+				}
+			} catch (FileNotFoundException e) {
+			}
+		} else
+			reloadDBintoDriver();
 
 	}
 
@@ -136,11 +149,19 @@ public class Driver {
 
 			String sql = "";
 			sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
-					+ "info varchar(100), " + "gender varchar(1), " + "age integer, " + "state varchar(5)" + ");";
-			connection.prepareStatement(sql).execute();
+					+ "info varchar(100), " + "gender varchar(1), " + "age integer, "
+					+ "state varchar(5), primary key (name));";
+			try {
+				connection.prepareStatement(sql).execute();
+			} catch (Exception e) {
 
-			sql = "create table relations (name1 varchar(50) not null, name2 varchar(50) not null, conn integer);";
-			connection.prepareStatement(sql).execute();
+			}
+			sql = "create table relations (name1 varchar(50) not null, name2 varchar(50) not null, conn integer, primary key (name1,name2));";
+			try {
+				connection.prepareStatement(sql).execute();
+			} catch (Exception e) {
+
+			}
 
 			connection.commit();
 			connection.close();
@@ -151,6 +172,65 @@ public class Driver {
 		ClassNotFoundException e) {
 		} catch (SQLException e) {
 		}
+	}
+
+	public void reloadDBintoDriver() {
+
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			String sql = "select name, photo, info, gender, age, state from person order by name desc;";
+
+			rs = connection.prepareStatement(sql).executeQuery();
+			while (rs.next()) {
+				String name = rs.getString(1);
+				String photo = rs.getString(2);
+				String info = rs.getString(3);
+				String gender = rs.getString(4);
+				int age = rs.getInt(5);
+				String state = rs.getString(6);
+
+				try {
+					addPerson(name, age, gender, info, state);
+				} catch (NoSuchAgeException e) {
+				}
+
+			}
+			connection.commit();
+
+			sql = "select name1, name2, conn from relations order by name1 desc;";
+
+			rs = connection.prepareStatement(sql).executeQuery();
+			while (rs.next()) {
+				String person1 = rs.getString(1);
+				String person2 = rs.getString(2);
+				int conn = rs.getInt(3);
+
+				Person p1 = _network.get(getIndexByProperty(person1));
+				Person p2 = _network.get(getIndexByProperty(person2));
+
+				connectPerson(p1, p2, conn);
+			}
+			connection.commit();
+
+			connection.close();
+			hsqlServer.stop();
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
 	}
 
 	public void loadDBPerson(String name, String photo, String info, String gender, int age, String state) {
@@ -171,10 +251,13 @@ public class Driver {
 
 			String sql = "insert into person (name, photo, info, gender, age, state)" + "values ('" + name + "','"
 					+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
+			try {
+				connection.prepareStatement(sql).execute();
+				connection.commit();
+			} catch (Exception e) {
 
-			connection.prepareStatement(sql).execute();
+			}
 
-			connection.commit();
 			connection.close();
 			hsqlServer.stop();
 
@@ -204,9 +287,13 @@ public class Driver {
 			String sql = "insert into relations (name1, name2, conn) " + "values ('" + name1 + "','" + name2 + "',"
 					+ conn + ");";
 
-			connection.prepareStatement(sql).execute();
+			try {
+				connection.prepareStatement(sql).execute();
+				connection.commit();
+			} catch (Exception e) {
 
-			connection.commit();
+			}
+
 			connection.close();
 			hsqlServer.stop();
 
@@ -216,6 +303,52 @@ public class Driver {
 
 		}
 
+	}
+
+	public Boolean DBPopulated() {
+
+		Boolean tablesPopulated = false;
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			int countPeople = 0;
+			int countRelations = 0;
+
+			String sql = "select count(*) from person;";
+			rs = connection.prepareStatement(sql).executeQuery();
+			rs.next();
+			countPeople = rs.getInt(1);
+			System.out.println("No. of Person(s) in DB: " + countPeople);
+
+			if (countPeople >= 1)
+				tablesPopulated = true;
+
+			sql = "select count(*) from relations;";
+			rs = connection.prepareStatement(sql).executeQuery();
+			rs.next();
+			countRelations = rs.getInt(1);
+			System.out.println("No. of Relationship(s) in DB: " + countRelations);
+			if (countRelations >= 1)
+				tablesPopulated = true;
+
+			connection.close();
+			hsqlServer.stop();
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+		return tablesPopulated;
 	}
 
 	public String viewDB(String name) {
@@ -291,18 +424,32 @@ public class Driver {
 	}
 
 	public void addPerson(String name, int age, String gender, String info, String state) throws NoSuchAgeException {
+		Boolean proceed = false;
+		String chkName = _network.get(getIndexByProperty(name)).getName();
 		if (age > Helper.ChildAge) {
 			Adult a = new Adult(name, age, gender, info, state);
-			_network.add(a);
+			if (!chkName.equals(name)) {
+				_network.add(a);
+				proceed = true;
+			}
 		} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
 			Child c = new Child(name, age, gender, info, state);
-			_network.add(c);
+			if (!chkName.equals(name)) {
+				_network.add(c);
+				proceed = true;
+			}
 		} else if (age <= Helper.YoungChildAge) {
 			YoungChild y = new YoungChild(name, age, gender, info, state);
-			_network.add(y);
+			if (!chkName.equals(name)) {
+				_network.add(y);
+				proceed = true;
+			}
 		} else if (age < 0 || age > 150) {
 			throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
 		}
+
+		if (proceed)
+			loadDBPerson(name, "", info, gender, age, state);
 
 	}
 
@@ -708,6 +855,13 @@ public class Driver {
 		return output;
 	}
 
+	public String connectPerson(Person p, Person q, int conn) {
+		String output = "";
+		_relationship.add(new Relationship(p, conn, p));
+		loadDBRelations(p.getName(), q.getName(), conn);
+		return output;
+	}
+
 	public String connectPerson(TextField t[], ComboBox<String> connComboBox) {
 		Boolean proceed = true;
 		String output = "";
@@ -969,7 +1123,9 @@ public class Driver {
 				}
 			}
 			if (proceed) {
-				_relationship.add(new Relationship(p, conn, q));
+
+				connectPerson(p, q, conn);
+
 				for (int i = 0; i < _relationship.size(); i++) {
 					if (r.getPersonA().getName().equals(_relationship.get(i).getPersonA().getName())
 							& r.getConn() == _relationship.get(i).getConn()
