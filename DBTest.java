@@ -60,6 +60,7 @@ public class DBTest {
 			}
 
 			connection.commit();
+			connection.close();
 
 		} catch (ClassNotFoundException e) {
 		} catch (SQLException e) {
