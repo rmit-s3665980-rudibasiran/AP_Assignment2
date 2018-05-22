@@ -77,6 +77,11 @@ public class Helper {
 	public static int rectWidth = 200;
 	public static int rectHeight = 50;
 
+	public static String separator = " | ";
+
+	public static int findInDB = 0;
+	public static int findInObj = 1;
+
 	public static String spaces = "     ";
 	public static int menuSize = 12;
 	public static int quitMenu = 0;
