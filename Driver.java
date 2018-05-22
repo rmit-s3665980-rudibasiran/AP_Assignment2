@@ -54,8 +54,8 @@ public class Driver {
 			Scanner input = new Scanner(new File(Helper.path + "people.txt"));
 			input.useDelimiter(";|\n");
 
-			// createDB();
-
+			createDB();
+			int count = 0;
 			while (input.hasNext()) {
 				// Name;Photo;Info;Gender;Age;State
 				String name = input.next();
@@ -67,6 +67,11 @@ public class Driver {
 				String state = input.next();
 
 				addPerson(name, age, gender, info, state);
+
+				loadDBPerson(name, photo, info, gender, age, state);
+
+				count++;
+				System.out.println("Creating Person(s) in DB :" + count);
 
 			}
 		} catch (NumberFormatException e) {
@@ -80,7 +85,7 @@ public class Driver {
 		try {
 			Scanner input = new Scanner(new File(Helper.path + "relation.txt"));
 			input.useDelimiter(";|\n");
-
+			int count = 0;
 			while (input.hasNext()) {
 
 				String person1 = input.next();
@@ -98,6 +103,12 @@ public class Driver {
 					Person p1 = _network.get(getIndexByProperty(person1));
 					Person p2 = _network.get(getIndexByProperty(person2));
 					_relationship.add(new Relationship(p1, relationship, p2));
+
+					loadDBRelations(p1.getName(), p2.getName(), relationship);
+
+					count++;
+					System.out.println("Forging Relationships(s) in DB :" + count);
+
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -121,10 +132,14 @@ public class Driver {
 			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
 
 			connection.prepareStatement("drop table person if exists;").execute();
+			connection.prepareStatement("drop table relations if exists;").execute();
 
 			String sql = "";
 			sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
 					+ "info varchar(100), " + "gender varchar(1), " + "age integer, " + "state varchar(5)" + ");";
+			connection.prepareStatement(sql).execute();
+
+			sql = "create table relations (name1 varchar(50) not null, name2 varchar(50) not null, conn integer);";
 			connection.prepareStatement(sql).execute();
 
 			connection.commit();
@@ -138,9 +153,10 @@ public class Driver {
 		}
 	}
 
-	public void loadDB(String name, String photo, String info, String gender, int age, String state) {
+	public void loadDBPerson(String name, String photo, String info, String gender, int age, String state) {
 
 		try {
+
 			Server hsqlServer = null;
 			Connection connection = null;
 			ResultSet rs = null;
@@ -157,6 +173,43 @@ public class Driver {
 					+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
 
 			connection.prepareStatement(sql).execute();
+
+			connection.commit();
+			connection.close();
+			hsqlServer.stop();
+
+		} catch (ClassNotFoundException e) {
+
+		} catch (SQLException e) {
+
+		}
+
+	}
+
+	public void loadDBRelations(String name1, String name2, int conn) {
+
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			String sql = "insert into relations (name1, name2, conn) " + "values ('" + name1 + "','" + name2 + "',"
+					+ conn + ");";
+
+			connection.prepareStatement(sql).execute();
+
+			connection.commit();
+			connection.close();
+			hsqlServer.stop();
+
 		} catch (ClassNotFoundException e) {
 
 		} catch (SQLException e) {
@@ -189,7 +242,7 @@ public class Driver {
 			rs = connection.prepareStatement(sql).executeQuery();
 			while (rs.next()) {
 
-				output = output + rs.getString(1) + "\n";
+				output = output + rs.getString(1);
 				found = true;
 			}
 			connection.commit();
@@ -231,7 +284,7 @@ public class Driver {
 		String output = "";
 
 		if (sourceType == Helper.findInDB) {
-			// output = output + viewDB(name);
+			output = output + viewDB(name);
 		}
 
 		return output;

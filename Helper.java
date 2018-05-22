@@ -29,7 +29,7 @@ public class Helper {
 
 	public static String databaseName = "MiniNetDB";
 	public static String jdbc = "org.hsqldb.jdbcDriver";
-	public static String jdbcConn = "jdbc:hsqldb:MiniNetDB";
+	public static String jdbcConn = "jdbc:hsqldb:" + Helper.databaseName;
 	public static String dbUser = "admin";
 	public static String dbUserPwd = "12345678";
 	public static String DatabaseFileName = "file:MYDB";
