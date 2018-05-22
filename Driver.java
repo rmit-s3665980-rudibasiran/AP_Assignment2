@@ -80,6 +80,7 @@ public class Driver {
 
 		if (reset) {
 			try {
+				destroyDatabase();
 				if (Helper.doDatabase)
 					createDatabase();
 
@@ -159,6 +160,37 @@ public class Driver {
 				}
 			} catch (FileNotFoundException e) {
 			}
+		}
+
+	}
+
+	public void destroyDatabase() {
+
+		try {
+			Server hsqlServer = null;
+			Connection connection = null;
+			ResultSet rs = null;
+			hsqlServer = new Server();
+			hsqlServer.setLogWriter(null);
+			hsqlServer.setSilent(true);
+			hsqlServer.setDatabaseName(0, Helper.databaseName);
+			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
+			hsqlServer.start();
+			Class.forName(Helper.jdbc);
+			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
+
+			connection.prepareStatement("drop table person if exists;").execute();
+			connection.prepareStatement("drop table relations if exists;").execute();
+
+			connection.commit();
+			connection.close();
+			hsqlServer.stop();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
