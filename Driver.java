@@ -29,6 +29,7 @@ Notes: --
 Change History: 
 - Rudi Basiran <s3665980@student.rmit.edu.au> : 16 May 2018 : Created based on old driver
 - Sherri McRae <s3117889@student.rmit.edu.au> : 22 May 2018 : Added Classmate and Colleague exceptions
+- Rudi Basiran <s3665980@student.rmit.edu.au> : 22 May 2018 : Added DB reading/writing. 
  */
 
 public class Driver {
@@ -51,21 +52,22 @@ public class Driver {
 	public void loadData() {
 		String peopleFile = "";
 		String relationsFile = "";
-		Boolean reInitialize = true;// set to true to start from scratch
+		Boolean reset = true;// set to true to start from scratch
 
-		if (reInitialize) {
-			createDB();
-			peopleFile = "people.txt";
-			relationsFile = "relation.txt";
-		} else {
-			// set such that driver wont look for the data files
-			peopleFile = "people2.txt";
-			relationsFile = "relation2.txt";
-		}
+		createDB();
 
-		if (!DBPopulated()) {
+		if (!DBPopulated() & _network.size() <= 0)
+			reset = true;
+		else if (DBPopulated() & _network.size() <= 0)
+			reloadDBintoDriver();
+		else if (DBPopulated() & _network.size() > 0)
+			reset = false;
+
+		if (reset) {
 			try {
 
+				peopleFile = "people.txt";
+				relationsFile = "relation.txt";
 				Scanner input = new Scanner(new File(Helper.path + peopleFile));
 				input.useDelimiter(";|\n");
 
@@ -118,14 +120,13 @@ public class Driver {
 						connectPerson(p1, p2, relationship);
 
 						count++;
-						System.out.println("Forging Relationships(s) in DB: " + person1 + "<<"
-								+ Helper.roleDesc[relationship] + ">>" + person2);
+						System.out.println("Forging Relationships(s) in DB: " + person1 + " <<"
+								+ Helper.roleDesc[relationship] + ">> " + person2);
 					}
 				}
 			} catch (FileNotFoundException e) {
 			}
-		} else
-			reloadDBintoDriver();
+		}
 
 	}
 
@@ -425,29 +426,31 @@ public class Driver {
 
 	public void addPerson(String name, int age, String gender, String info, String state) throws NoSuchAgeException {
 		Boolean proceed = false;
-		String chkName = _network.get(getIndexByProperty(name)).getName();
-		if (age > Helper.ChildAge) {
-			Adult a = new Adult(name, age, gender, info, state);
-			if (!chkName.equals(name)) {
+
+		if (findPerson(name)) {
+		} else {
+			if (age > Helper.ChildAge) {
+				Adult a = new Adult(name, age, gender, info, state);
+
 				_network.add(a);
 				proceed = true;
-			}
-		} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
-			Child c = new Child(name, age, gender, info, state);
-			if (!chkName.equals(name)) {
+
+			} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
+				Child c = new Child(name, age, gender, info, state);
+
 				_network.add(c);
 				proceed = true;
-			}
-		} else if (age <= Helper.YoungChildAge) {
-			YoungChild y = new YoungChild(name, age, gender, info, state);
-			if (!chkName.equals(name)) {
+
+			} else if (age <= Helper.YoungChildAge) {
+				YoungChild y = new YoungChild(name, age, gender, info, state);
+
 				_network.add(y);
 				proceed = true;
-			}
-		} else if (age < 0 || age > 150) {
-			throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
-		}
 
+			} else if (age < 0 || age > 150) {
+				throw new NoSuchAgeException("You can not enter an age below zero or above 150.");
+			}
+		}
 		if (proceed)
 			loadDBPerson(name, "", info, gender, age, state);
 
@@ -697,6 +700,12 @@ public class Driver {
 		p.setGender(gender);
 		p.setState(state);
 		p.setInfo(info);
+		updateDB(name, age, info, state, gender);
+
+	}
+
+	public void updateDB(String name, int age, String info, String state, String gender) {
+		// 999
 	}
 
 	public String updateProfile(TextField t[], ComboBox<String> connComboBox, ToggleGroup rbgGender) {
