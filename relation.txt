@@ -1,11 +1,11 @@
 Rudi Basiran;Ahysa Ahmad;Spouse
 Rudi Basiran;Rida Aqyda;Father
 Ahysa Ahmad;Rida Aqyda;Mother
-Arthur Simanjuntak;Sheree Reaver;Spouse
+Arthur Simanjuntak;Sheree Feaver;Spouse
 Arthur Simanjuntak;Rangi Simanjuntak;Father
-Sheree Reaver;Rangi Simanjuntak;Mother
+Sheree Feaver;Rangi Simanjuntak;Mother
 Arthur Simanjuntak;Tane Simanjuntak;Father
-Sheree Reaver;Tane Simanjuntak;Mother
+Sheree Feaver;Tane Simanjuntak;Mother
 Andrew Steward;Nat James;Spouse
 Nat James;Callum James;Mother
 Al Rasyid Abdul Wahab;Nor Amalina Abdul Rahman;Spouse
@@ -13,7 +13,6 @@ Al Rasyid Abdul Wahab;Nurul Sabrina Al Rasyid;Father
 Nor Amalina Abdul Rahman;Nurul Sabrina Al Rasyid;Mother
 Al Rasyid Abdul Wahab;Riyan Firdaus Al Rasyid;Father
 Nor Amalina Abdul Rahman;Riyan Firdaus Al Rasyid;Mother
-Rudi Basiran;Sherri McRae;Friend
 Huani Neupane;Rudi Basiran;Friend
 Rudi Basiran;Chloe Loh;Friend
 Rudi Basiran;Wanyi Beh;Friend
@@ -46,17 +45,16 @@ Vito Corleone;Micheal Corleone;Father
 Carmela Corleone;Micheal Corleone;Mother
 Vito Corleone;Connie Corleone;Father
 Carmela Corleone;Connie Corleone;Mother
-Keith McRae;Jeanne McRae;Spouse
-Jeanne McRae;Sherri McRae;Mother
-Keith McRae;Sherri McRae;Father
-Jeanne McRae;Jacqui McRae;Mother
-Keith McRae;Jacqui McRae;Father
 Sherri McRae;Stephanie Call;Friend
 Terhi Kuusisto;Mikko Kuusisto;Spouse
-Jeanne McRae;Jacqui McRae;Mother
-Keith McRae;Jacqui McRae;Father
-Terhi Kuusisto;Julius Kuusisto;Father
-Mikko Kuusisto;Julius Kuusisto;Mother
-Terhi Kuusisto;Lumi Kuusisto;Father
-Mikko Kuusisto;Lumi Kuusisto;Mother
+Mikko Kuusisto;Julius Kuusisto;Father
+Terhi Kuusisto;Julius Kuusisto;Mother
+Mikko Kuusisto;Lumi Kuusisto;Father
+Terhi Kuusisto;Lumi Kuusisto;Mother
 Sherri McRae;Terhi Kuusisto;Friend
+Rudi Basiran;Sherri McRae;Friend
+Keith McRae;Jeanne McRae;Spouse
+Keith McRae;Sherri McRae;Father
+Jeanne McRae;Sherri McRae;Mother
+Keith McRae;Jacqui McRae;Father
+Jeanne McRae;Jacqui McRae;Mother

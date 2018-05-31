@@ -187,6 +187,7 @@ public class Menu extends Application implements Serializable {
 		try {
 			ObjectInputStream input = new ObjectInputStream(new FileInputStream(Helper.SerializableFileName));
 			_driver = (Driver) input.readObject();
+			hasData = true;
 			input.close();
 		} catch (FileNotFoundException e) {
 			System.out.println(

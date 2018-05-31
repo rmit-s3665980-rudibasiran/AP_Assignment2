@@ -2,7 +2,7 @@ Rudi Basiran;;Lead Systems Analyst;M;48;VIC
 Ahysa Ahmad;;;F;45;VIC
 Rida Aqyda;;;F;7;VIC
 Arthur Simanjuntak;;Wave Engineer;M;45;WA
-Sheree Reaver;;Civil Engineer;F;45;WA
+Sheree Feaver;;Civil Engineer;F;45;WA
 Rangi Simanjuntak;;;M;8;WA
 Tane Simanjuntak;;;M;6;WA
 Andrew Steward;;HR Officer;M;45;SA
