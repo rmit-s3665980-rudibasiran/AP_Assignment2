@@ -1,5 +1,7 @@
 package AP_Assignment2;
 
+import java.io.Serializable;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -11,7 +13,7 @@ Notes: --
 Change History:
  */
 
-public abstract class Person {
+public abstract class Person implements Serializable {
 	private String _name;
 	private int _age;
 	private String _gender;

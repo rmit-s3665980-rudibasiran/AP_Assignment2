@@ -2,16 +2,11 @@ package AP_Assignment2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Scanner;
-
-import org.hsqldb.Server;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
@@ -32,7 +27,7 @@ Change History:
 - Rudi Basiran <s3665980@student.rmit.edu.au> : 22 May 2018 : Added DB reading/writing. 
  */
 
-public class Driver {
+public class Driver implements Serializable {
 	private ArrayList<Person> _network = new ArrayList<Person>();
 	private ArrayList<Relationship> _relationship = new ArrayList<Relationship>();
 
@@ -54,29 +49,6 @@ public class Driver {
 		String relationsFile = "";
 		Boolean reset = true;
 
-		// 4 possible scenarios
-		if (Helper.doDatabase) {
-			if (!DatabasePopulated() & _network.size() <= 0)
-				reset = true;
-
-			else if (DatabasePopulated() & _network.size() <= 0) {
-				try {
-					reloadDatabaseintoDriver();
-				} catch (NoSuchAgeException e) {
-				}
-				reset = false;
-			}
-
-			else if (!DatabasePopulated() & _network.size() > 0)
-				reset = true;
-
-			else if (DatabasePopulated() & _network.size() > 0)
-				reset = false;
-		}
-		if (!Helper.doDatabase) {
-			reset = true;
-			destroyDatabase(); // flush the database
-		}
 		if (reset) {
 			try {
 
@@ -150,368 +122,6 @@ public class Driver {
 
 	}
 
-	public void destroyDatabase() {
-
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-			connection.prepareStatement("drop table person if exists;").execute();
-			connection.prepareStatement("drop table relations if exists;").execute();
-
-			connection.commit();
-			connection.close();
-			hsqlServer.stop();
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	public void moveDriverToDatabase() {
-		String output = "";
-		if (Helper.doDatabase) {
-			if (Helper.doDatabase) {
-
-				destroyDatabase(); // flush the database
-
-				createDatabase(); // re-create the database
-
-				for (int i = 0; i < _network.size(); i++) {
-					output = output + "Verifying Person(s) in Database: " + _network.get(i).getName();
-					loadDatabasePerson(_network.get(i).getName(), "", _network.get(i).getInfo(),
-							_network.get(i).getGender(), _network.get(i).getAge(), _network.get(i).getState());
-				}
-
-				for (int i = 0; i < _relationship.size(); i++) {
-					output = output + "Forging Relationships(s) in Database: "
-							+ _relationship.get(i).getPersonA().getName() + " <<"
-							+ Helper.roleDesc[_relationship.get(i).getConn()] + ">> "
-							+ _relationship.get(i).getPersonB().getName();
-
-					loadDatabaseRelations(_relationship.get(i).getPersonA().getName(),
-							_relationship.get(i).getPersonB().getName(), _relationship.get(i).getConn());
-				}
-			}
-		}
-
-	}
-
-	public void createDatabase() {
-		if (Helper.doDatabase) {
-			try {
-				Server hsqlServer = null;
-				Connection connection = null;
-				ResultSet rs = null;
-				hsqlServer = new Server();
-				hsqlServer.setLogWriter(null);
-				hsqlServer.setSilent(true);
-				hsqlServer.setDatabaseName(0, Helper.databaseName);
-				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-				hsqlServer.start();
-				Class.forName(Helper.jdbc);
-				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-				connection.prepareStatement("drop table person if exists;").execute();
-				connection.prepareStatement("drop table relations if exists;").execute();
-
-				String sql = "";
-				sql = "create table person (" + "name varchar(50) not null, " + "photo varchar(50), "
-						+ "info varchar(100), " + "gender varchar(1), " + "age integer, "
-						+ "state varchar(5), primary key (name));";
-				try {
-					connection.prepareStatement(sql).execute();
-				} catch (Exception e) {
-
-				}
-				sql = "create table relations (name1 varchar(50) not null, name2 varchar(50) not null, conn integer, primary key (name1,name2));";
-				try {
-					connection.prepareStatement(sql).execute();
-				} catch (Exception e) {
-
-				}
-
-				connection.commit();
-				connection.close();
-				hsqlServer.stop();
-
-			} catch (
-
-			ClassNotFoundException e) {
-			} catch (SQLException e) {
-			}
-		}
-	}
-
-	public void reloadDatabaseintoDriver() throws NoSuchAgeException {
-		if (Helper.doDatabase) {
-			try {
-				Server hsqlServer = null;
-				Connection connection = null;
-				ResultSet rs = null;
-				hsqlServer = new Server();
-				hsqlServer.setLogWriter(null);
-				hsqlServer.setSilent(true);
-				hsqlServer.setDatabaseName(0, Helper.databaseName);
-				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-				hsqlServer.start();
-				Class.forName(Helper.jdbc);
-				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-				String sql = "select name, photo, info, gender, age, state from person order by name desc;";
-
-				rs = connection.prepareStatement(sql).executeQuery();
-				while (rs.next()) {
-					String name = rs.getString(1);
-					String photo = rs.getString(2);
-					String info = rs.getString(3);
-					String gender = rs.getString(4);
-					int age = rs.getInt(5);
-					String state = rs.getString(6);
-
-					if (age > Helper.ChildAge) {
-						Adult a = new Adult(name, age, gender, info, state);
-						_network.add(a);
-
-					} else if (age <= Helper.ChildAge & age > Helper.YoungChildAge) {
-						Child c = new Child(name, age, gender, info, state);
-
-						_network.add(c);
-
-					} else if (age <= Helper.YoungChildAge) {
-						YoungChild y = new YoungChild(name, age, gender, info, state);
-
-						_network.add(y);
-
-					} else if (age < 0) {
-						throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
-					} else if (age > 150) {
-						throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
-					}
-
-					if (Helper.doDatabase) {
-						System.out.println("Re-creating Human(s) in Driver: " + name);
-
-					}
-				}
-
-				sql = "select name1, name2, conn from relations order by name1 desc;";
-
-				rs = connection.prepareStatement(sql).executeQuery();
-				while (rs.next()) {
-					String person1 = rs.getString(1);
-					String person2 = rs.getString(2);
-					int relationship = rs.getInt(3);
-
-					if (findPerson(person1) & findPerson(person2) & relationship >= 0) {
-						Person p1 = _network.get(getIndexByProperty(person1));
-						Person p2 = _network.get(getIndexByProperty(person2));
-
-						// connectPerson(p1, p2, relationship);
-						_relationship.add(new Relationship(p1, relationship, p2));
-
-						if (Helper.doDatabase) {
-							System.out.println("Forging Relationships(s) in Driver: " + person1 + " <<"
-									+ Helper.roleDesc[relationship] + ">> " + person2);
-
-						}
-					}
-
-				}
-				connection.commit();
-
-				connection.close();
-				hsqlServer.stop();
-			} catch (ClassNotFoundException e) {
-
-			} catch (SQLException e) {
-
-			}
-		}
-	}
-
-	public void loadDatabasePerson(String name, String photo, String info, String gender, int age, String state) {
-
-		if (Helper.doDatabase) {
-			try {
-
-				Server hsqlServer = null;
-				Connection connection = null;
-				ResultSet rs = null;
-				hsqlServer = new Server();
-				hsqlServer.setLogWriter(null);
-				hsqlServer.setSilent(true);
-				hsqlServer.setDatabaseName(0, Helper.databaseName);
-				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-				hsqlServer.start();
-				Class.forName(Helper.jdbc);
-				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-				String sql = "insert into person (name, photo, info, gender, age, state)" + "values ('" + name + "','"
-						+ photo + "','" + info + "','" + gender + "'," + age + ",'" + state + "');";
-				try {
-					connection.prepareStatement(sql).execute();
-					connection.commit();
-				} catch (Exception e) {
-
-				}
-
-				connection.close();
-				hsqlServer.stop();
-
-			} catch (ClassNotFoundException e) {
-
-			} catch (SQLException e) {
-
-			}
-		}
-	}
-
-	public void loadDatabaseRelations(String name1, String name2, int conn) {
-		if (Helper.doDatabase) {
-			try {
-				Server hsqlServer = null;
-				Connection connection = null;
-				ResultSet rs = null;
-				hsqlServer = new Server();
-				hsqlServer.setLogWriter(null);
-				hsqlServer.setSilent(true);
-				hsqlServer.setDatabaseName(0, Helper.databaseName);
-				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-				hsqlServer.start();
-				Class.forName(Helper.jdbc);
-				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-				String sql = "insert into relations (name1, name2, conn) " + "values ('" + name1 + "','" + name2 + "',"
-						+ conn + ");";
-
-				try {
-					connection.prepareStatement(sql).execute();
-					connection.commit();
-				} catch (Exception e) {
-
-				}
-
-				connection.close();
-				hsqlServer.stop();
-
-			} catch (ClassNotFoundException e) {
-
-			} catch (SQLException e) {
-
-			}
-		}
-	}
-
-	public Boolean DatabasePopulated() {
-
-		Boolean tablesPopulated = false;
-
-		if (Helper.doDatabase) {
-
-			try {
-				Server hsqlServer = null;
-				Connection connection = null;
-				ResultSet rs = null;
-				hsqlServer = new Server();
-				hsqlServer.setLogWriter(null);
-				hsqlServer.setSilent(true);
-				hsqlServer.setDatabaseName(0, Helper.databaseName);
-				hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-				hsqlServer.start();
-				Class.forName(Helper.jdbc);
-				connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-				int countPeople = 0;
-				int countRelations = 0;
-
-				String sql = "select count(*) from person;";
-				rs = connection.prepareStatement(sql).executeQuery();
-				rs.next();
-				countPeople = rs.getInt(1);
-				System.out.println("No. of Person(s) in DB: " + countPeople);
-
-				if (countPeople >= 1)
-					tablesPopulated = true;
-
-				sql = "select count(*) from relations;";
-				rs = connection.prepareStatement(sql).executeQuery();
-				rs.next();
-				countRelations = rs.getInt(1);
-				System.out.println("No. of Relationship(s) in DB: " + countRelations);
-				if (countRelations >= 1)
-					tablesPopulated = true;
-
-				connection.close();
-				hsqlServer.stop();
-			} catch (ClassNotFoundException e) {
-
-			} catch (SQLException e) {
-
-			}
-		}
-		return tablesPopulated;
-	}
-
-	public String viewDatabase(String name) {
-
-		String output = "";
-		String sql = "";
-		Boolean found = false;
-
-		try {
-			Server hsqlServer = null;
-			Connection connection = null;
-			ResultSet rs = null;
-			hsqlServer = new Server();
-			hsqlServer.setLogWriter(null);
-			hsqlServer.setSilent(true);
-			hsqlServer.setDatabaseName(0, Helper.databaseName);
-			hsqlServer.setDatabasePath(0, Helper.path + Helper.DatabaseFileName);
-			hsqlServer.start();
-			Class.forName(Helper.jdbc);
-			connection = DriverManager.getConnection(Helper.jdbcConn, Helper.dbUser, Helper.dbUserPwd);
-
-			sql = "select name " + "from person where lower(name) like lower('%" + name + "%') order by name desc;";
-
-			rs = connection.prepareStatement(sql).executeQuery();
-			while (rs.next()) {
-
-				output = output + rs.getString(1);
-				found = true;
-			}
-			connection.commit();
-			connection.close();
-			hsqlServer.stop();
-		} catch (ClassNotFoundException e) {
-
-		} catch (SQLException e) {
-
-		}
-
-		if (!found)
-			output = "";
-		return output;
-	}
-
-	public void writeDatabase() {
-
-	}
-
 	public Boolean findPerson(String name) {
 		return ((getIndexByProperty(name) >= 0) ? true : false);
 	}
@@ -524,16 +134,6 @@ public class Driver {
 			output = output + "[" + _network.get(getIndexByProperty(name)).getName() + "] found in network.\n";
 		} else
 			output = "[" + name + "] not found.";
-
-		return output;
-	}
-
-	public String findPerson(String name, int sourceType) {
-		String output = "";
-
-		if (sourceType == Helper.findInDB) {
-			output = output + viewDatabase(name);
-		}
 
 		return output;
 	}
@@ -566,8 +166,6 @@ public class Driver {
 				throw new NoSuchAgeException("You cannot enter an age below zero or above 150.");
 			}
 		}
-		if (proceed & Helper.doDatabase)
-			loadDatabasePerson(name, "", info, gender, age, state);
 
 	}
 
@@ -1010,8 +608,7 @@ public class Driver {
 
 		if (!isConnected(p, q, conn)) {
 			_relationship.add(new Relationship(p, conn, p));
-			if (Helper.doDatabase)
-				loadDatabaseRelations(p.getName(), q.getName(), conn);
+
 		}
 
 		return output;

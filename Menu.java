@@ -1,5 +1,13 @@
 package AP_Assignment2;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,13 +32,16 @@ Change History:
 - [16 May 2018] Rudi Basiran  : Updated GUI
  */
 
-public class Menu extends Application {
+public class Menu extends Application implements Serializable {
 
 	private Driver _driver = new Driver();
 
 	public Menu() {
-		// _driver = new Driver();
-		_driver.loadData();
+
+		if (loadSerializable()) {
+
+		} else
+			_driver.loadData();
 	}
 
 	public void go() {
@@ -155,12 +166,46 @@ public class Menu extends Application {
 
 	}
 
+	public void fillSerializable() {
+
+		try {
+			ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(Helper.SerializableFileName));
+			output.writeObject(_driver);
+			output.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(
+					"FileNotFoundException | Serializable File " + Helper.SerializableFileName + " not found.");
+		} catch (IOException e) {
+			System.out.println("IOException");
+		}
+
+	}
+
+	public Boolean loadSerializable() {
+		Boolean hasData = false;
+
+		try {
+			ObjectInputStream input = new ObjectInputStream(new FileInputStream(Helper.SerializableFileName));
+			_driver = (Driver) input.readObject();
+			input.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(
+					"FileNotFoundException | Serializable File " + Helper.SerializableFileName + " not found.");
+		} catch (ClassNotFoundException e) {
+			System.out.println("ClassNotFoundException");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("IOException");
+			// e.printStackTrace();
+		}
+
+		return hasData;
+	}
+
 	public void menuAction(Stage primaryStage, GridPane wp, Pane p, String menuClicked) {
 
 		if (menuClicked.equals(Helper.menuDesc[Helper.quitMenu])) {
-			if (Helper.doDatabase)
-
-				_driver.moveDriverToDatabase();
+			fillSerializable();
 			primaryStage.close();
 		} else {
 

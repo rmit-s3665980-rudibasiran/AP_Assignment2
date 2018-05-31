@@ -25,6 +25,8 @@ Change History:
 
 public class Helper {
 
+	public static String SerializableFileName = "MiniNetDB.dat";
+
 	public static String path = new File("").getAbsolutePath() + "/AP_Assignment2/";
 
 	public static String databaseName = "MiniNetDB";

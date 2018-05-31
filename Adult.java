@@ -11,7 +11,9 @@ Change History:
 
  */
 
-public class Adult extends Person {
+import java.io.Serializable;
+
+public class Adult extends Person implements Serializable {
 
 	public Adult() {
 

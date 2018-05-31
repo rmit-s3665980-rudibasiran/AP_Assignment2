@@ -1,5 +1,7 @@
 package AP_Assignment2;
 
+import java.io.Serializable;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -12,7 +14,7 @@ Notes: --
 Change History:
  */
 
-public class Relationship {
+public class Relationship implements Serializable {
 	private Person _personA;
 	private int _connection;
 	private Person _personB;

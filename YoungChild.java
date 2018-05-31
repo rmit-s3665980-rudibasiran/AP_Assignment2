@@ -1,5 +1,7 @@
 package AP_Assignment2;
 
+import java.io.Serializable;
+
 /*
 Title: RMIT Advanced Programming Assignment 2
 Developer(s): 
@@ -11,7 +13,7 @@ Notes: --
 Change History:
  */
 
-public class YoungChild extends Person {
+public class YoungChild extends Person implements Serializable {
 
 	public YoungChild(String name, int age, String g, String i, String s) {
 		super(name, age, g, i, s);
