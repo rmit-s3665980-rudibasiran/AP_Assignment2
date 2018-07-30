@@ -27,6 +27,7 @@ public class Adult extends Person implements Serializable {
 	public Adult(String name, int age, String g, String i) {
 		super(name, age, g, i);
 
+		int i = 99;
 	}
 
 	public Adult(String name, int age, String g) {
